@@ -1,0 +1,12 @@
+<style type="text/css">
+	.list-group {max-width:650px; margin:50px auto 0;}
+	.list-group .cover {width:50px; height:auto; margin:0 15px;}
+</style>
+
+<ul class="list-group">
+	<li class="list-group-item" ng-repeat="song in songs">
+		<span>{{song.no+1}}</span>
+		<img class="cover" ng-src="{{song.album.cover}}" />
+		<a href="#/songs/{{song.id}}">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』</a>
+	</li>
+</ul>

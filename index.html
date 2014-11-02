@@ -1,0 +1,67 @@
+<!doctype html>
+<html ng-app="bestApp">
+<head>
+	<meta charset="utf-8">
+	<title>Ballad Best 100</title>
+    <link rel="stylesheet" href="/homedev/bower_components/bootstrap/dist/css/bootstrap.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		/*
+		 * [경로 설정]
+		 *
+		 */
+		//경로에 따라 다른 뷰를 보여주도록 설정한다.
+		//모듈의 첫번째 파라미터에는 ng-app의 이름을 설정하고,
+		//$routeProvider를 가져와서 설정한다.
+		angular.module('bestApp', [])
+			.config(['$routeProvider', function($routeProvider){
+				$routeProvider.
+					when('/songs', {	//경로명
+						templateUrl: 'partials/song-list.html', //해당 경로일 때 불러올 페이지
+						controller: SongListController	//해당 경로일 때 사용할 컨트롤러
+					}).
+					when('/songs/:songId', {	//경로명
+						templateUrl: 'partials/song-detail.html', //해당 경로일 때 불러올 페이지
+						controller: SongDetailController	//해당 경로일 때 사용할 컨트롤러
+					}).
+					otherwise({
+						redirectTo: '/songs'	//그 외에 모든 경로는 여기로 이동
+					});
+			}]);
+
+		/*
+		 * [컨트롤러]
+		 *
+		 */
+
+		//노래 세부 정보를 보여주는 컨트롤러
+		function SongDetailController($scope, $routeParams){
+			$scope.songId = $routeParams.songId;
+			$scope.explain = $routeParams.explain;
+		}
+
+		//노래 리스트를 보여주는 컨트롤러
+		function SongListController($scope, $http){
+			
+			$http.get('album.json')
+				.success(function(data){
+					$scope.songs = data;
+				});
+
+			//기본값은 번호로 정해준다.
+			//기본값을 정하지 않아도 되지만, 그럴경우 선언된 순서대로 표시된다.
+			$scope.orderByProp = 'no';
+		}
+
+	</script>
+</head>
+<body>
+
+	<div class="container">
+		<!-- angular 뷰 -->
+		<ng-view></ng-view>
+	</div>
+
+</body>
+</html>
