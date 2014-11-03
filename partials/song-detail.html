@@ -1,9 +1,16 @@
+<style type="text/css">
+	.panel-default {max-width:650px; margin:50px auto 0;}
+</style>
+
 <div class="panel panel-default">
   <div class="panel-heading">
-	  <h3 class="panel-title">{{song.no+1}}. {{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』</h3>
+	  <h3 class="panel-title">{{songInfo.no+1}}. {{songInfo.singer}} -「{{songInfo.title}}」 from 『{{songInfo.album}}』</h3>
   </div>
-  <div class="panel-body">
-   	<img ng-src="{{song.album.cover}}" />
-	<p>{{songId}}</p>
+  <div class="panel-body clearfix">
+   	<img class="pull-left" ng-src="{{songInfo.albumImg}}" />
+	<p class="pull-right col-md-8">{{songInfo.explain}}</p>
   </div>
+</div>
+<div class="text-right">
+	<button class="btn btn-default" type="button" onClick="history.go(-1);return false;">목록</button>
 </div>

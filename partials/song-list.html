@@ -1,10 +1,34 @@
 <style type="text/css">
 	.list-group {max-width:650px; margin:50px auto 0;}
 	.list-group .cover {width:50px; height:auto; margin:0 15px;}
+
+	.control-label {padding-top:8px;}
 </style>
 
+<form role="form">
+	<div class="row">
+		<div class="col-md-8">
+			<label class="sr-only" for="search">검색어</label>
+			<input type="text" class="form-control" id="search" placeholder="검색어를 입력하세요." ng-model="searchKey" />
+		</div>
+		<div class="col-md-4">
+			<div class="row">
+				<label for="sort" class="control-label col-md-4 text-right">정렬</label>
+				<div class="col-md-8">
+					<select class="form-control" ng-model="orderByProp">
+						<option value="no">번호</option>
+						<option value="singer">가수</option>
+						<option value="title">노래제목</option>
+						<option value="album.name">앨범명</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <ul class="list-group">
-	<li class="list-group-item" ng-repeat="song in songs">
+	<li class="list-group-item" ng-repeat="song in songs | filter:searchKey | orderBy:orderByProp">
 		<span>{{song.no+1}}</span>
 		<img class="cover" ng-src="{{song.album.cover}}" />
 		<a href="#/songs/{{song.id}}">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』</a>
