@@ -73,14 +73,22 @@
 
 	</script>
 	<style type="text/css">
-		.container {max-width:650px; margin:0 auto;}
+		.container {max-width:650px; margin:30px auto;}
+		.contents {padding:30px 0;}	
 	</style>
 </head>
 <body>
 
 	<div class="container">
-		<!-- angular 뷰 -->
-		<ng-view></ng-view>
+		<div class="text-center">
+			<h1>Ballad Best 100</h1>
+			<p>- 음악취향 Y 선정 1985~2010 발라드 베스트 100 -</p>
+		</div>
+
+		<div class="contents">
+			<!-- angular 뷰 -->
+			<ng-view></ng-view>
+		</div>
 	</div>
 
 </body>

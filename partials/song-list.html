@@ -1,5 +1,6 @@
 <style type="text/css">
-	.list-group {max-width:650px; margin:50px auto 0;}
+	form {margin-bottom:20px;}
+	.list-group {max-width:650px; margin:10px auto 0;}
 	.list-group .cover {width:50px; height:auto; margin:0 15px;}
 
 	.control-label {padding-top:8px;}
@@ -25,8 +26,9 @@
 			</div>
 		</div>
 	</div>
-</div>
+</form>
 
+<p>검색 키워드 : {{searchKey || '없음'}} ----- 정렬 기준 : {{orderByProp}}</p>
 <ul class="list-group">
 	<li class="list-group-item" ng-repeat="song in songs | filter:searchKey | orderBy:orderByProp">
 		<span>{{song.no+1}}</span>
