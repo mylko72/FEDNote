@@ -1,7 +1,8 @@
 <style type="text/css">
 	form {margin-bottom:20px;}
-	.list-group {max-width:650px; margin:10px auto 0;}
+	.list-group .no {display:inline-block; width:20px; text-align:right;}
 	.list-group .cover {width:50px; height:auto; margin:0 15px;}
+	.list-group .song {display:inline-block; width:620px; vertical-align:middle;}
 
 	.control-label {padding-top:8px;}
 </style>
@@ -31,8 +32,11 @@
 <p>검색 키워드 : {{searchKey || '없음'}} ----- 정렬 기준 : {{orderByProp}}</p>
 <ul class="list-group">
 	<li class="list-group-item" ng-repeat="song in songs | filter:searchKey | orderBy:orderByProp">
-		<span>{{song.no+1}}</span>
-		<img class="cover" ng-src="{{song.album.cover}}" />
-		<a href="#/songs/{{song.id}}">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』</a>
+		<div id="section-{{song.no+1}}">
+			<span class="no">{{song.no+1}}</span>
+			<img class="cover" ng-src="{{song.album.cover}}" />
+			<a href="#/songs/{{song.id}}" class="song">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』/ 작사. {{song.album.Lyrics}}, 작곡. {{song.album.Composed}}</a>
+		</div>
 	</li>
 </ul>
+<div class="text-right"><button ng-click="toTheTop()" class="btn btn-default">위로</button></div>

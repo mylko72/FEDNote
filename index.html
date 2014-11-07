@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+	<script src="js/angular-scroll.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		/*
 		 * [경로 설정]
@@ -14,7 +15,7 @@
 		//경로에 따라 다른 뷰를 보여주도록 설정한다.
 		//모듈의 첫번째 파라미터에는 ng-app의 이름을 설정하고,
 		//$routeProvider를 가져와서 설정한다.
-		angular.module('bestApp', [])
+		angular.module('bestApp', ['duScroll'])
 			.config(['$routeProvider', function($routeProvider){
 				$routeProvider.
 					when('/songs', {	//경로명
@@ -28,12 +29,20 @@
 					otherwise({
 						redirectTo: '/songs'	//그 외에 모든 경로는 여기로 이동
 					});
-			}]);
+			}])
 
 		/*
 		 * [컨트롤러]
 		 *
 		 */
+
+		function mainController($scope, $document){
+			$scope.gotoSection = function(id){
+				var sectionId = angular.element(document.getElementById(id));
+				$document.scrollTo(sectionId, 170, 1000);
+				$scope.selStyle = {'background':'#a28629','color':'#fff'}
+			}
+		}
 
 		//노래 세부 정보를 보여주는 컨트롤러
 		function SongDetailController($scope, $http, $routeParams){
@@ -52,6 +61,8 @@
 							$scope.songInfo.title = $scope.songs[i].title;
 							$scope.songInfo.album = $scope.songs[i].album.name;
 							$scope.songInfo.albumImg = $scope.songs[i].album.cover;
+							$scope.songInfo.lyrics = $scope.songs[i].album.Lyrics;
+							$scope.songInfo.composed = $scope.songs[i].album.Composed;
 							$scope.songInfo.explain = $scope.songs[i].explain;
 						}
 					}
@@ -59,12 +70,17 @@
 		}
 
 		//노래 리스트를 보여주는 컨트롤러
-		function SongListController($scope, $http){
+		function SongListController($scope, $http, $document){
 			
 			$http.get('album.json')
 				.success(function(data){
 					$scope.songs = data;
+				}).then(function(){
+					$scope.toTheTop = function(){
+						$document.scrollTop(0, 500);
+					}
 				});
+
 
 			//기본값은 번호로 정해준다.
 			//기본값을 정하지 않아도 되지만, 그럴경우 선언된 순서대로 표시된다.
@@ -73,22 +89,47 @@
 
 	</script>
 	<style type="text/css">
-		.container {max-width:650px; margin:30px auto;}
+		header .container {width:1024px; margin:0 auto;}
+		.bs-main-nav {background-color:#c3a11f; color:#fff;}
+		.bs-main-nav .navbar-nav > li > a {color:#ffe578;}
+		.bs-main-nav .navbar-nav > li > .base.active {background:#a28629; color:#fff;}
+
+		.bs-main-container {width:800px; margin:160px auto 50px;}
 		.contents {padding:30px 0;}	
 	</style>
 </head>
-<body>
+<body ng-controller="mainController">
 
-	<div class="container">
-		<div class="text-center">
-			<h1>Ballad Best 100</h1>
-			<p>- 음악취향 Y 선정 1985~2010 발라드 베스트 100 -</p>
+	<header class="navbar navbar-inverse navbar-fixed-top bs-main-nav">
+		<div class="container">
+			<div class="text-center">
+				<h1>Ballad Best 100</h1>
+				<p>- 음악취향 Y 선정 1985~2010 발라드 베스트 100 -</p>
+			</div>
+			<nav class="collapse navbar-collapse" role="navigation">
+				<ul class="nav navbar-nav">
+					<li><a ng-click="gotoSection('section-1')">1 ~ 10위</a></li>
+					<li><a ng-click="gotoSection('section-11')">11 ~ 20위</a></li>
+					<li><a ng-click="gotoSection('section-21')">21 ~ 30위</a></li>
+					<li><a ng-click="gotoSection('section-31')">31 ~ 40위</a></li>
+					<li><a ng-click="gotoSection('section-41')">41 ~ 50위</a></li>
+					<li><a ng-click="gotoSection('section-51')">51 ~ 60위</a></li>
+					<li><a ng-click="gotoSection('section-61')">61 ~ 70위</a></li>
+					<li><a ng-click="gotoSection('section-71')">71 ~ 80위</a></li>
+					<li><a ng-click="gotoSection('section-81')">81 ~ 90위</a></li>
+					<li><a ng-click="gotoSection('section-91')">91 ~ 100위</a></li>
+				</ul>
+			</nav>
 		</div>
+	</header>
+
+	<div class="container bs-main-container">
 
 		<div class="contents">
 			<!-- angular 뷰 -->
 			<ng-view></ng-view>
 		</div>
+
 	</div>
 
 </body>
