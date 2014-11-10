@@ -435,21 +435,6 @@
 		"explain" :""
 	},
 	{
-		"no" : 28,
-		"id" : "best029",
-		"singer" : "토이",
-		"title" : "거짓말 같은 시간 (feat.김연우)",
-		"album" : {
-			"name" : "A Night In Seoul",
-			"cover" : "image/jacket029.jpg?type=w740",
-			"Lyrics" : "유희열",
-			"Composed" : "유희열",
-			"Release" : "1999.01",
-			"Label" : "삼성뮤직"
-		},
-		"explain" :""
-	},
-	{
 		"no" : 29,
 		"id" : "best030",
 		"singer" : "빛과소금",
