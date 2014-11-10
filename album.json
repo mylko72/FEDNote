@@ -448,6 +448,66 @@
 			"Label" : "동아기획"
 		},
 		"explain" :""
+	},
+	{
+		"no" : 30,
+		"id" : "best031",
+		"singer" : "김광진",
+		"title" : "편지",
+		"album" : {
+			"name" : "It's Me",
+			"cover" : "image/jacket031.jpg?type=w740",
+			"Lyrics" : "허승경",
+			"Composed" : "김광진",
+			"Release" : "2000.05",
+			"Label" : "서울음반"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 31,
+		"id" : "best032",
+		"singer" : "김민우",
+		"title" : "사랑일뿐야",
+		"album" : {
+			"name" : "김민우 1",
+			"cover" : "image/jacket032.jpg?type=w740",
+			"Lyrics" : "박주연",
+			"Composed" : "하광훈",
+			"Release" : "1990.02",
+			"Label" : "신세계"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 32,
+		"id" : "best033",
+		"singer" : "김범수",
+		"title" : "보고싶다",
+		"album" : {
+			"name" : "보고싶다",
+			"cover" : "image/jacket033.jpg?type=w740",
+			"Lyrics" : "윤사라",
+			"Composed" : "윤일상",
+			"Release" : "2002.12",
+			"Label" : "유니버셜"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 33,
+		"id" : "best034",
+		"singer" : "솔리드",
+		"title" : "이 밤의 끝을 잡고",
+		"album" : {
+			"name" : "The Magic of 8 Ball",
+			"cover" : "image/jacket034.jpg?type=w740",
+			"Lyrics" : "김혜선",
+			"Composed" : "김형석/정재윤",
+			"Release" : "1995.03",
+			"Label" : "서인기획"
+		},
+		"explain" :""
 	}
 
 
