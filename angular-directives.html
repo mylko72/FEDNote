@@ -22,13 +22,13 @@
 				}])
 				.directive('myAlbum', function(){
 					return {
-						restrict : 'E',
-						scope : {
+						restrict : 'E', //HTML에서 디렉티브를 사용하기 위한 DOM 엘리먼트 속성 설정.
+						scope : { //재사용 가능한 isolated scope를 새롭게 생성
 							thisAlbum : '=albumInformation'
 						},
-						templateUrl : 'my-album.html',
-						replace : false,
-						transclude : true
+						templateUrl : 'my-album.html', //template을 별도의 html 파일로 관리
+						replace : false, // false는 template에 작성된 태그를 디렉티브를 사용한 태그에 추가
+						transclude : true  // true는 디렉티브내의 원본내용을 포함
 					};
 				});
 		</script>
