@@ -19,7 +19,7 @@
 
   function someFactory() { }
   ```
-  연관된 component를 각각의 파일로 분리하라.
+  다음처럼 연관된 component를 각각의 파일로 분리한다.
     
   ```javascript
   /* recommended */
@@ -50,11 +50,33 @@
   	
   function someFactory() { }
   ```
+  
+## IIFE (즉시실행함수)
 
+### JavaScript Closures
 
+  - AngularJS components는 즉시실행함수를 감싼다.
 
+  ```javascript
+  /* avoid */
+  
+  // logger.js
+  angular
+    .module('app')
+    .factory('logger', logger);
+  	
+  // logger function is added as a global variable  
+  function logger() { }
 
+  // storage.js
+  angular
+    .module('app')
+    .factory('storage', storage);
 
+  // storage function is added as a global variable  
+  function storage() { }
+  ```
+  
 
 Related & Best Articles
 ------------------------------------------------------------------------------
