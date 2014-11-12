@@ -1,5 +1,7 @@
 # AngularJS Style Guide
 
+- johnpapa의 AngularJS Style Guide를 정리한 번역글 (https://github.com/johnpapa/angularjs-styleguide)
+
 ## Single Responsibility
 
 ### Rule of 1
