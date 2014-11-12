@@ -107,14 +107,15 @@
     function storage() { }
   })();
   ```
+  
 ## Modules
 
-### 모듈명은 충돌하기 않도록 네이밍한다.
+### 모듈명은 충돌하지 않도록 네이밍한다.
 
   - 기호(seperator)를 사용하면 충돌을 피할수 있고 modules과 sub modules의 계층도를 정의하는데 도움이 된다.
   예를 들어, app이 root에 정의된 모듈이라면 app.dashboard와 app.users는 app과 의존관계에 있는 서브모듈을 정의한다.
 
-### 정의
+### 정의 (Setters)
 
   - 설정구문(setter syntax)에서는 변수를 사용하지 말고 모듈을 선언한다.
   
@@ -127,6 +128,40 @@
     'app.dashboard'
   ]);
   ```
+  ```javascript
+  /* avoid */
+  angular.module('app', [
+    'ngAnimate',
+    'ngRoute',
+    'app.shared',
+    'app.dashboard'
+  ]);
+  ```
+
+### Getters
+
+- 정의된 모듈을 사용할때는 변수의 사용을 피하고 체이닝(chaining)을 사용한다. 가독성을 높이고 변수충돌이나 메모리누수를 막을 수 있다.
+
+  ```javascript
+  /* avoid */
+  var app = angular.module('app');
+  app.controller('SomeController' , SomeController);
+
+  function SomeController() { }
+  ```
+  ```javascript
+  /* recommended */
+  angular
+    .module('app')
+    .controller('SomeController' , SomeController);
+
+  function SomeController() { }
+  ```
+### Setting vs Getting
+
+- 단 한번 설정을 하면 모든 인스턴스에서 사용할 수 있다.
+  - Use `angular.module('app', []);` 모듈 설정하기
+	- Use `angular.module('app');` 모듈 사용하기 
 
 
 
