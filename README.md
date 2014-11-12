@@ -4,7 +4,8 @@ angularJSDev
 AngularJS Style Guide
 ------------------------------------------------------------------------------
 1. Single Responsibility
-	하나의 File에 하나의 Component를 정의하라.
+
+하나의 File에 하나의 Component를 정의하라.
 
 
 
