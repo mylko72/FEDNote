@@ -234,6 +234,7 @@ Related & Best Articles
 4. AngularJS: Scope와 데이터 바인딩[ $apply, $watch ](http://www.nextree.co.kr/p8890/)
 5. ng-newsletter  (http://www.ng-newsletter.com/)
 6. controllerAs 구문 파헤치기(http://toddmotto.com/digging-into-angulars-controller-as-syntax/)
+7. Opinionated AngularJS styleguide for teams (http://toddmotto.com/opinionated-angular-js-styleguide-for-teams/)
 
 Error Message
 ------------------------------------------------------------------------------
