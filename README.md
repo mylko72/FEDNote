@@ -1,8 +1,5 @@
-angularJSDev
-==========
+# AngularJS Style Guide
 
-AngularJS Style Guide
-------------------------------------------------------------------------------
 ## Single Responsibility
 
 ### Rule of 1
