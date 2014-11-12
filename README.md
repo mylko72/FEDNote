@@ -195,7 +195,30 @@
   function logger() { }
   ```  
   
+## Contollers
 
+### controllerAs View 구문
+ - 전형적인 controller 구문이 아닌 controllerAS 구문을 사용한다. View에서는 'dotted'를 사용하여 데이터를 바인딩한다.(name 대신 customer.name) 
+ - View에서 중첩된 controller를 호출할 때 $parent의 사용을 피할 수 있다.
+
+ ```javascript
+ <!-- avoid -->
+ <div ng-controller="Customer">
+    {{ name }}
+ </div>
+ ```
+ 
+ ```javascript
+ <!-- recommended -->
+ <div ng-controller="Customer as customer">
+    {{ customer.name }}
+ </div>
+ ```
+ 
+### controllerAs Controller 구문
+
+
+### controllerAs with vm
 
 
 
