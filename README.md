@@ -5,7 +5,16 @@ AngularJS Style Guide
 ------------------------------------------------------------------------------
 1. Single Responsibility
 
-하나의 File에 하나의 Component를 정의하라.
+File에 하나의 Component를 정의하라.
+/* avoid */
+angular
+      .module('app', ['ngRoute'])
+      .controller('SomeController' , SomeController)
+      .factory('someFactory' , someFactory);
+
+function SomeController() { }
+
+function someFactory() { }
 
 
 
