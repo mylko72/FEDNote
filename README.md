@@ -79,24 +79,23 @@
   
   ```javascript
   /**
-* recommended 
-*
-* no globals are left behind 
-*/
+  * recommended 
+  *
+  * no globals are left behind 
+  */
 
-// logger.js
-(function() {
+  // logger.js
+  (function() {
     'use strict';
-
     angular
         .module('app')
         .factory('logger', logger);
 
     function logger() { }
-})();
+  })();
 
-// storage.js
-(function() {
+  // storage.js
+  (function() {
     'use strict';
 
     angular
@@ -104,7 +103,7 @@
         .factory('storage', storage);
 
     function storage() { }
-})();
+  })();
   ```
   
 
