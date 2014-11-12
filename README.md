@@ -165,6 +165,36 @@
 	- Use `angular.module('app', []);` 모듈 설정하기
 	- Use `angular.module('app');` 모듈 사용하기 
 
+### Named vs Anonymous Functions
+ - 콜백함수로 익명함수를 전달하는 대신에 기명함수를 사용한다. 코드의 가독성을 높이고 중복되는 콜백의 양을 줄일수 있다.
+
+  ```javascript
+  /* avoid */
+  angular
+    .module('app')
+    .controller('Dashboard', function() { })
+    .factory('logger', function() { });
+  ```  
+  
+  ```javascript
+  /* recommended */
+  // dashboard.js
+  angular
+    .module('app')
+    .controller('Dashboard', Dashboard);
+    
+  function Dashboard() { }
+  ```  
+  
+  ```javascript
+  // logger.js
+  angular
+    .module('app')
+    .factory('logger', logger);
+    
+  function logger() { }
+  ```  
+  
 
 
 
