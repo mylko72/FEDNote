@@ -56,6 +56,8 @@
 ### JavaScript Closures
 
   - AngularJS components는 즉시실행함수로 감싼다.
+  
+  전역범위에서 변수를 제거할 수 있고 변수가 충돌하는 것을 막을 수 있다.
 
   ```javascript
   /* avoid */
@@ -105,7 +107,32 @@
     function storage() { }
   })();
   ```
+## Modules
+
+### 모듈명은 충돌하기 않도록 네이밍한다.
+
+  - 기호(seperator)를 사용하면 충돌을 피할수 있고 modules과 sub modules의 계층도를 정의하는데 도움이 된다.
+  예를 들어, app이 root에 정의된 모듈이라면 app.dashboard와 app.users는 app과 의존관계에 있는 서브모듈을 정의한다.
+
+### 정의
+
+  - 설정구문(setter syntax)에서는 변수를 사용하지 말고 모듈을 선언한다.
   
+  ```javascript
+  /* avoid */
+  var app = angular.module('app', [
+    'ngAnimate',
+    'ngRoute',
+    'app.shared',
+    'app.dashboard'
+  ]);
+  ```
+
+
+
+
+
+
 
 Related & Best Articles
 ------------------------------------------------------------------------------
