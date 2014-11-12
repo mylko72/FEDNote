@@ -235,3 +235,6 @@ Related & Best Articles
 5. ng-newsletter  (http://www.ng-newsletter.com/)
 6. controllerAs 구문 파헤치기(http://toddmotto.com/digging-into-angulars-controller-as-syntax/)
 
+Error Message
+------------------------------------------------------------------------------
+1. Uncaught ReferenceError: controller is not defined from module (http://stackoverflow.com/questions/11211999/using-angular-controllers-created-with-angular-module-controller)
