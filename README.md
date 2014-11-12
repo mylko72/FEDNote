@@ -55,7 +55,7 @@
 
 ### JavaScript Closures
 
-  - AngularJS components는 즉시실행함수를 감싼다.
+  - AngularJS components는 즉시실행함수로 감싼다.
 
   ```javascript
   /* avoid */
@@ -75,6 +75,36 @@
 
   // storage function is added as a global variable  
   function storage() { }
+  ```
+  
+  ```javascript
+  /**
+* recommended 
+*
+* no globals are left behind 
+*/
+
+// logger.js
+(function() {
+    'use strict';
+
+    angular
+        .module('app')
+        .factory('logger', logger);
+
+    function logger() { }
+})();
+
+// storage.js
+(function() {
+    'use strict';
+
+    angular
+        .module('app')
+        .factory('storage', storage);
+
+    function storage() { }
+})();
   ```
   
 
