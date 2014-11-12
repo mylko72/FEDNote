@@ -131,7 +131,7 @@
   ]);
   ```
   ```javascript
-  /* avoid */
+  /* recommended */
   angular.module('app', [
     'ngAnimate',
     'ngRoute',
