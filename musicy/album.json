@@ -508,6 +508,36 @@
 			"Label" : "서인기획"
 		},
 		"explain" :""
+	},
+	{
+		"no" : 34,
+		"id" : "best035",
+		"singer" : "최용준",
+		"title" : "아마도 그건",
+		"album" : {
+			"name" : "최용준 1",
+			"cover" : "image/jacket035.jpg?type=w740",
+			"Lyrics" : "박병규",
+			"Composed" : "박병규",
+			"Release" : "1989.05",
+			"Label" : "오아시스"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 35,
+		"id" : "best036",
+		"singer" : "최용준",
+		"title" : "아마도 그건",
+		"album" : {
+			"name" : "최용준 1",
+			"cover" : "image/jacket035.jpg?type=w740",
+			"Lyrics" : "박병규",
+			"Composed" : "박병규",
+			"Release" : "1989.05",
+			"Label" : "오아시스"
+		},
+		"explain" :""
 	}
 
 

@@ -25,7 +25,7 @@
 <section id="section-1" class="list-sec">
 	<h1 class="tit">Ballad Best 100 : 1~10위</h1>
 	<ul class="list-group">
-		<li ng-show="$index<10" class="list-group-item" ng-repeat="song in songs | filter:searchKey | orderBy:orderByProp">
+		<li class="list-group-item" ng-repeat="song in songs.slice(0, 10) | filter:searchKey | orderBy:orderByProp">
 			<span class="no">{{song.no+1}}</span>
 			<img class="cover" ng-src="{{song.album.cover}}" />
 			<a href="#/songs/{{song.id}}" class="song">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』/ 작사. {{song.album.Lyrics}}, 작곡. {{song.album.Composed}}</a>
@@ -36,7 +36,7 @@
 <section id="section-2" class="list-sec">
 	<h1 class="tit">Ballad Best 100 : 11~20위</h1>
 	<ul class="list-group">
-		<li ng-show="$index>9&&$index<20" class="list-group-item" ng-repeat="song in songs | filter:searchKey | orderBy:orderByProp">
+		<li class="list-group-item" ng-repeat="song in songs.slice(10, 20) | filter:searchKey | orderBy:orderByProp">
 			<span class="no">{{song.no+1}}</span>
 			<img class="cover" ng-src="{{song.album.cover}}" />
 			<a href="#/songs/{{song.id}}" class="song">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』/ 작사. {{song.album.Lyrics}}, 작곡. {{song.album.Composed}}</a>
@@ -47,11 +47,23 @@
 <section id="section-3" class="list-sec">
 	<h1 class="tit">Ballad Best 100 : 21~30위</h1>
 	<ul class="list-group">
-		<li ng-show="$index>19&&$index<30" class="list-group-item" ng-repeat="song in songs | filter:searchKey | orderBy:orderByProp">
+		<li class="list-group-item" ng-repeat="song in songs.slice(20, 30) | filter:searchKey | orderBy:orderByProp">
 			<span class="no">{{song.no+1}}</span>
 			<img class="cover" ng-src="{{song.album.cover}}" />
 			<a href="#/songs/{{song.id}}" class="song">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』/ 작사. {{song.album.Lyrics}}, 작곡. {{song.album.Composed}}</a>
 		</li>
 	</ul>
 </section>
+
+<section id="section-4" class="list-sec">
+	<h1 class="tit">Ballad Best 100 : 31~40위</h1>
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="song in songs.slice(30, 40) | filter:searchKey | orderBy:orderByProp">
+			<span class="no">{{song.no+1}}</span>
+			<img class="cover" ng-src="{{song.album.cover}}" />
+			<a href="#/songs/{{song.id}}" class="song">{{song.singer}} -「{{song.title}}」 from 『{{song.album.name}}』/ 작사. {{song.album.Lyrics}}, 작곡. {{song.album.Composed}}</a>
+		</li>
+	</ul>
+</section>
+
 <div class="text-right"><button ng-click="toTheTop()" class="btn btn-default">위로</button></div>
