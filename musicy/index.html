@@ -1,0 +1,129 @@
+<!doctype html>
+<html ng-app="bestApp">
+<head>
+	<meta charset="utf-8">
+	<title>Ballad Best 100</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/common.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+	<script src="js/angular-scroll.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		/*
+		 * [경로 설정]
+		 *
+		 */
+		//경로에 따라 다른 뷰를 보여주도록 설정한다.
+		//모듈의 첫번째 파라미터에는 ng-app의 이름을 설정하고,
+		//$routeProvider를 가져와서 설정한다.
+		angular.module('bestApp', ['duScroll'])
+			.config(['$routeProvider', function($routeProvider){
+				$routeProvider.
+					when('/songs', {	//경로명
+						templateUrl: 'partials/song-list.html', //해당 경로일 때 불러올 페이지
+						controller: SongListController	//해당 경로일 때 사용할 컨트롤러
+					}).
+					when('/songs/:songId', {	//경로명
+						templateUrl: 'partials/song-detail.html', //해당 경로일 때 불러올 페이지
+						controller: SongDetailController	//해당 경로일 때 사용할 컨트롤러
+					}).
+					otherwise({
+						redirectTo: '/songs'	//그 외에 모든 경로는 여기로 이동
+					});
+			}])
+			.value('duScrollOffset', 170);
+
+		/*
+		 * [컨트롤러]
+		 *
+		 */
+
+		function mainController($scope, $document){
+			$scope.gotoSection = function(id){
+				var sectionId = angular.element(document.getElementById(id));
+				$document.scrollTo(sectionId, 170, 1000);
+				$scope.selStyle = {'background':'#a28629','color':'#fff'}
+			}
+		}
+
+		//노래 세부 정보를 보여주는 컨트롤러
+		function SongDetailController($scope, $http, $routeParams){
+			var id = $routeParams.songId;
+			$scope.songInfo = {};
+
+			$http.get('album.json')
+				.success(function(data){
+					$scope.songs = data;
+				})
+				.then(function(response){
+					for(var i=0;i<$scope.songs.length;i++){
+						if(id == $scope.songs[i].id){
+							$scope.songInfo.no = $scope.songs[i].no;
+							$scope.songInfo.singer = $scope.songs[i].singer;
+							$scope.songInfo.title = $scope.songs[i].title;
+							$scope.songInfo.album = $scope.songs[i].album.name;
+							$scope.songInfo.albumImg = $scope.songs[i].album.cover;
+							$scope.songInfo.lyrics = $scope.songs[i].album.Lyrics;
+							$scope.songInfo.composed = $scope.songs[i].album.Composed;
+							$scope.songInfo.explain = $scope.songs[i].explain;
+						}
+					}
+				})
+		}
+
+		//노래 리스트를 보여주는 컨트롤러
+		function SongListController($scope, $http, $document){
+			
+			$http.get('album.json')
+				.success(function(data){
+					$scope.songs = data;
+				}).then(function(){
+					$scope.toTheTop = function(){
+						$document.scrollTop(0, 500);
+					}
+				});
+
+
+			//기본값은 번호로 정해준다.
+			//기본값을 정하지 않아도 되지만, 그럴경우 선언된 순서대로 표시된다.
+			$scope.orderByProp = 'no';
+		}
+
+	</script>
+</head>
+<body ng-controller="mainController">
+
+	<header class="navbar navbar-inverse navbar-fixed-top bs-main-nav">
+		<div class="container">
+			<div class="text-center">
+				<h1>Ballad Best 100</h1>
+				<p>- 음악취향 Y 선정 1985~2010 발라드 베스트 100 -</p>
+			</div>
+			<nav class="collapse navbar-collapse" role="navigation">
+				<ul class="nav navbar-nav">
+					<li><a href="#section-1" du-smooth-scroll du-scrollspy>1 ~ 10위</a></li>
+					<li><a href="#section-2" du-smooth-scroll du-scrollspy>11 ~ 20위</a></li>
+					<li><a href="#section-3" du-smooth-scroll du-scrollspy>21 ~ 30위</a></li>
+					<li><a href="#section-4" du-smooth-scroll du-scrollspy>31 ~ 40위</a></li>
+					<li><a href="#section-5" du-smooth-scroll du-scrollspy>41 ~ 50위</a></li>
+					<li><a href="#section-6" du-smooth-scroll du-scrollspy>51 ~ 60위</a></li>
+					<li><a href="#section-7" du-smooth-scroll du-scrollspy>61 ~ 70위</a></li>
+					<li><a href="#section-8" du-smooth-scroll du-scrollspy>71 ~ 80위</a></li>
+					<li><a href="#section-9" du-smooth-scroll du-scrollspy>81 ~ 90위</a></li>
+					<li><a href="#section-10" du-smooth-scroll du-scrollspy>91 ~ 100위</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="container bs-main-container">
+
+		<div class="contents">
+			<!-- angular 뷰 -->
+			<ng-view></ng-view>
+		</div>
+
+	</div>
+
+</body>
+</html>
