@@ -1,12 +1,16 @@
 angularJSDev
 ==========
 
-angularJS Study & Test
+AngularJS Style Guide
 
-.
-.
-.
-.
+Single Responsibility
+
+
+
+
+
+
+
 
 Related & Best Articles
 ------------------------------------------------------------------------------
