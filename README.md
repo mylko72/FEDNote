@@ -5,6 +5,8 @@
 ### Rule of 1
 
   - 하나의 file에 하나의 component를 정의하라  
+   
+ 	다음 예제는 같은 파일에 `app` module 과 의존성을 정의하고, controller와 factory 정의하고 있다.
 
   ```javascript
   /* avoid */
@@ -17,6 +19,8 @@
 
   function someFactory() { }
   ```
+  연관된 component를 각각의 파일로 분리하라.
+    
   ```javascript
   /* recommended */
   
