@@ -157,10 +157,12 @@
 
   function SomeController() { }
   ```
+  
 ### Setting vs Getting
 
 - 단 한번 설정을 하면 모든 인스턴스에서 사용할 수 있다.
-  - Use `angular.module('app', []);` 모듈 설정하기
+	
+	- Use `angular.module('app', []);` 모듈 설정하기
 	- Use `angular.module('app');` 모듈 사용하기 
 
 
