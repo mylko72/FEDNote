@@ -1,7 +1,7 @@
-BalladBest
+angularJSDev
 ==========
 
-Ballad Best 100
+angularJS Study & Test
 
 .
 .
