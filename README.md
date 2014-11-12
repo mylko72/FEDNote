@@ -3,9 +3,11 @@ angularJSDev
 
 AngularJS Style Guide
 ------------------------------------------------------------------------------
-1. Single Responsibility
+## Single Responsibility
 
-- File에 하나의 Component를 정의하라.
+### Rule of 1
+
+  - 하나의 file에 하나의 component를 정의하라  
 
   ```javascript
   /* avoid */
@@ -18,7 +20,35 @@ AngularJS Style Guide
 
   function someFactory() { }
   ```
+  ```javascript
+  /* recommended */
+  
+  // app.module.js
+  angular
+    	.module('app', ['ngRoute']);
+  ```
 
+  ```javascript
+  /* recommended */
+  
+  // someController.js
+  angular
+    	.module('app')
+    	.controller('SomeController' , SomeController);
+
+  function SomeController() { }
+  ```
+
+  ```javascript
+  /* recommended */
+  
+  // someFactory.js
+  angular
+    	.module('app')
+    	.factory('someFactory' , someFactory);
+  	
+  function someFactory() { }
+  ```
 
 
 
