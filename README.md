@@ -255,6 +255,7 @@
     vm.sendMessage = function() { };
  }
  ```
+ 
  - controllerAs를 사용하는 controller에서 watch 구문을 사용할 때는 다음과 같이 vm.* 와 같이 사용할 수 있다.
  
  ```javascript
