@@ -235,7 +235,9 @@
     this.sendMessage = function() { };
  }
  ```
+ 
 ### controllerAs with vm
+
 - controllerAs 구문에서 this를 사용할때는 View Model을 의미하는 vm으로 네이밍된 변수에 cache 해둔다.
 
  ```javascript
