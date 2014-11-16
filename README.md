@@ -218,12 +218,46 @@
  ```
  
 ### controllerAs Controller 구문
-
-
+ - controllerAs 구문에서는 controller안에서 $scope 대신에 this를 사용한다.
+ ```javascript
+ /* avoid */
+ function Customer($scope) {
+    $scope.name = {};
+    $scope.sendMessage = function() { };
+ }
+ ```
+ ```javascript
+ /* recommended - but see next section */
+ function Customer() {
+    this.name = {};
+    this.sendMessage = function() { };
+ }
+ ```
 ### controllerAs with vm
-
-
-
+- controllerAs 구문에서 this를 사용할때는 View Model을 의미하는 vm으로 네이밍된 변수에 cache 해둔다.
+ ```javascript
+ /* avoid */
+ function Customer() {
+    this.name = {};
+    this.sendMessage = function() { };
+ }
+ ```
+ ```javascript
+ /* recommended */
+ function Customer() {
+    var vm = this;
+    vm.name = {};
+    vm.sendMessage = function() { };
+ }
+ ```
+ - controllerAs를 사용하는 controller에서 watch 구문을 사용할 때는 다음과 같이 vm.* 와 같이 사용할 수 있다.
+ ```javascript
+ /* recommended */
+ $scope.$watch('vm.title', function(current, original) {
+    $log.info('vm.title was %s', original);
+    $log.info('vm.title is now %s', current);
+ });
+ ```
 
 
 Related & Best Articles
