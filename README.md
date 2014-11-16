@@ -255,7 +255,6 @@
     vm.sendMessage = function() { };
  }
  ```
- 
  - controllerAs를 사용하는 controller에서 watch 구문을 사용할 때는 다음과 같이 vm.* 와 같이 사용할 수 있다.
  
  ```javascript
@@ -276,6 +275,7 @@ Related & Best Articles
 5. ng-newsletter  (http://www.ng-newsletter.com/)
 6. controllerAs 구문 파헤치기(http://toddmotto.com/digging-into-angulars-controller-as-syntax/)
 7. Opinionated AngularJS styleguide for teams (http://toddmotto.com/opinionated-angular-js-styleguide-for-teams/)
+8. AngularJS 참고 링크모음(http://myzmd.blog.me/220032343458)
 
 Error Message
 ------------------------------------------------------------------------------
