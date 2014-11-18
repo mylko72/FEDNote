@@ -1,0 +1,21 @@
+/* 공통 */
+header .container {width:1024px; margin:0 auto;}
+.bs-main-nav {background-color:#c3a11f; color:#fff;}
+.bs-main-nav .navbar-nav > li > a {color:#ffe578;}
+.bs-main-nav .navbar-nav > li > .active {background:#a28629; color:#fff;}
+
+.bs-main-container {width:800px; margin:160px auto 50px;}
+.contents {padding:30px 0;}	
+
+/* 리스트 */
+.list-sec {margin-bottom:40px;}
+.tit {font-size:26px !important;}
+form {margin-bottom:20px;}
+.list-group .no {display:inline-block; width:20px; text-align:right;}
+.list-group .cover {width:50px; height:auto; margin:0 15px;}
+.list-group .song {display:inline-block; width:620px; vertical-align:middle;}
+
+.control-label {padding-top:8px;}
+
+/* 상세 */
+.panel-default {max-width:800px; margin:auto 0;}
