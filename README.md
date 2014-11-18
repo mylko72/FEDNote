@@ -12,4 +12,6 @@ angularJSDev
 - Directives
 - Module
 
-MVC는 
+AngularJS의 공식사이트 입니다. [AngularJS](//angularjs.org)
+
+
