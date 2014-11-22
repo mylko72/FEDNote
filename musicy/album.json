@@ -527,15 +527,75 @@
 	{
 		"no" : 35,
 		"id" : "best036",
-		"singer" : "최용준",
-		"title" : "아마도 그건",
+		"singer" : "더클래식",
+		"title" : "내 슬픔만큼 그대가 행복하길",
 		"album" : {
-			"name" : "최용준 1",
-			"cover" : "image/jacket035.jpg?type=w740",
-			"Lyrics" : "박병규",
-			"Composed" : "박병규",
-			"Release" : "1989.05",
-			"Label" : "오아시스"
+			"name" : "The Classic 2",
+			"cover" : "image/jacket036.jpg?type=w740",
+			"Lyrics" : "박용준/조범구",
+			"Composed" : "박용준",
+			"Release" : "1995.08",
+			"Label" : "킹레코드"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 36,
+		"id" : "best037",
+		"singer" : "이문세",
+		"title" : "옛사랑",
+		"album" : {
+			"name" : "이문세 VII",
+			"cover" : "image/jacket037.jpg?type=w740",
+			"Lyrics" : "이영훈",
+			"Composed" : "이영훈",
+			"Release" : "1991.09",
+			"Label" : "한국음반"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 37,
+		"id" : "best038",
+		"singer" : "장혜리",
+		"title" : "내게 남은 사랑을 드릴께요",
+		"album" : {
+			"name" : "장혜리 3",
+			"cover" : "image/jacket038.jpg?type=w740",
+			"Lyrics" : "함경문",
+			"Composed" : "하광훈",
+			"Release" : "1988.07",
+			"Label" : "한국음반"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 38,
+		"id" : "best039",
+		"singer" : "에코",
+		"title" : "행복한 나를",
+		"album" : {
+			"name" : "ECO 2",
+			"cover" : "image/jacket039.jpg?type=w740",
+			"Lyrics" : "유유진",
+			"Composed" : "박근태",
+			"Release" : "1997.08",
+			"Label" : "뮤직디자인"
+		},
+		"explain" :""
+	},
+	{
+		"no" : 39,
+		"id" : "best040",
+		"singer" : "제이",
+		"title" : "어제처럼",
+		"album" : {
+			"name" : "In Love",
+			"cover" : "image/jacket040.jpg?type=w740",
+			"Lyrics" : "윤사라",
+			"Composed" : "심상원",
+			"Release" : "2000.04",
+			"Label" : "서울음반"
 		},
 		"explain" :""
 	}
