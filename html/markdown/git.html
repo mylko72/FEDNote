@@ -1,0 +1,176 @@
+ <!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Angularjsdev by mylko72</title>
+
+    <link rel="stylesheet" href="../../../stylesheets/styles.css">
+    <link rel="stylesheet" href="http://mylko72.github.io/angularJSDev/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="../../../stylesheets/markdown.css">
+    <link rel="stylesheet" href="../../../stylesheets/github.css">
+    <link rel="stylesheet" href="../../../stylesheets/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>FED Note</h1>
+        <p>Front End Development</p>
+
+        <p class="view"><a href="https://github.com/mylko72/angularJSDev">View the Project on GitHub <small>mylko72/angularJSDev</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/mylko72/angularJSDev/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/mylko72/angularJSDev/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/mylko72/angularJSDev">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section class="markdown-body">
+		  
+		  <!-- start -->
+		  <h1 id="git-">Git (버전관리시스템)</h1>
+<h2 id="console-">console - 설치</h2>
+<h3 id="-">윈도우에 설치</h3>
+<p>Git을 윈도우에 설치하기도 쉽다. 그저 구글 코드 페이지에서 msysGit 인스톨러를 내려받고 실행하면 된다:</p>
+<p><a href="http://msysgit.github.io/">http://msysgit.github.io/</a></p>
+<p>설치가 완료되면 CLI 프로그램과 GUI 프로그램을 둘 다 사용할 수 있다. CLI 프로그램에는 SSH 클라이언트가 포함돼 있기 때문에 유용하다.</p>
+<h3 id="-">설정</h3>
+<p>사용자 정보를 입력</p>
+<pre><code><span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="comment">user</span>.<span class="comment">name</span> <span class="comment">"John</span> <span class="comment">Doe"</span>
+<span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="comment">user</span>.<span class="comment">email</span> <span class="comment">johndoe@example</span>.<span class="comment">com</code></pre>
+<h2 id="console-">console - 작업흐름</h2>
+<h3 id="1-working-directory-">1. 저장소를 생성하거나 저장소를 복제해서 작업 디렉토리(working directory)를 만든다.</h3>
+<ul>
+<li>로컬 저장소 만들기</li>
+</ul>
+<pre><code><span class="title">git</span> init</code></pre>
+<ul>
+<li>로컬 저장소 복제하기</li>
+</ul>
+<pre><code><span class="title">git</span> clone /로컬/저장소/경로</code></pre>
+<h3 id="2-">2. 작업할 파일을 생성한다.</h3>
+<p>새로운 파일은 <code>touch</code> 명령어를 사용하여 생성한다.</p>
+<pre><code><span class="title">touch</span> index.html
+<span class="title">touch</span> index.html
+<span class="title">git</span> status</code></pre>
+<p>파일을 추가한 후에 git status를 실행하면 아래와 같이 표시된다.</p>
+<p>실행결과<img src="https://s3-ap-northeast-1.amazonaws.com/opentutorialsfile/module/217/737.png" alt="실행결과"></p>
+<p>untracked files는 버전관리가 되지 않는 파일을 의미한다.</p>
+<h3 id="3-staging-area-add-">3. 파일을 스테이징 영역(staging area)에 추가(add)한다.</h3>
+<p>스테이징 영역은 저장소에 최종적으로 반영할 소스들을 선별해두는 가상의 공간이다. git add 명령을 통해서 working directory 의 파일들이 staging 상태가 되며, stataging 상태가 된 파일들은 commit 명령을 통해서 저장소에 반영된다. staging area에 포함된 파일들은 git status 명령시에 아래와 같이 표시된다.</p>
+<pre><code>git <span class="keyword">add</span> index<span class="preprocessor">.html</span> script<span class="preprocessor">.js</span><span class="comment">;</span>
+git status</code></pre>
+<p>실행결과<img src="https://s3-ap-northeast-1.amazonaws.com/opentutorialsfile/module/217/738.png" alt="실행결과"></p>
+<h3 id="4-staging-area-remove-">4. 파일을 스테이징 영역(staging area)에서 제거(remove)한다.</h3>
+<p>스테이징 영역에 잘못 추가된 파일이 있다면 다시 untracked 시켜서 작업 디렉토리로 되돌릴 수 있다.</p>
+<pre><code><span class="title">git</span> rm <span class="comment">--cached script.js </span>
+<span class="title">git</span> status</code></pre>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_untracked_file.gif" alt="실행결과"></p>
+<h3 id="5-commit-">5. 커밋(commit)한다.</h3>
+<p>commit는 변경된 소스를 저장소에 저장하는 명령으로, staging area에 있는 파일들을 대상으로 이루어진다.</p>
+<p>untracked된 파일들은 working directory에 그대로 남아 있다.</p>
+<pre><code>git <span class="operator"><span class="keyword">commit</span> -m <span class="string">'first commit add files'</span>;</span></code></pre>
+<p>실행결과<img src="https://s3-ap-northeast-1.amazonaws.com/opentutorialsfile/module/217/739.png" alt="실행결과"></p>
+<h3 id="6-push-">6. 리모트 저장소에 push한다.</h3>
+<p><img src="https://s3-ap-northeast-1.amazonaws.com/opentutorialsfile/module/217/712.jpg" alt="리모트 저장소"></p>
+<pre><code><span class="title">git</span> push origin master</code></pre>
+<h2 id="console-commit-">console - 커밋(commit)</h2>
+<h3 id="-">커밋이란?</h3>
+<p>마무리된 작업에 작업이력을 기록해서 저장소로 보내는 행위. 즉, staging area에 tracked 된 파일들을 저장소에 저장.</p>
+<h3 id="-id-">커밋 ID란?</h3>
+<p>각각의 커밋을 식별하는 유일무일한 값</p>
+<h3 id="-">커밋의 흐름</h3>
+<p><img src="https://s3-ap-northeast-1.amazonaws.com/opentutorialsfile/module/217/714.png" alt="커밋의 흐름"></p>
+<p>커밋은 commit 상태에 있는 파일들, 즉 staging area에 tracked된 파일들 만이 <code>commit</code> 명령어를 사용하여 커밋된다.</p>
+<pre><code>git <span class="operator"><span class="keyword">commit</span> -m <span class="string">'first commit add files'</span>;</span></code></pre>
+<p>만약 tacked된 license.txt 파일을 수정을 하고 <code>git status</code> 명령을 내리면 아래와 같이 표시된다.</p>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_commit.gif" alt="실행결과"></p>
+<p>new file은 commit 상태에 있는 staged된 파일이고 modified는 commit 상태가 아닌 untracked 파일을 나타낸다.</p>
+<h3 id="-">작업 디렉토리의 파일 삭제</h3>
+<p><code>rm</code> 명령어를 사용하여 파일을 삭제하면 아래와 같이 표시된다.</p>
+<pre><code><span class="title">ls</span> -al
+<span class="title">rm</span> index.html
+<span class="title">git</span> status</code></pre>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_removed_file.gif" alt="실행결과"></p>
+<p>index.html 파일은 버전 관리되고 있는 파일이므로 <code>rm</code> 명령어를 사용하여 파일을 삭제하면 더이상 커밋대상이 아닌 파일, 즉 버전관리 대상이 아닌 파일로 인식이 된다. </p>
+<p>실수로 작업 디렉토리에 있는 파일을 삭제 했을 때는 <code>checkout</code> 명령어를 사용하여 작업 디렉토리에 있는 변경사항들을 취소할 수 있다. 다시 말해 삭제된 파일을 다시 복구 할 수 있다.</p>
+<pre><code><span class="comment">git</span> <span class="comment">checkout</span> <span class="literal">-</span><span class="literal">-</span> <span class="comment">index</span>.<span class="comment">html</code></pre>
+<p>작업 디렉토리에 있는 파일을 삭제 할 때는 아래와 같이 <code>git rm</code> 명령어를 사용하여 삭제를 하며 아래와 같이 표시된다.</p>
+<pre><code><span class="title">git</span> rm index.html</code></pre>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_rm_file.gif" alt="실행결과"></p>
+<p><code>git rm</code> 명령어로 삭제한 파일도 tracked 되어 staging 영역에 올라가며 커밋 대상이 되므로 아래와 같이 commit을 해야 파일이 온전히 삭제된다.</p>
+<pre><code>git <span class="operator"><span class="keyword">commit</span> -m <span class="string">'delete index.html'</span></code></pre>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_rm_file2.gif" alt="실행결과"></p>
+<h3 id="-">작업 디렉토리의 파일이름 변경</h3>
+<p>작업 디렉토리에 있는 파일의 이름을 변경 할 때는 <code>git mv</code> 명령어를 사용한다.</p>
+<pre><code><span class="title">git</span> mv script.js common.js
+<span class="title">git</span> status</code></pre>
+<p>명령어를 실행하면 tracked 되어 staging 영역에 올라가며 commit 대기 상태가 된다. commit을 하면 파일 이름이 변경된다.</p>
+<pre><code>git <span class="operator"><span class="keyword">commit</span> -m <span class="string">'rename script.js'</span></code></pre>
+<h2 id="console-">console - 협업</h2>
+<h3 id="-">협업이란?</h3>
+<p>여러사람이 하나의 프로젝트를 개발하면서 발생할 수 있는 다양한 충돌상황에 대한 질서와 규범을 버전관리 시스템이 제공한다. </p>
+<h3 id="-github-">리모트 저장소(Github) 만들기</h3>
+<h4 id="-ssh-keys-">- SSH keys 등록하기</h4>
+<p>git bash에서 <code>ssh-keygen</code>라고 입력하고 엔터를 누른 후 물음에 &#39;y&#39;를 입력하고 엔터를 치면 다음과 같은 메세지가 나온다.</p>
+<pre><code><span class="attribute">ssh-keygen</code></pre>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_ssh_keygen.gif" alt="실행결과"></p>
+<p>메세지에서 &#39;Your identification has been saved in /c/Users/mylko72/.ssh/id_rsa.&#39; 텍스트 중 &#39;/c/Users/mylko72/.ssh/&#39; 부분을 복사한 후
+다음과 같이 디렉토리 이동을 한다.</p>
+<pre><code><span class="title">cd</span> /c/Users/mylko72/.ssh/</code></pre>
+<p>그리고 아래와 같이 목록을 보면 <strong><em>id_rsa</em></strong> 라는 비공개 키와 <strong><em>id_rsa.pub</em></strong> 라는 공개키가 보인다.</p>
+<pre><code><span class="title">ls</span> -al</code></pre>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_ssh_keygen2.gif" alt="실행결과"></p>
+<p>id_rsa.pub 이라는 공개키를 원격 저장소에 등록을 해 놓으면 원격 저장소에 access 하려고 할때 컴퓨터에 있는 id_rsa 비공개 키와 원격 저장소에 등록해 놓은
+공개 키인 id_rsa.pub을 비교하여 일치하면 별도의 로그인 과정없이 access 할 수 있다.</p>
+<p>다음과 같이 <code>cat</code> 명령어를 이용하여 비공개 키를 열어서 암호화된 문자를 복사해 둔다.</p>
+<pre><code><span class="title">cat</span> id_rsa.pub</code></pre>
+<p>실행결과<img src="http://mylko72.maru.net/jquerylab/images/img_ssh_keygen3.gif" alt="실행결과"></p>
+<p>그 다음 github 사이트로 가서 <code>Add SSH key</code> 버튼을 클릭하여 복사한 키를 등록한다.</p>
+<h4 id="-">- 저장소 만들기</h4>
+<p>SSH 키를 등록했다면 github 사이트에서 <code>New repository</code> 버튼을 클릭하여 저장소(angularJSDev)를 만든다.</p>
+<h3 id="-github-">리모트 저장소(Github) 연결하기</h3>
+<h4 id="-">- 리모트 저장소 복제</h4>
+<p>github 사이트로 가서 새로 생성한 저장소(angularJSDev)의 <strong><em>SSH URL을 복사</em></strong>한다.</p>
+<p>그리고 git bash에서 아래와 같이  <code>git clone(리모트 저장소 URL)</code> 을 입력하면</p>
+<pre><code><span class="title">git</span> clone git<span class="variable">@github</span>.com:mylko72/angularJSDev.git</code></pre>
+<p>현재 디렉토리에 저장소의 이름인 angularJSDev라는 디렉토리가 만들어지고 그 안에 <strong><em>리모트 저장소인 angularJSDev와 원격으로 연결</em></strong>된다. </p>
+<h4 id="-">- 리모트 저장소 추가</h4>
+<p>만약 기존에 있던 원격 저장소를 복제한 것이 아니라면, 원격 서버의 주소를 git에게 알려줘야 해요.</p>
+<pre><code>git remote add origin <span class="tag">&lt;<span class="title">원격</span> 서버 주소&gt;</span></code></pre>
+<h4 id="-">- 리모트 저장소에 있는 파일들을 가져오기</h4>
+<p>현재 로컬 저장소에 어떤 리모트 저장소가 등록되어 있는지 보려면 <code>git remote</code> 명령어를 입력한다.</p>
+<pre><code><span class="title">git</span> remote
+<span class="title">origin</span></code></pre>
+<p>origin은 리모트 저장소의 별명으로 현재 로컬저장소에 등록되어 있음을 나타낸다.</p>
+<p>로컬에 <code>commit</code>한 파일들을 리모트 저장소에 업로드 하기전에 먼저 리모트 저장소에 있는 파일들을 다운 받아서 동기화 시켜야 한다.
+이렇게 리모트 저장소로 부터 파일들을 가져오는 명령어는 다음과 같다.</p>
+<pre><code><span class="title">git</span> fetch (리모트 저장소의 별명) (리모트 브랜치)</code></pre>
+<p><code>git fetch</code>는 (리모트 저장소 별명)에 해당하는 저장소의 (리모트 브랜치)를 현재 선택된 로컬 브랜치로 가져온다.</p>
+<pre><code><span class="title">git</span> pull (리모트 저장소의 별명) (리모트 브랜치)</code></pre>
+<p><strong><em><code>git pull</code>은 <code>git fetch</code>명령을 실행하고 자동으로 merge(병합)</em></strong> 한다.</p>
+<h4 id="-">- 리모트 저장소로 업로드 하기</h4>
+<pre><code><span class="title">git</span> push origin master</code></pre>
+<p>(리모트 저장소 별명)의 (리모트 브랜치)로 로컬 브랜치를 전송한다.
+이 명령을 수행하기 전에 git fetch나 git pull을 수행한다.</p>
+<h4 id="-">- 리모트 저장소 이름 변경하기</h4>
+
+		  <!-- //end -->
+
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/mylko72">mylko72</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="http://mylko72.github.io/angularJSDev/javascripts/scale.fix.js"></script>
+	<script src="./../../javascripts/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+    
+  </body>
+</html>
