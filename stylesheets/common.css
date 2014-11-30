@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-em {font-style:normal; color:red; text-decoration:underline;}
+em {font-style:normal; color:red;}
 
 header h1 {margin-bottom:0px; font-size:38px;}
 
