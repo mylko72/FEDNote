@@ -49,6 +49,11 @@
 <p>사용자 정보를 입력</p>
 <pre><code><span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="comment">user</span>.<span class="comment">name</span> <span class="comment">"John</span> <span class="comment">Doe"</span>
 <span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="comment">user</span>.<span class="comment">email</span> <span class="comment">johndoe@example</span>.<span class="comment">com</code></pre>
+<p>설정 값을 잘 저장했는지 확인하려면 <code>git config</code> 명령어에 <code>--list</code> 매개변수를 이용한다.</p>
+<pre><code><span class="comment">$</span> <span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">list</span>
+<span class="comment">user</span>.<span class="comment">name=mypmk</span>
+<span class="comment">user</span>.<span class="comment">email=mypmk@naver</span>.<span class="comment">com</code></pre>
+<p>user.name과 user.email은 반드시 설정해야 하는 값이다.</p>
 <h2 id="console-">console - 작업흐름</h2>
 <h3 id="1-working-directory-">1. 저장소를 생성하거나 저장소를 복제해서 작업 디렉토리(working directory)를 만든다.</h3>
 <ul>
