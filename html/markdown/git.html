@@ -49,11 +49,6 @@
 <p>사용자 정보를 입력</p>
 <pre><code><span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="comment">user</span>.<span class="comment">name</span> <span class="comment">"John</span> <span class="comment">Doe"</span>
 <span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="comment">user</span>.<span class="comment">email</span> <span class="comment">johndoe@example</span>.<span class="comment">com</code></pre>
-<p>설정 값을 잘 저장했는지 확인하려면 <code>git config</code> 명령어에 <code>--list</code> 매개변수를 이용한다.</p>
-<pre><code><span class="comment">$</span> <span class="comment">git</span> <span class="comment">config</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">global</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">list</span>
-<span class="comment">user</span>.<span class="comment">name=mypmk</span>
-<span class="comment">user</span>.<span class="comment">email=mypmk@naver</span>.<span class="comment">com</code></pre>
-<p>user.name과 user.email은 반드시 설정해야 하는 값이다.</p>
 <h2 id="console-">console - 작업흐름</h2>
 <h3 id="1-working-directory-">1. 저장소를 생성하거나 저장소를 복제해서 작업 디렉토리(working directory)를 만든다.</h3>
 <ul>
@@ -186,13 +181,11 @@ git status</code></pre>
 <p>현재 master 브랜치에서 gh-pages 브랜치로 이동하려면 <code>checkout</code> 명령어를 사용한다.</p>
 <pre><code><span class="title">git</span> checkout gh-pages</code></pre>
 <h4 id="-">- 로컬 브랜치 생성하기</h4>
-<p><strong>git branch (새로운 브랜치) master</strong>    </p>
-<p>이 명령어는 새로운 브랜치를 생성한다.</p>
-<pre><code><span class="title">git</span> branch RB_1.<span class="number">0</span> master</code></pre>
 <p><strong>git checkout -b (새로운 브랜치)</strong></p>
-<p>이 명령어는 새로운 브랜치를 생성하고 생성된 새로운 브랜치로 switch된다.</p>
+<p><strong><em>브랜치를 생성하려면 <code>git checkout -b (branch이름)</code>을 입력한다.</em></strong></p>
 <pre><code>git checkout -b utility
 Switched <span class="keyword">to</span> a <span class="keyword">new</span> branch <span class="attribute">'utility</span>'</code></pre>
+<p>새로운 브랜치가 생성되고 생성된 새로운 브랜치로 switch된다.</p>
 <h4 id="-">- 리모트 브랜치 생성</h4>
 <p><strong>git push (리모트 저장소) (리모트 브랜치)</strong></p>
 <p>새로 생성한 로컬 브랜치에서 파일을 만들고 commit을 한 다음 아래와 같이 push를 하면</p>

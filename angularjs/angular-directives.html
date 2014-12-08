@@ -1,0 +1,41 @@
+<!doctype html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+		<!-- angular.js를 로드하고, HTML페이지가 모두 로드된 후에 브라우저에 의해 실행되는 콜백을 등록-->
+		<script type="text/javascript" charset="utf-8">
+			angular.module('myApp', [])
+				.controller('myCtrl', ['$scope', function($scope){
+					$scope.albumInfo = {
+						no : 1,
+						img : 'jacket001.jpg',
+						singer : '유재하',
+						song : '사랑하기 때문에',
+						album : '사랑하기 때문에',
+						lyrics : '유재하',
+						composed : '유재하',
+						url : 'http://www.youtube.com/watch?v=2qxLHIHpimE&index=1&list=PL-wS9xeVktm-zpKdqGPqFYs_-RjPcPtiU'
+					};
+				}])
+				.directive('myAlbum', function(){
+					return {
+						restrict : 'E', //HTML에서 디렉티브를 사용하기 위한 DOM 엘리먼트 속성 설정.
+						scope : { //재사용 가능한 isolated scope를 새롭게 생성
+							thisAlbum : '=albumInformation'
+						},
+						templateUrl : 'my-album.html', //template을 별도의 html 파일로 관리
+						replace : false, // false는 template에 작성된 태그를 디렉티브를 사용한 태그에 추가
+						transclude : true  // true는 디렉티브내의 원본내용을 포함
+					};
+				});
+		</script>
+	</head>
+	<body ng-controller="myCtrl">
+
+		<my-album album-information="albumInfo">[음악취향 Y 선정 1985~2010 발라드 베스트 100]</my-album>
+
+	</body>
+</html>

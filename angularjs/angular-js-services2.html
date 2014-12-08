@@ -1,0 +1,75 @@
+<!doctype html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="utf-8">
+		<title>서비스를 생성하고 사용하는 간단한 예제</title>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+		<!-- angular.js를 로드하고, HTML페이지가 모두 로드된 후에 브라우저에 의해 실행되는 콜백을 등록-->
+		<script type="text/javascript" charset="utf-8">
+			//모듈 정의	
+			var app = angular.module('myApp', []);
+
+			//service()메서드를 사용하여 서비스 추가
+			app.service('addStrService', function(){
+				this.add = function(sentence, word){
+					return sentence.concat(word);	//문자열 뒤쪽에 문자열을 연결
+				};
+			});
+
+			//factory()메서드를 사용하여 서비스 추가
+			app.factory('subtractStrFactory', function(){
+				return {
+					subtract : function(sentence){
+						var end = sentence.lastIndexOf(".");
+						var next = sentence.lastIndexOf(".", end-1);
+						return sentence.substring(0, next+1);	//문장에서 마지막 문장을 하나씩 제거
+					}
+				};
+			});
+
+			//myApp 모듈에 컨트롤러 등록
+			//서비스를 컨트롤러에 주입
+			app.controller('AppCtrl', ['$scope', 'addStrService', 'subtractStrFactory', function($scope, addStrService, subtractStrFactory){
+				$scope.sentence = '';	//name이라는 ng-model을 생성하고 값을 넣는다.
+
+				//addStrService를 사용하는 $scope-level 함수 선언
+				$scope.addService = function(){
+					if($scope.word){
+						$scope.sentence = addStrService.add($scope.sentence, $scope.word+". ");
+						$scope.word = "";
+					}else{
+						alert('문장을 입력해주세요');
+					}
+				};
+
+				//subtractStrFactory를 사용하는 $scope-level 함수 선언
+				$scope.subtractFactory = function(){
+					$scope.sentence= subtractStrFactory.subtract($scope.sentence);
+				};
+			}]);
+		</script>
+	</head>
+	<body>
+	<div class="container">
+		<h1>Service를 추가하는 두가지 방법</h1>
+		<p>보통 서비스는 하나의 객체를 리턴하는 형태가 주를 이루는데 다양한 함수적인 기능을 수행하는 컨트롤러와는 상당한 차이가 있다.</p>
+		<p>컨트롤러는 $scope 상의 모델을 조작하거나 UI와 밀접하게 여러 기능을 수행한다.<br />
+		반면 서비스는 서비스 자체가 싱글톤이라는 특성을 사용해 컨트롤러간의 통신을 제어하거나, 리소스 접근 권한을 가진 객체를 리턴해서 컨트롤러에서 이 객체로 CRUD를 수행하거나 하는 방식으로 사용되게 된다.</p>
+		<section ng-controller="AppCtrl">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div>
+						<label for="name">Hello, </label>
+						<input type="text" ng-model="word" name="name" />
+						<button ng-click="addService()" class="btn btn-default">Add</button>
+					</div>
+					<h2>안녕, {{sentence}}</h2>
+					<hr />
+					<button ng-click="subtractFactory()" class="btn btn-default">Subtract</button>
+				</div>
+			</div>
+		</section>
+	</div>
+	</body>
+</html>
