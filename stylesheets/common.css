@@ -6,6 +6,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.tocify {max-height:60%; margin-left:0 !important;}
+.tocify ul, .tocify li {border-bottom:1px solid #ddd;}
+.tocify-header > li:first-child {border-bottom:none;}
+.ui-widget-content a {font-size:14px; line-height:2; text-align:left;}
+.tocify > ul > ul > li > a {font-size:12px !important;}
+.tocify > ul > ul > ul > li > a {font-size:11px !important;}
+.tocify > ul > ul > ul > ul > li > a {font-size:11px !important;}
+
 em {font-style:normal; color:red;}
 
 header h1 {margin-bottom:0px; font-size:38px;}

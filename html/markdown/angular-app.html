@@ -5,12 +5,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Front End Development Note</title>
-
-    <link rel="stylesheet" href="http://mylko72.github.io/FEDNote/stylesheets/styles.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="http://gregfranko.com/jquery.tocify.js/css/jquery.ui.all.css" />
+    <link rel="stylesheet" href="http://gregfranko.com/jquery.tocify.js/css/jquery.tocify.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.css" />
+    <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="http://mylko72.github.io/FEDNote/stylesheets/pygment_trac.css">
     <link rel="stylesheet" href="http://mylko72.github.io/FEDNote/stylesheets/markdown.css">
     <link rel="stylesheet" href="http://mylko72.github.io/FEDNote/stylesheets/github.css">
-    <link rel="stylesheet" href="http://mylko72.github.io/FEDNote/stylesheets/common.css">
+    <link rel="stylesheet" href="/stylesheets/common.css">
+    <link rel="stylesheet" href="/stylesheets/markdown-toc.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -25,21 +30,22 @@
 	  	        <p>Front End Development</p>
 
 	  	        <p class="view"><a href="https://github.com/mylko72/FEDNote">View the Project on GitHub <small>mylko72/FEDNote</small></a></p>
+	  			<div id="toc"></div>
 
-
-	  	        <ul>
+	  	        <!--<ul>
 	  	          <li><a href="https://github.com/mylko72/FEDNote/zipball/master">Download <strong>ZIP File</strong></a></li>
 	  	          <li><a href="https://github.com/mylko72/FEDNote/tarball/master">Download <strong>TAR Ball</strong></a></li>
 	  	          <li><a href="https://github.com/mylko72/FEDNote">View On <strong>GitHub</strong></a></li>
-	  	        </ul>
+	  			</ul>-->
 	  	      </header>
 
 	  <!--// header -->
 
       <section class="markdown-body">
-		  
+		  <div id="preview">
 		  <!-- start -->
 		  <h1 id="angularjs-br-">AngularJS로 하는<br />웹 애플리케이션 개발</h1>
+<h2 id="-">백엔드 서버와 통신</h2>
 <h2 id="-">데이터 포맷과 출력</h2>
 <h3 id="-">디렉티브에 대한 참조</h3>
 <p>HTML 템플릿에서 디렉티브 참조 이름에는 접두사로 x나 data를 사용할 수 있다. 
@@ -114,7 +120,7 @@ myModule.config(<span class="keyword">function</span>($interpolateProvider){
         <span class="tag">&lt;/<span class="title">span</span>&gt;</span>
     <span class="tag">&lt;/<span class="title">ng-switch</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span></code></pre>
-<h4 id="ngrepeat-ngclass-">ngRepeat 패턴을 활용한 ngClass 디렉티브</h4>
+<h4 id="ngrepeat-ngclass-">ngRepeat패턴을 활용한 ngClass디렉티브</h4>
 <p>리스트에 줄무늬 색을 입히는 건 가독성을 높이는 좋은 방법이다. 이를 위해 <code>ngClassEven</code>과 <code>ngClassOdd</code>라는 디렉티브를 제공한다.</p>
 <pre><code><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"user in users"</span>
     <span class="attribute">ng-class-even</span>=<span class="value">"'light-gray'"</span> <span class="attribute">ng-class-odd</span>=<span class="value">"'dark-gray'"</span>&gt;</span>
@@ -127,6 +133,24 @@ myModule.config(<span class="keyword">function</span>($interpolateProvider){
 <span class="tag">&lt;/<span class="title">tr</span>&gt;</span></span></code></pre>
 <p><code>ngClass</code> 디렉티브는 객체를 인자로 받는다. 이 객체는 클래스 이름을 키로 사용하고, 조건을 나타내는 표현식을 값으로 사용한다.
 그리고 이 표현식의 평가 결과에 따라 키로 선언한 클래스를 요소에 추가하거나 삭제한다.</p>
+<h4 id="ngrepeat-dom-">ngRepeat과 여러 DOM 요소</h4>
+<p>ng-repeat은 형제 요소들을 관리하지 않는다. 이 말은 마치 ng-repeat 디렉티브를 사용하려면 컨테이너 요소가 필요하고, 특정 HTML 구조를 생성해야 하는 것처럼 보인다.
+하지만 ng-repeat 디렉티브를 넣을 만한 HTML 요소가 없는 경우도 많다.
+다음과 같은 이름과 세부내용으로 구성된 HTML을 사용해야 한다고 생각해 보자.</p>
+<pre><code><span class="tag">&lt;<span class="title">ul</span>&gt;</span>
+    <span class="comment">&lt;!-- 반복자를 여기에 추가하고 싶다. --&gt;</span>
+    <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">strong</span>&gt;</span><span class="variable">{{item.name}}</span><span class="tag">&lt;/<span class="title">strong</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="variable">{{item.description}}</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+    <span class="comment">&lt;!-- 여기까지만 반복 --&gt;</span>
+<span class="tag">&lt;/<span class="title">ul</span>&gt;</span></code></pre>
+<p>AngularJS 새 버전(1.2.x)부터는 ngRepeat 디렉티브의 기본 문법을 확장해 반복할 DOM 요소를 지정할 수 있다. 다시 작성하면 다음과 같다.</p>
+<pre><code><span class="tag">&lt;<span class="title">ul</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">li</span> <span class="attribute">ng-repeat-start</span>=<span class="value">"item in items"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">strong</span>&gt;</span><span class="variable">{{item.name}}</span><span class="tag">&lt;/<span class="title">strong</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">li</span> <span class="attribute">ng-repeat-end</span>&gt;</span><span class="variable">{{item.description}}</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">ul</span>&gt;</span></code></pre>
+<p><strong><em><code>ng-repeat-start</code>와 <code>ng-repeat-end</code> 속성을 사용함으로써 반복할 형제 DOM 요소 그룹을 지정할 수 있다.</em></strong></p>
 <blockquote>
 <p>관련내용</p>
 <ul>
@@ -134,8 +158,76 @@ myModule.config(<span class="keyword">function</span>($interpolateProvider){
 <li>예제) <a href="/angularjs/ngrepeat/index.html">ngRepeat 패턴을 이용한 list와 view</a></li>
 </ul>
 </blockquote>
+<h3 id="dom-">DOM 이벤트 핸들러</h3>
+<p>DOM 이벤트 핸들러에는 실제 DOM 이벤트를 가리키는 <code>$event</code> 라는 특별한 인자를 표현식에서 사용할 수 있다. <code>$event</code>를 통해 이벤트의 내부 프로퍼티에 접근할 수 있어 기본 동작을 변경하거나
+이벤트가 전파되는 것을 막는 등의 추가 작업을 할 수 있다. 예를 들어 선택한 요소의 현재 위치를 어떻게 읽어오는지 보자.</p>
+<pre><code><span class="tag">&lt;<span class="title">ul</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">li</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in items"</span> <span class="attribute">ng-click</span>=<span class="value">"logPosition(item, $event)"</span>&gt;</span>
+        <span class="variable">{{item}}</span>
+    <span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">ul</span>&gt;</span></code></pre>
+<pre><code class="lang-javascript">    $scope.items = [<span class="string">'foo'</span>, <span class="string">'bar'</span>, <span class="string">'baz'</span>];
+
+    $scope.logPosition = <span class="function"><span class="keyword">function</span> <span class="params">(item, $event)</span> {</span>
+      console.log(item + <span class="string">' was clicked at: '</span> + $event.clientX + <span class="string">','</span> + $event.clientY);
+    };</code></pre>
+<blockquote>
+<p>관련내용</p>
+<ul>
+<li><a href="http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&amp;sn=7#h3_9">이벤트 처리를 위한 템플릿</a></li>
+</ul>
+</blockquote>
+<h3 id="-">필터로 모델 변형 다루기</h3>
+<p>AngularJS 표현식에는 필터라는 특별한 포맷 함수를 지원한다.</p>
+<pre><code>{{user.signedUp | <span class="built_in">date</span>:<span class="comment">'yyyy-MM-dd'}}</span></code></pre>
+<p>이 코드는 사용자의 가입 날짜를 특정한 서식에 맞춰 표현하기 위해 date 필터를 사용한 예다. </p>
+<p>필터는 뷰에서 파이프(|)를 사용해 호출하는 전역함수라고 보면 된다. 인자는 콜론(:)으로 구분한다. 예제 코드를 다음과 같이 formatDate 함수를 사용해 작성할 수도 있다.</p>
+<pre><code><span class="variable">{{formatDate(user.signedUp, 'yyyy-MM-dd')}}</span></code></pre>
+<p>필터는 매개 변수를 사용할 수 도 있고 여러개의 필터를 파이프라인으로 묶어 함께 사용(체인)할 수도 있다.</p>
+<p>예를 들어 문자열의 길이를 80개로 제한하고 모든 글자를 소문자로 변경하는 코드는 다음과 같다.</p>
+<pre><code><span class="tuple">{<span class="tuple">{my<span class="variable">LongString</span> | limit<span class="variable">To</span>:<span class="number">80</span> | lower<span class="keyword">case</span>}}</code></pre>
+<h4 id="-">기본 제공 필터</h4>
+<h5 id="-">서식 변경 필터</h5>
+<p>currency | date | number | lowercase | uppercase | json</p>
+<h5 id="-">배열 변경 필터</h5>
+<p>limitTo | Filter | orderBy</p>
+<h5 id="-filter-">&#39;filter&#39; 필터 적용</h5>
+<p><code>filter</code> 필터는 배열의 부분 집합을 가져올 때 사용하는 일반적인 목적의 필터링 함수다.</p>
+<pre><code>Search <span class="keyword">for</span> : &lt;input type=<span class="string">"text"</span> ng-model=<span class="string">"criteria"</span>&gt;
+<span class="keyword">...</span>
+<span class="keyword">...</span>
+&lt;tr ng-<span class="keyword">repeat</span>=<span class="string">"backlogItem in backlog | filter:criteria"</span>&gt;
+    <span class="keyword">...</span>
+    <span class="keyword">...</span>
+&lt;/tr&gt;</code></pre>
+<p>입력창의 값을 필터의 인자로 연결하여 모든 항목에 대해 입력된 문자열을 포함하는 항목만 표시한다.</p>
+<p>하지만 좀 더 정교하게 비교하고 싶다면 필터의 인자로 객체를 사용하면 된다.</p>
+<p>이제 프로퍼티 중에 이름이 일치하고 아직 완료되지 않은 항목만 추리고 싶다고 해 보자.</p>
+<pre><code><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in backlog | filter:{name: criteria, done: false}"</span>&gt;</span></code></pre>
+<p>이 코드는 인자로 넘긴 객체의 모든 프로퍼티가 일치해야만 통과한다. 즉, AND 연산자로 묶는 것과 같다고 말할 수 있다.</p>
+<p>객체의 모든 프로퍼티에 대해 문자열 비교를 하되 완료되지 않은 항목만 추리고 싶다면 다음과 같이 작성할 수 있다.</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in backlog | filter:{</span><span class="variable">$:</span><span class="xml"> criteria, done: false}"&gt;</span></code></pre>
+<p>함수를 필터의 인자로 사용할 수 있다. 컬렉션의 항목마다 이 함수가 호출되며, 함수 호출 결과가 true인 항목만 결과 배열로 취함한다.</p>
+<pre><code class="lang-javascript">$scope.doneAndBigEffort = <span class="keyword">function</span>(backlogItem){
+    <span class="keyword">return</span> backlogItem.done &amp;&amp; backlogItem.estimation &gt; <span class="number">20</span>;
+};</code></pre>
+<pre><code><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in backlog | filter:doneAndBigEffort"</span>&gt;</span></code></pre>
+<h5 id="-">걸러진 결과의 개수</h5>
+<blockquote>
+<p>관련내용</p>
+<ul>
+<li><a href="http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&amp;sn=7#h2_8">필터를 사용하고 만들어 보자</a></li>
+</ul>
+</blockquote>
+<h2 id="-">고급 폼 작성</h2>
+<h2 id="-">내비게이션 구성</h2>
+<h2 id="-">애플리케이션 보안</h2>
+<h2 id="-">디렉티브 작성</h2>
+<h2 id="-">고급 디렉티브 작성</h2>
+<h2 id="-">웹애플리케이션 작성</h2>
 
 		  <!-- //end -->
+	  </div>
 
       </section>
 
@@ -148,8 +240,16 @@ myModule.config(<span class="keyword">function</span>($interpolateProvider){
 	  <!--// footer -->
 
     </div>
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script src="http://gregfranko.com/jquery.tocify.js/js/jquery.tocify.js"></script>
     <script src="http://mylko72.github.io/FEDNote/javascripts/scale.fix.js"></script>
 	<script src="http://mylko72.github.io/FEDNote/javascripts/highlight.pack.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+	<script src="/javascripts/marked.js"></script>
+	<script src="/javascripts/markdown-toc.js"></script>
 	<script>hljs.initHighlightingOnLoad();</script>
     
   </body>
