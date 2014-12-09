@@ -8,7 +8,7 @@
 $(function() {
 	$(function () {
 		$.ajax({
-			url: "/markdown/angular-app.md",
+			url: "http://mylko72.github.io/FEDNote/markdown/angular-app.md",
 			type: "GET",
 			success: function (data) {
 				var html = marked(data);
