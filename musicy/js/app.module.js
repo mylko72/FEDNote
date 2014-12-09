@@ -8,7 +8,8 @@
 	//경로에 따라 다른 뷰를 보여주도록 설정한다.
 	//모듈의 첫번째 파라미터에는 ng-app의 이름을 설정하고,
 	//$routeProvider를 가져와서 설정한다.
-	angular.module('bestApp', ['duScroll'])
+	angular.module('bestApp', ['duScroll']);
+	angular.module('bestApp')
 		.config(['$routeProvider', function($routeProvider){
 			$routeProvider.
 				when('/songs', {	//경로명

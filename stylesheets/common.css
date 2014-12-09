@@ -1,0 +1,13 @@
+body {
+  font-size: 16px;
+  color:#444;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+em {font-style:normal; color:red;}
+
+header h1 {margin-bottom:0px; font-size:38px;}
+
+.markdown-body code {border-radius:6px;}

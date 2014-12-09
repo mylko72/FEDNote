@@ -18,6 +18,14 @@ http://msysgit.github.io/
 git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com
 ```
+설정 값을 잘 저장했는지 확인하려면 `git config` 명령어에 `--list` 매개변수를 이용한다.
+
+```
+$ git config --global --list
+user.name=mypmk
+user.email=mypmk@naver.com
+```
+user.name과 user.email은 반드시 설정해야 하는 값이다.
 
 ##console - 작업흐름 
 
@@ -386,4 +394,3 @@ $ git push origin :utility
 To git@github.com:mylko72/FEDNote.git
  - [deleted]         utility
 ```
-							

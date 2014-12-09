@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AngularJS Style Guide
 
 - johnpapa의 AngularJS Style Guide를 정리한 번역글 (https://github.com/johnpapa/angularjs-styleguide)
@@ -280,3 +281,22 @@ Related & Best Articles
 Error Message
 ------------------------------------------------------------------------------
 1. Uncaught ReferenceError: controller is not defined from module (http://stackoverflow.com/questions/11211999/using-angular-controllers-created-with-angular-module-controller)
+=======
+angularJSDev
+============
+
+##목적
+
+###방향
+
+개인 Study, 특히 **AngularJS** 의 예제를 중심으로 작성한 블로그입니다.
+앞으로 공부한 *예제*를 올릴 생각입니다.
+
+- `Controller`
+- `Directives`
+- `Module`
+
+AngularJS의 공식사이트 입니다. [AngularJS](//angularjs.org)
+
+
+>>>>>>> 83a89cfc016498d9e77b73f231573c9c67ecf8c8
