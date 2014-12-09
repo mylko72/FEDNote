@@ -1,5 +1,6 @@
 #AngularJS로 하는<br />웹 애플리케이션 개발
 
+##백엔드 서버와 통신
 ##데이터 포맷과 출력
 
 ###디렉티브에 대한 참조
@@ -136,7 +137,7 @@ AngularJS 반복자는 요소마다 생성된 스코프에 특별한 변수를 �
 </li>
 ```
 
-####ngRepeat 패턴을 활용한 ngClass 디렉티브
+####ngRepeat패턴을 활용한 ngClass디렉티브
 
 리스트에 줄무늬 색을 입히는 건 가독성을 높이는 좋은 방법이다. 이를 위해 `ngClassEven`과 `ngClassOdd`라는 디렉티브를 제공한다.
 
@@ -159,6 +160,151 @@ AngularJS 반복자는 요소마다 생성된 스코프에 특별한 변수를 �
 `ngClass` 디렉티브는 객체를 인자로 받는다. 이 객체는 클래스 이름을 키로 사용하고, 조건을 나타내는 표현식을 값으로 사용한다.
 그리고 이 표현식의 평가 결과에 따라 키로 선언한 클래스를 요소에 추가하거나 삭제한다.
 
+####ngRepeat과 여러 DOM 요소
+
+ng-repeat은 형제 요소들을 관리하지 않는다. 이 말은 마치 ng-repeat 디렉티브를 사용하려면 컨테이너 요소가 필요하고, 특정 HTML 구조를 생성해야 하는 것처럼 보인다.
+하지만 ng-repeat 디렉티브를 넣을 만한 HTML 요소가 없는 경우도 많다.
+다음과 같은 이름과 세부내용으로 구성된 HTML을 사용해야 한다고 생각해 보자.
+
+```
+<ul>
+	<!-- 반복자를 여기에 추가하고 싶다. -->
+	<li><strong>{{item.name}}</strong></li>
+	<li>{{item.description}}</li>
+	<!-- 여기까지만 반복 -->
+</ul>
+```
+
+AngularJS 새 버전(1.2.x)부터는 ngRepeat 디렉티브의 기본 문법을 확장해 반복할 DOM 요소를 지정할 수 있다. 다시 작성하면 다음과 같다.
+
+```
+<ul>
+	<li ng-repeat-start="item in items">
+		<strong>{{item.name}}</strong>
+	</li>
+	<li ng-repeat-end>{{item.description}}</li>
+</ul>
+```
+
+***`ng-repeat-start`와 `ng-repeat-end` 속성을 사용함으로써 반복할 형제 DOM 요소 그룹을 지정할 수 있다.***
+
 > 관련내용
 > - [반복적인 데이터 표현을 위한 템플릿](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h3_5)
 > - 예제) [ngRepeat 패턴을 이용한 list와 view](/angularjs/ngrepeat/index.html)
+
+###DOM 이벤트 핸들러
+
+DOM 이벤트 핸들러에는 실제 DOM 이벤트를 가리키는 `$event` 라는 특별한 인자를 표현식에서 사용할 수 있다. `$event`를 통해 이벤트의 내부 프로퍼티에 접근할 수 있어 기본 동작을 변경하거나
+이벤트가 전파되는 것을 막는 등의 추가 작업을 할 수 있다. 예를 들어 선택한 요소의 현재 위치를 어떻게 읽어오는지 보자.
+
+```
+<ul>
+    <li ng-repeat="item in items" ng-click="logPosition(item, $event)">
+        {{item}}
+    </li>
+</ul>
+```
+
+```javascript
+    $scope.items = ['foo', 'bar', 'baz'];
+
+    $scope.logPosition = function (item, $event) {
+      console.log(item + ' was clicked at: ' + $event.clientX + ',' + $event.clientY);
+    };
+```
+
+> 관련내용
+> - [이벤트 처리를 위한 템플릿](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h3_9)
+
+###필터로 모델 변형 다루기
+
+AngularJS 표현식에는 필터라는 특별한 포맷 함수를 지원한다.
+
+```
+{{user.signedUp | date:'yyyy-MM-dd'}}
+```
+
+이 코드는 사용자의 가입 날짜를 특정한 서식에 맞춰 표현하기 위해 date 필터를 사용한 예다. 
+
+필터는 뷰에서 파이프(|)를 사용해 호출하는 전역함수라고 보면 된다. 인자는 콜론(:)으로 구분한다. 예제 코드를 다음과 같이 formatDate 함수를 사용해 작성할 수도 있다.
+
+```
+{{formatDate(user.signedUp, 'yyyy-MM-dd')}}
+```
+
+필터는 매개 변수를 사용할 수 도 있고 여러개의 필터를 파이프라인으로 묶어 함께 사용(체인)할 수도 있다.
+
+예를 들어 문자열의 길이를 80개로 제한하고 모든 글자를 소문자로 변경하는 코드는 다음과 같다.
+
+```
+{{myLongString | limitTo:80 | lowercase}}
+```
+
+####기본 제공 필터
+
+#####서식 변경 필터
+currency | date | number | lowercase | uppercase | json
+
+#####배열 변경 필터
+limitTo | Filter | orderBy
+
+#####'filter' 필터 적용
+
+`filter` 필터는 배열의 부분 집합을 가져올 때 사용하는 일반적인 목적의 필터링 함수다.
+
+```
+Search for : <input type="text" ng-model="criteria">
+...
+...
+<tr ng-repeat="backlogItem in backlog | filter:criteria">
+	...
+	...
+</tr>
+```
+
+입력창의 값을 필터의 인자로 연결하여 모든 항목에 대해 입력된 문자열을 포함하는 항목만 표시한다.
+
+하지만 좀 더 정교하게 비교하고 싶다면 필터의 인자로 객체를 사용하면 된다.
+
+이제 프로퍼티 중에 이름이 일치하고 아직 완료되지 않은 항목만 추리고 싶다고 해 보자.
+
+```
+<tr ng-repeat="item in backlog | filter:{name: criteria, done: false}">
+```
+
+이 코드는 인자로 넘긴 객체의 모든 프로퍼티가 일치해야만 통과한다. 즉, AND 연산자로 묶는 것과 같다고 말할 수 있다.
+
+객체의 모든 프로퍼티에 대해 문자열 비교를 하되 완료되지 않은 항목만 추리고 싶다면 다음과 같이 작성할 수 있다.
+
+```
+<tr ng-repeat="item in backlog | filter:{$: criteria, done: false}">
+```
+
+함수를 필터의 인자로 사용할 수 있다. 컬렉션의 항목마다 이 함수가 호출되며, 함수 호출 결과가 true인 항목만 결과 배열로 취함한다.
+
+```javascript
+$scope.doneAndBigEffort = function(backlogItem){
+	return backlogItem.done && backlogItem.estimation > 20;
+};
+```
+```
+<tr ng-repeat="item in backlog | filter:doneAndBigEffort">
+```
+
+#####걸러진 결과의 개수
+
+> 관련내용
+> - [필터를 사용하고 만들어 보자](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h2_8)
+
+
+##고급 폼 작성
+
+##내비게이션 구성
+
+##애플리케이션 보안
+
+##디렉티브 작성
+
+##고급 디렉티브 작성
+
+##웹애플리케이션 작성
