@@ -1,0 +1,56 @@
+<!doctype html>
+<html ng-app="toDoApp">
+	<head>
+		<meta charset="utf-8">
+		<title>간단한 할일</title>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+		<!-- angular.js를 로드하고, HTML페이지가 모두 로드된 후에 브라우저에 의해 실행되는 콜백을 등록-->
+		<script type="text/javascript" charset="utf-8">
+			var todoApp = angular.module('toDoApp', []);
+
+			todoApp.controller('todoCtrl', ['$scope', '$http', function($scope, $http){
+				
+				$http.get('todo.json')
+					.success(function(data){
+						$scope.todos = data;
+					});
+
+				$scope.addToBook = function(){
+					if($scope.newBook){
+						$scope.todos.push({
+							"checked": "",
+							"book": $scope.newBook
+						});
+						$scope.newBook = null;
+					}else{
+						alert('책을 입력해주세요!');
+					}
+				}
+			}]);
+		</script>
+	</head>
+	<body ng-controller="todoCtrl">
+		<div class="container">
+			<h1>간단한 할일</h1>
+			<p>$http을 사용하여 json 파일을 가져온 후 ng-repeat 지시자를 사용하여 데이터를 화면에 출력한다. 입력 텍스트박스에 할일을 추가하면 todos 모델에 데이터를 추가한다.</p>
+			<div class="row">
+				<ul class="list-group">
+					<li class="list-group-item" ng-repeat="todo in todos">
+						<input type="checkbox" checked="{{todo.checked}}" />
+						{{todo.book}}
+					</li>
+				</ul>
+			</div>
+
+			<div class="row">
+				<form class="form-inline">
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="newBook">
+					</div>
+					<input type="button" class="btn btn-default" value="책 추가" ng-click="addToBook()">
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
