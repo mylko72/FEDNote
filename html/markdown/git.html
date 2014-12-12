@@ -227,6 +227,38 @@ Switched <span class="keyword">to</span> a <span class="keyword">new</span> bran
 <p>master 브랜치로 체크아웃한 다음 <code>cherry-pick</code> 명령어를 실행하여 추가된 커밋명을 선택하여 합칠 수 있다.</p>
 <pre><code><span class="title">git</span> checkout master</code></pre>
 <p><img src="http://mylko72.maru.net/jquerylab/images/img_git03.gif" alt="실행결과"></p>
+<p>기본적으로 <code>git cherry-pick</code>은 선택한 커밋의 변경 사항을 가지고 새로운 커밋을 생성한다. </p>
+<p><em>선택하려는 커밋이 여러 개라면 <code>git cherry-pick</code>에 <code>-n</code> 매개변수를 지정한다. <code>-n</code> 매개변수는 Git을 합치기는 하지만 커밋하지 않게 만든다.</em></p>
+<pre><code><span class="title">git</span> cherry-pick -n 9941f44</code></pre>
+<p><code>git status</code>을 실행하여 새로운 파일이 추가되었고 스테이징되어 커밋할 준비가 됐음을 확인할 수 있다.</p>
+<p>이제 계속해서 다른 변경 사항을 선택하여 합칠 수 있다. 선택한 커밋을 모두 가져온 후 원하는 대로 메시지를 지정하여 커밋하면 된다.
+커밋할 때 메시지를 추가하는 <code>-m</code> 매개변수를 지정하지 않아도 된다. 편집기가 실행되면 기본적으로 가져온 커밋의 메시지가 나타남을 볼 수 있다.</p>
+<h3 id="-">충돌 다루기</h3>
+<p>두 개의 다른 브랜치에서 동일한 파일을 다르게 편집한 후 합치려고 하면 때로는 합칠 수 없는 경우도 있다. </p>
+<p>Git에서 커밋을 자동적으로 합칠 수 없는 경우를 충돌이라고 한다.</p>
+<p>만약 두개의 다른 브랜치에서 동일한 contact.html 파일을 합치려고 할 때 다음 화면을 보자.</p>
+<p><img src="http://mylko72.maru.net/jquerylab/images/img_git04.gif" alt="실행결과"></p>
+<p>CONFLICT를 눈여겨 보면 contact.html 파일에 충돌이 있음을 알 수 있다.</p>
+<p>about.html 파일의 코드는 다음과 같다.</p>
+<pre><code>    <span class="tag">&lt;<span class="title">ul</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">li</span>&gt;</span>Erlang<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">li</span>&gt;</span>Python<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">li</span>&gt;</span>Objective C<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;<span class="title">&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="attribute">HEAD:about.html</span>
+        &lt;<span class="attribute">li</span>&gt;</span>Javascript<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+=======
+        <span class="tag">&lt;<span class="title">li</span>&gt;</span>ECMAScrpt<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; about2:about.html
+    <span class="tag">&lt;/<span class="title">ul</span>&gt;</span></code></pre>
+<p>첫번째 &#39;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#39; 뒤에 나오는 코드는 현재 브랜치의 코드이고, &#39;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&#39; 앞에 나오는 코드는 다른 브랜치의 코드이다. </p>
+<p>두번째는 파일명 앞에 합치려고 하는 브랜치명이 표시된다는 것이다. 이 경우는 HEAD(현재 브랜치의 가장 최신 커밋)가 about2 브랜치와 충돌했다.</p>
+<p>충돌이 발생한 부분을 직접 수정하거나 도구를 선택하여 수정할 수 있다.</p>
+<p><img src="http://mylko72.maru.net/jquerylab/images/img_git05.gif" alt="실행결과"></p>
+<p><code>git mergetool</code>은 구성에 있는 merge.tool 값을 확인하여 합치기에 적합한 도구가 있는지 시스템에서 확인한다. </p>
+<p>C:\Documents and Settings\Administrator.gitconfig 파일을 직접 수정한다.</p>
+<pre><code><span class="matrix">[merge]</span>
+    tool = vimdiff</code></pre>
+<p>충돌을 성공적으로 해결했다면 변경사항을 커밋한다.</p>
 <h2 id="console-">console - 협업</h2>
 <h3 id="-">협업이란?</h3>
 <p>여러사람이 하나의 프로젝트를 개발하면서 발생할 수 있는 다양한 충돌상황에 대한 질서와 규범을 버전관리 시스템이 제공한다. </p>
