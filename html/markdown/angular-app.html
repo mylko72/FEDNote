@@ -212,6 +212,113 @@ myModule.config(<span class="keyword">function</span>($interpolateProvider){
 };</code></pre>
 <pre><code><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in backlog | filter:doneAndBigEffort"</span>&gt;</span></code></pre>
 <h5 id="-">걸러진 결과의 개수</h5>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in filteredBacklog = (backlog | filter:{</span><span class="variable">$:</span><span class="xml"> criteria, done: false})"&gt;</span></code></pre>
+<p>이제 걸러진 결과의 개수는 저장해둔 변수의 길이로 쉽게 알아낼 수 있다.</p>
+<pre><code>Total : {{filteredBacklog.<span class="built_in">length</span>}}</code></pre>
+<h5 id="orderby-">orderBy 필터로 정렬</h5>
+<p><code>orderBy</code> 필터를 사용하면 테이블 데이터를 정렬할 수 있다. </p>
+<pre><code><span class="tag">&lt;<span class="title">thead</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">th</span> <span class="attribute">ng-click</span>=<span class="value">"sort('name')"</span>&gt;</span>Name 
+        <span class="tag">&lt;<span class="title">i</span> <span class="attribute">ng-class</span>=<span class="value">"{'icon-chevron-up':isSortUp('name'), 
+        'icon-chevron-down':isSortDown('name')}"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">th</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">th</span> <span class="attribute">ng-click</span>=<span class="value">"sort('desc')"</span>&gt;</span>Description<span class="tag">&lt;/<span class="title">th</span>&gt;</span>
+    ...
+<span class="tag">&lt;/<span class="title">thead</span>&gt;</span>
+<span class="tag">&lt;<span class="title">tbody</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in filteredBacklogObj = (backlog | filter:criteria | orderBy:sortField:reverse)"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">td</span>&gt;</span><span class="variable">{{item.name}}</span><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">td</span>&gt;</span><span class="variable">{{item.desc}}</span><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+        ...</code></pre>
+<p>실제 정렬은 <code>orderBy</code> 필터로 수행되며 2개의 인자를 사용했다.</p>
+<ul>
+<li><strong>sortField</strong> 정렬 기준으로 사용할 프로퍼티의 이름</li>
+<li><strong>정렬순서(reverse)</strong> 반대로 정렬하는지의 여부</li>
+</ul>
+<p>헤더를 클릭해서 호출되는 sort 함수는 정렬 순서를 바꾸는 것은 물론 정럴할 필드도 결정한다. 다음은 컨트롤러의 코드다.</p>
+<pre><code class="lang-javascript">$scope.sortField = <span class="literal">undefined</span>;
+$scope.reverse = <span class="literal">false</span>;
+
+$scope.sort = <span class="function"><span class="keyword">function</span> <span class="params">(fieldName)</span> {</span>
+  <span class="keyword">if</span> ($scope.sortField === fieldName) {
+    $scope.reverse = !$scope.reverse;
+  } <span class="keyword">else</span> {
+    $scope.sortField = fieldName;
+    $scope.reverse = <span class="literal">false</span>;
+  }
+};</code></pre>
+<p>또한 정렬을 나타내는 아이콘을 추가할 수 있다. <code>ng-class</code> 디렉티브를 사용하여 함수가 반환하는 불런값이 true인 객체의 키를 클래스로 지정한다.</p>
+<pre><code class="lang-javascript">$scope.isSortUp = <span class="function"><span class="keyword">function</span> <span class="params">(fieldName)</span> {</span>
+  <span class="keyword">return</span> $scope.sortField === fieldName &amp;&amp; !$scope.reverse;
+};
+$scope.isSortDown = <span class="function"><span class="keyword">function</span> <span class="params">(fieldName)</span> {</span>
+  <span class="keyword">return</span> $scope.sortField === fieldName &amp;&amp; $scope.reverse;
+};</code></pre>
+<h4 id="-">사용자 정의 필터 생성</h4>
+<h5 id="-">페이지 번호 매기기 예제</h5>
+<p>페이지 번호를 매기는 기능을 지원하기 위해서는 사용자 정의 필터를 작성해야 한다. 다음은 사용자 정의 필터 pagination 이다.</p>
+<pre><code><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"item in filteredBacklog = (backlog | pagination:pageNo:pageSize)"</span>&gt;</span></code></pre>
+<p>pagination 필터는 표시할 페이지(인덱스)와 페이지의 크기(한 페이지에 표시할 목록의 수)를 나타내는 2개의 매개변수를 받는다.</p>
+<pre><code class="lang-javascript">angular.module(<span class="string">'arrayFilters'</span>, [])
+    .filter(<span class="string">'pagination'</span>, <span class="keyword">function</span>(){
+     <span class="keyword">return</span> <span class="keyword">function</span>(inputArray, selectedPage, pageSize) {
+       <span class="keyword">var</span> start = selectedPage*pageSize;
+       <span class="keyword">return</span> inputArray.slice(start, start + pageSize);
+     };
+    });</code></pre>
+<p>필터도 한 모듈의 인스턴스로 등록한다. <code>filter</code> 메소드는 필터이름으로 호출되며, 팩토리 함수는 새로운 필터의 인스턴스를 생성한다. 그리고 등록된
+팩토리 함수는 실제 필터 함수를 반환해준다.</p>
+<p>pagination 필터링 함수의 첫번째 인자는 필터링할 입력 값이고, 뒤에 이어지는 매개변수는 필터 옵션을 의미한다.</p>
+<p>다음은 컨트롤러의 코드이다. </p>
+<pre><code class="lang-javascript"><span class="comment">//pagination</span>
+$scope.pageSize = <span class="number">3</span>;
+$scope.pages = [];
+$scope.$watch(<span class="string">'filteredBacklog.length'</span>, <span class="keyword">function</span>(filteredSize){
+  $scope.pages.length = <span class="number">0</span>;
+  <span class="keyword">var</span> noOfPages = Math.ceil(filteredSize / $scope.pageSize);
+  <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;noOfPages; i++) {
+    $scope.pages.push(i);
+  }
+});
+
+$scope.setActivePage = <span class="function"><span class="keyword">function</span> <span class="params">(pageNo)</span> {</span>
+  <span class="keyword">if</span> (pageNo &gt;=<span class="number">0</span> &amp;&amp; pageNo &lt; $scope.pages.length) {
+    $scope.pageNo = pageNo;
+  }
+};</code></pre>
+<h4 id="-">자바스크립트 코드에서 필터 접근</h4>
+<p>필터는 보통 마크업에서 파이프(|)를 사용하여 호출하지만 자바스크립트 코드에서도 필터 인스턴스에 접근할 수 있다. 이 방법으로 기존 필터를 합쳐
+새로운 기능을 만들어낼 수 있다.</p>
+<p>필터는 AngularJS의 의존성 주입 시스템으로 관리되는 어떤 객체에든 주입할 수 있다. 다음은 필터에 의존성을 정의하는 방법이다.</p>
+<ul>
+<li><em><code>$filter</code> 서비스</em></li>
+<li><em><code>Filter</code>라는 접미사를 붙인 필터 이름</em></li>
+</ul>
+<p><em><code>$filter</code> 서비스는 이름을 기준으로 필터의 인스턴스를 찾는 함수이다.</em></p>
+<p>다음은 limitTo와 비슷하게 문자열을 잘라내는 필터를 작성해보자. 새로 만들 필터는 문자열이 긴 경우 &#39;...&#39; 접미사를 추가하는 필터다.</p>
+<pre><code class="lang-javascript">angular.module(<span class="string">'trimFilter'</span>, [])
+  .filter(<span class="string">'trim'</span>, <span class="keyword">function</span>($filter){
+
+    <span class="keyword">var</span> limitToFilter =  $filter(<span class="string">'limitTo'</span>);
+
+    <span class="keyword">return</span> <span class="keyword">function</span>(input, limit) {
+      <span class="keyword">if</span> (input.length &gt; limit) {
+        <span class="keyword">return</span> limitToFilter(input, limit-<span class="number">3</span>) + <span class="string">'...'</span>;
+      }
+      <span class="keyword">return</span> input;
+    };
+  });</code></pre>
+<p><code>$filter(&#39;limitTo&#39;)</code> 함수를 사용하면 필터 이름을 기준으로 필터의 인스턴스를 받아올 수 있다.</p>
+<p>다음은 좀 더 빠르게 동작하고 읽기 쉬운 구현 방법이다.</p>
+<pre><code class="lang-javascript">angular.module(<span class="string">'trimFilter'</span>, [])
+  .filter(<span class="string">'trim'</span>, <span class="keyword">function</span>(limitToFilter){
+    <span class="keyword">return</span> <span class="keyword">function</span>(input, limit) {
+      <span class="keyword">if</span> (input.length &gt; limit) {
+        <span class="keyword">return</span> limitToFilter(input, limit-<span class="number">3</span>) + <span class="string">'...'</span>;
+      }
+      <span class="keyword">return</span> input;
+    };
+  });</code></pre>
 <blockquote>
 <p>관련내용</p>
 <ul>
