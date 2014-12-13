@@ -8,11 +8,14 @@ body {
 
 .tocify {max-height:60%; margin-left:0 !important;}
 .tocify ul, .tocify li {border-bottom:1px solid #ddd;}
-.tocify-header > li:first-child {border-bottom:none;}
 .ui-widget-content a {font-size:14px; line-height:2; text-align:left;}
+.tocify > ul > li + ul {border-bottom:none;}
 .tocify > ul > ul > li > a {font-size:12px !important;}
+.tocify > ul > ul > li + ul {border-bottom:none;}
 .tocify > ul > ul > ul > li > a {font-size:11px !important;}
+.tocify > ul > ul > ul > li + ul {border-bottom:none;}
 .tocify > ul > ul > ul > ul > li > a {font-size:11px !important;}
+.tocify > ul > ul > ul > ul > li:last-child {border-bottom:none;}
 
 em {font-style:normal; color:red;}
 

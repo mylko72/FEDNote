@@ -288,6 +288,39 @@ $scope.setActivePage = <span class="function"><span class="keyword">function</sp
     $scope.pageNo = pageNo;
   }
 };</code></pre>
+<h4 id="-">자바스크립트 코드에서 필터 접근</h4>
+<p>필터는 보통 마크업에서 파이프(|)를 사용하여 호출하지만 자바스크립트 코드에서도 필터 인스턴스에 접근할 수 있다. 이 방법으로 기존 필터를 합쳐
+새로운 기능을 만들어낼 수 있다.</p>
+<p>필터는 AngularJS의 의존성 주입 시스템으로 관리되는 어떤 객체에든 주입할 수 있다. 다음은 필터에 의존성을 정의하는 방법이다.</p>
+<ul>
+<li><em><code>$filter</code> 서비스</em></li>
+<li><em><code>Filter</code>라는 접미사를 붙인 필터 이름</em></li>
+</ul>
+<p><em><code>$filter</code> 서비스는 이름을 기준으로 필터의 인스턴스를 찾는 함수이다.</em></p>
+<p>다음은 limitTo와 비슷하게 문자열을 잘라내는 필터를 작성해보자. 새로 만들 필터는 문자열이 긴 경우 &#39;...&#39; 접미사를 추가하는 필터다.</p>
+<pre><code class="lang-javascript">angular.module(<span class="string">'trimFilter'</span>, [])
+  .filter(<span class="string">'trim'</span>, <span class="keyword">function</span>($filter){
+
+    <span class="keyword">var</span> limitToFilter =  $filter(<span class="string">'limitTo'</span>);
+
+    <span class="keyword">return</span> <span class="keyword">function</span>(input, limit) {
+      <span class="keyword">if</span> (input.length &gt; limit) {
+        <span class="keyword">return</span> limitToFilter(input, limit-<span class="number">3</span>) + <span class="string">'...'</span>;
+      }
+      <span class="keyword">return</span> input;
+    };
+  });</code></pre>
+<p><code>$filter(&#39;limitTo&#39;)</code> 함수를 사용하면 필터 이름을 기준으로 필터의 인스턴스를 받아올 수 있다.</p>
+<p>다음은 좀 더 빠르게 동작하고 읽기 쉬운 구현 방법이다.</p>
+<pre><code class="lang-javascript">angular.module(<span class="string">'trimFilter'</span>, [])
+  .filter(<span class="string">'trim'</span>, <span class="keyword">function</span>(limitToFilter){
+    <span class="keyword">return</span> <span class="keyword">function</span>(input, limit) {
+      <span class="keyword">if</span> (input.length &gt; limit) {
+        <span class="keyword">return</span> limitToFilter(input, limit-<span class="number">3</span>) + <span class="string">'...'</span>;
+      }
+      <span class="keyword">return</span> input;
+    };
+  });</code></pre>
 <blockquote>
 <p>관련내용</p>
 <ul>
@@ -324,7 +357,7 @@ $scope.setActivePage = <span class="function"><span class="keyword">function</sp
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 	<script src="/javascripts/marked.js"></script>
-	<!--<script src="/javascripts/markdown-toc.js"></script>-->
+	<script src="/javascripts/markdown-toc.js"></script>
 	<script>hljs.initHighlightingOnLoad();</script>
     
   </body>
