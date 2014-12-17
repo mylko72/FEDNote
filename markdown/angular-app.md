@@ -293,6 +293,163 @@ $scope.doneAndBigEffort = function(backlogItem){
 
 #####걸러진 결과의 개수
 
+필터 적용 후의 결과에 대한 개수를 보여주고 싶다면 *걸러진 결과 값을 저장하는 변수를 생성*하면 된다.
+
+```
+<tr ng-repeat="item in filteredBacklog = (backlog | filter:{$: criteria, done: false})">
+```
+
+이제 걸러진 결과의 개수는 저장해둔 변수의 길이로 쉽게 알아낼 수 있다.
+
+```
+Total : {{filteredBacklog.length}}
+```
+
+#####orderBy 필터로 정렬
+
+`orderBy` 필터를 사용하면 테이블 데이터를 정렬할 수 있다. 
+
+```
+<thead>
+    <th ng-click="sort('name')">Name 
+		<i ng-class="{'icon-chevron-up':isSortUp('name'), 
+		'icon-chevron-down':isSortDown('name')}"></i>
+	</th>
+    <th ng-click="sort('desc')">Description</th>
+	...
+</thead>
+<tbody>
+    <tr ng-repeat="item in filteredBacklogObj = (backlog | filter:criteria | orderBy:sortField:reverse)">
+        <td>{{item.name}}</td>
+        <td>{{item.desc}}</td>
+		...
+```
+
+실제 정렬은 `orderBy` 필터로 수행되며 2개의 인자를 사용했다.
+
+- **sortField** 정렬 기준으로 사용할 프로퍼티의 이름
+- **정렬순서(reverse)** 반대로 정렬하는지의 여부
+
+헤더를 클릭해서 호출되는 sort 함수는 정렬 순서를 바꾸는 것은 물론 정럴할 필드도 결정한다. 다음은 컨트롤러의 코드다.
+
+```javascript
+$scope.sortField = undefined;
+$scope.reverse = false;
+
+$scope.sort = function (fieldName) {
+  if ($scope.sortField === fieldName) {
+	$scope.reverse = !$scope.reverse;
+  } else {
+	$scope.sortField = fieldName;
+	$scope.reverse = false;
+  }
+};
+```
+
+또한 정렬을 나타내는 아이콘을 추가할 수 있다. `ng-class` 디렉티브를 사용하여 함수가 반환하는 불런값이 true인 객체의 키를 클래스로 지정한다.
+
+```javascript
+$scope.isSortUp = function (fieldName) {
+  return $scope.sortField === fieldName && !$scope.reverse;
+};
+$scope.isSortDown = function (fieldName) {
+  return $scope.sortField === fieldName && $scope.reverse;
+};
+```
+
+####사용자 정의 필터 생성
+
+#####페이지 번호 매기기 예제
+
+페이지 번호를 매기는 기능을 지원하기 위해서는 사용자 정의 필터를 작성해야 한다. 다음은 사용자 정의 필터 pagination 이다.
+
+```
+<tr ng-repeat="item in filteredBacklog = (backlog | pagination:pageNo:pageSize)">
+```
+
+pagination 필터는 표시할 페이지(인덱스)와 페이지의 크기(한 페이지에 표시할 목록의 수)를 나타내는 2개의 매개변수를 받는다.
+
+```javascript
+angular.module('arrayFilters', [])
+	.filter('pagination', function(){
+	 return function(inputArray, selectedPage, pageSize) {
+	   var start = selectedPage*pageSize;
+	   return inputArray.slice(start, start + pageSize);
+	 };
+	});
+```
+
+필터도 한 모듈의 인스턴스로 등록한다. `filter` 메소드는 필터이름으로 호출되며, 팩토리 함수는 새로운 필터의 인스턴스를 생성한다. 그리고 등록된
+팩토리 함수는 실제 필터 함수를 반환해준다.
+
+pagination 필터링 함수의 첫번째 인자는 필터링할 입력 값이고, 뒤에 이어지는 매개변수는 필터 옵션을 의미한다.
+
+다음은 컨트롤러의 코드이다. 
+
+```javascript
+//pagination
+$scope.pageSize = 3;
+$scope.pages = [];
+$scope.$watch('filteredBacklog.length', function(filteredSize){
+  $scope.pages.length = 0;
+  var noOfPages = Math.ceil(filteredSize / $scope.pageSize);
+  for (var i=0; i<noOfPages; i++) {
+	$scope.pages.push(i);
+  }
+});
+
+$scope.setActivePage = function (pageNo) {
+  if (pageNo >=0 && pageNo < $scope.pages.length) {
+	$scope.pageNo = pageNo;
+  }
+};
+```
+
+####자바스크립트 코드에서 필터 접근
+
+필터는 보통 마크업에서 파이프(|)를 사용하여 호출하지만 자바스크립트 코드에서도 필터 인스턴스에 접근할 수 있다. 이 방법으로 기존 필터를 합쳐
+새로운 기능을 만들어낼 수 있다.
+
+필터는 AngularJS의 의존성 주입 시스템으로 관리되는 어떤 객체에든 주입할 수 있다. 다음은 필터에 의존성을 정의하는 방법이다.
+
+- *`$filter` 서비스*
+- *`Filter`라는 접미사를 붙인 필터 이름*
+
+*`$filter` 서비스는 이름을 기준으로 필터의 인스턴스를 찾는 함수이다.*
+
+다음은 limitTo와 비슷하게 문자열을 잘라내는 필터를 작성해보자. 새로 만들 필터는 문자열이 긴 경우 '...' 접미사를 추가하는 필터다.
+
+```javascript
+angular.module('trimFilter', [])
+  .filter('trim', function($filter){
+
+    var limitToFilter =  $filter('limitTo');
+
+    return function(input, limit) {
+      if (input.length > limit) {
+        return limitToFilter(input, limit-3) + '...';
+      }
+      return input;
+    };
+  });
+```
+
+`$filter('limitTo')` 함수를 사용하면 필터 이름을 기준으로 필터의 인스턴스를 받아올 수 있다.
+
+다음은 좀 더 빠르게 동작하고 읽기 쉬운 구현 방법이다.
+
+```javascript
+angular.module('trimFilter', [])
+  .filter('trim', function(limitToFilter){
+    return function(input, limit) {
+      if (input.length > limit) {
+        return limitToFilter(input, limit-3) + '...';
+      }
+      return input;
+    };
+  });
+```
+
 > 관련내용
 > - [필터를 사용하고 만들어 보자](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h2_8)
 
@@ -301,9 +458,452 @@ $scope.doneAndBigEffort = function(backlogItem){
 
 ##내비게이션 구성
 
+AngularJS는 다음과 같은 것들을 지원한다.
+
+- 딥 링크 URL은 단일 페이지 웹 애플리케이션 내에서 특정 기능을 가리킨다. 그리고 이 URL은 북마크할 수 있고 없어질 수도 있다.
+- 단일 웹 페이지 애플리케이션에서 서로 다른 화면 사이를 오갈 수 있는 브라우저의 뒤로가기, 앞으로 가기 버튼은 사요자 생각대로 동작한다.
+- 브라우저에서 HTML5 API를 지원할 수 있게 URL은 간결하고 기억하기 쉬운 형태다.
+
+###단일 페이지 웹 애플리케이션의 URL
+
+####HTML5 이전 시대의 hashbang URL
+
+현재 표시되는 페이지를 다시 로딩하지 않고 브라우저 주소 창의 URL에 # 문자를 사용하는 방법이 있는데 URL에 추가한 이 부분을 URL 조각(fragment)이라고 부른다. 이 URL 조각을 변경하면 브라우저의 히스토리 스택에 새로운 요소를 추가할 수 있고 뒤로 가기와 앞으로 가기도 동작하게 만들 수 있다.
+
+단일 페이지 웹 애플리케이션의 # 문자를 사용해 전체 URL을 표현하면 다음과 같다.
+- http://myhost.com/#/admin/users/list  
+기존 사용자의 목록을 보여주는 URL
+- http://myhost.com/#/admin/users/new  
+새로운 사용자를 추가하는 폼을 보여주는 URL
+- http://myhost.com/#/admin/users/[userId]  
+ID가 [userId]인 기존 사용자 정보를 수정하는 폼을 보여주는 URL
+
+보통 단일 페이지 웹 애플리케이션의 내부만을 가리키는 URL은 **hashbang URL**을 사용해 표현한다. **hashbang URL** 스키마를 사용하면 브라우저 주소 창의 URL을 변경해도 페이지를 다시 로딩하지 않는다. 브라우저는 서로 다른 URL(앞부분은 같지만 # 문자부터의 URL 조각은 다른)을 받아 히스토리를 관리하고 뒤로가기/앞으로 가기 버튼을 처리한다. 게다가 URL 조각의 일부분을 변경해도 서버와 통신하는데 아무런 문제가 없다.
+
+####HTML5와 history API
+
+history API를 사용하면 서버를 실제로 갔다 오지 않아도 외부 리소스를 사용할 수 있다. 새로운 `history.pushState` 메소드를 사용하면 브라우저 히스토리 스택의 최상위에 원하는 URL을 집어넣을 수 있다. 또한 history APi에는 히스토리 스택의 변경 여부를 지켜보는 내부 메커니즘이 있다. 그래서 `window.onpopstate` 이벤트를 지켜보다가 이벤트가 발생하면 애플리케이션의 상태를 변경할 수 있다.
+
+HTML5 history API를 사용하면 단일 페이지 웹 애플리케이션에서 URL을 잘 사용할 수 있으며(#트릭을 쓰지 않고도), URL을 북마크할 수 있고 뒤로 가기/앞으로 가기 버튼도 기대한 대로 동작하는 등 좋은 사용자 경험을 제공할 수 있다. 따라서 이전 예제의 URL은 다음과 같이 간단히 표현할 수 있다.
+
+- http://myhost.com/admin/users/list  
+- http://myhost.com/admin/users/new  
+- http://myhost.com/admin/users/[userId]  
+
+###$location 서비스 사용
+
+AngularJS는 URL을 한 단계 추상화한 `$location` 서비스라는 것을 제공한다. 
+
+####$location 서비스 API와 URL 이해
+
+사용자의 목록을 가리키는 URL이 있다고 해보자. 패스, 쿼리 문자열, 조각 등 가능한 컴포넌트를 URL에 모두 추가한다.
+
+/admin/users/list?active=true#bottom
+
+이 URL을 해석하면 관리자 페이지의 활성하된 모든 사용자 목록을 맨 아래로 스크롤한다.
+
+위 URL을 HTML5로 표현하면 다음과 같다.
+
+http://myhost.com/myapp/admin/users/list?active=true#bottom
+
+hashbang 모드의 URL은 좀 더 길고 약간 더 보기 좋지 않다.
+
+http://myhost.com/myapp#/admin/users/list?active=true#bottom
+
+사용하는 모드랑 상관없이 `$location` 서비스는 일관적인 API를 제공함으로써 둘 사이의 차이점을 없애버린다. 다음 표는 사용 가능한 API 메소드를 보여준다.
+
+메소드 | 반환하는 값
+-------|------------
+$location.url() | /admin/users/list?active=true#bottom
+$location.path() | /admin/users/list
+$location.search() | {active:true}
+$location.hash() | Bottom
+
+모든 메소드가 URL의 각 컴포넌트에 대해 get과 set 동작을 모두 쓸수 있다. 예를 들어 URL 조각을 읽으려면 `$location.hash()`를 사용하고, 값을 설정하려면 `$location.hash('top')` 형태로 사용하면 된다.
+
+`$location` 서비스는 프로토콜(protocol()), 호스트(host()), 포트(port()), 절대 URL(absUrl())과 같은 메소드도 제공하며 게터로만 동작한다.
+
+####$anchorScroll
+
+hashbang URL에 단점이 하나 있다. 일반적인 경우 # 문자 뒤에 오는 URL은 로드된 문서 내부를 돌아다니는 데 사용한다. 다음 URL이 있다고 해보자.
+
+http://myhost.com/myapp#/admin/users/list?active=true#bottom
+
+hashbang 모드에서 브라우저는 두번째 해시(#bottom)가 문서 내부를 스크롤하는데 사용돼야 한다는 사실을 알 방법이 없다. 이럴때 AngularJS의 `$anchorScroll` 서비스가 필요하다. 
+
+`$anchorScroll` 서비스는 기본적으로 URL 조각을 지켜보고 있다가 해시를 발견하면 문서 내부의 특정 영역으로 점프한다. 이 동작은 HTML5 모드는 물론 hashbang 모드에서도 정확하게 동작한다.
+
+`$anchorScroll` 서비스의 스크롤하는 동작을 좀 더 세밀하게 제어하고 싶다면 자동으로 URL 조각을 모니터링하는 기능을 사용하지 않으면 된다. 모듈의 설정 블록에서 `$anchorScrollProvider` 서비스의 `disableAutoScrolling()` 메소드를 다음과 같이 호출하면 이 기능을 끌 수 있다.
+
+```javascript
+angular.module('myModule', [])
+	.config(function($anchorScrollProvider){
+		$anchorScrollProvider.disableAutoScrolling();
+	});
+```
+
+이렇게 설정하면 스크롤이 발생하는 모든 상황을 제어할 수 있다. 즉, 원하는 시점에 서비스의 함수인 `$anchorScroll()을 호출해 스크롤 동작을 만들 수 있다.
+
+###AngularJS 내장 경로 서비스 사용
+
+AngularJS 프레임워크는 단일 페이지 웹 애플리케이션에서 경로를 설정하기 위해 `$route`라는 서비스를 기본으로 제공한다.
+
+####기본적인 경로 정의
+
+*AngularJS에서 경로는 애플리케이션의 설정 단계에서 `$routeProvider` 서비스를 통해 정의할 수 있다.*
+
+```javascript
+angular.module('routing_basics', [])
+  .config(function($routeProvider) {
+    $routeProvider
+      .when('/admin/users/list', {templateUrl: 'tpls/users/list.html'})
+      .when('/admin/users/new',  {templateUrl: 'tpls/users/new.html'})
+      .when('/admin/users/edit', {templateUrl: 'tpls/users/edit.html'})
+      .otherwise({redirectTo: '/admin/users/list'});
+  })
+```
+
+`$routeProvider` 서비스는 새로운 경로를 정의하는 메소드(when)와 기본 경로를 정의하는 메소드(otherwise)를 체이닝할 수 있는 유연한 API를 제공한다.
+
+#####- 일치하는 경로의 내용 보여주기
+
+URL이 경로 중 하나와 일치하면 경로의 내용(templateUrl)을 `ng-view` 디렉티브로 보여줄 수 있다.
+
+```
+<div class="container-fluid" ng-view>
+</div>
+```
+
+####변경되는 경로 찾기
+
+다음과 같이 URL 쿼리 매개변수를 사용해 사용자 id를 구분할 수 있다.
+
+/admin/users/edit?user={{user.id}}
+
+하지만 사용자 id를 다음과 같이 URL의 일부분으로 집어넣는 방식이 훨씬 낫다.
+
+/admin/users/edit/{{user.id}}
+
+AngularJS는 콜론(:)으로 구분한 문자열을 사용해 아주 쉽게 이 기능을 지원한다. 사용자의 ID를 URL의 일부분으로 처리하려면 URL 스키마를 다음과 같이 정의하면 된다.
+
+```javascript
+.when('/admin/users/:userid', {templateUrl:'tpls/users/edit.html'})
+```
+
+#####- 기본 경로 설정
+
+기본 경로는 `otherwise` 메소드를 사용해 설정할 수 있다. 기본 경로를 설정하면 일치하지 않는 모든 경로가 기본 경로로 처리된다.
+
+#####- 경로의 매개변수 값 사용
+
+특정 URL이 경로와 일치할 때 `$routeParams` 서비스를 사용하면 이 매개변수의 값에 쉽게 접근할 수 있다. 사실 `$routeParams` 서비스는 경로의 매개변수 이름을 키로 하고 일치하는 URL의 해당 문자열을 값으로 하는 간단한 자바스크립트 객체(해시)다.
+
+`$routeParams`는 일반적인 서비스이므로 AngularJS 의존성 주입 시스템이 관리하는 어떤 객체에든 주입할 수 있다. 사용자 정보를 수정(/admin/users/:userid)하는데 사용하는 컨트롤러에서 다음과 같이 정의할 수 있다.
+
+```javascript
+.controller('EditUserCtrl', function($scope, $routeParams, Users){
+	$scope.user = Users.get({id: $routeParams.userid});
+})
+```
+
+이 코드는 /admin/users/edit로 정의한 경로와 일치하는 URL인 /admin/users/edit?userid=1234에 대해 동일하게 동작한다.
+
+####경로설정 단계에서의 컨트롤러 정의
+
+AngularJS 경로 시스템은 경로를 정의할 때 컨트롤러도 같이 정의할 수 있는 기능을 제공한다.
+
+```javascript
+.when('/admin/users/:userid', {
+	templateUrl: 'tpls/users/edit.html',
+	controller: 'EditUserCtrl'
+})
+```
+
+####경로 변경시 깜빡거림 현상 제거
+
+애플리케이션에서 다른 화면으로 이동할 때는 해당되는 데이터 뿐만 아니라 새로운 화면에 대한 마크업도 가져와서 보여줘야 한다. 이때 새로운 화면을 그리기 위해 사용할 수 있는 2가지 다른 전략이 있다.
+
+- 새로운 마크업을 가능한 한 빨리 보여주고(데이터가 아직 준비되지 않았더라도) 백엔드로부터 데이터가 도착하면 UI를 다시 그리는 방법
+- 백엔드에서 모든 요청이 처리되고 데이터가 준비된 후 새로운 경로에 대한 마크업을 보여주는 방법
+
+첫번째 방법이 기본으로 사용되는 바법이다. 하지만 사용자는 의도치 않은 깜빡거림 현상을 접하게 된다. UI가 깜빡거리는 현상은 같은 템플릿이 짧은 시간에 데이터 없이 한 번 그려지고 데이터가 준비되면 또다시 그려지기 때문에 발생하는 현상이다. 
+
+AngularJS 경로 시스템은 두 번째 방법을 구현하기 위해 템플릿과 필요한 데이터가 준비될 때까지 경로 변경(UI를 다시 그리는)을 미루는 멋진 기능을 제공한다. ***경로를 정의하는 객체에서 `resolve` 프로퍼티를 사용하면 경로의 컨트롤러에 대한 비동기적인 의존성을 정의할 수 있다.*** AngularJS는 경로가 변경되기 전에(컨트롤러를 초기화하기 전에) 이 의존성을 모두 처리해 준다.
+
+`resolve` 프로퍼티를 사용하는 방법에 대한 예로 사용자 정보를 수정하는 경로를 다시 작성해 보자.
+
+```javascript
+.when('/admin/users/:userid', {
+	templateUrl: 'tpls/users/edit.html',
+	controller: 'EditUserCtrl',
+	resolve: {
+		user : function($route, Users){
+		  return Users.getById($route.current.params.userid);
+		}
+	}
+})
+```
+
+`resolve` 프로퍼티는 객체다. *경로의 컨트롤러에 주입할 새로운 변수를 키로 정의하고 해당 변수로 제공할 특정 함수를 값으로 정의한다.* 물론 이 함수에서도 역시 AngularJS의 DI 시스템을 사용해 의존성을 주입할 수 있다. 예제에서는 사용자 데이터를 받아오기 위해 `$route`와 Users 서비스를 주입했다.
+
+이 `resolve` 함수는 간단한 자바스크립트 값, 객체, 프라미스 등을 반환할 수 있다. 프라미스가 반환되면 AngularJS는 프라미스가 해결될 때까지 경로 변경을 미룬다. 비슷하게 `resolve` 함수가 여러 개의 프라미스를 반환하면 AngularJS 경로 시스템은 모든 프라미스가 해결되기 전까지는 경로를 변경하지 않는다.
+
+경로 관련 변수(resolve로 정의한)가 모두 해결되고 나면 경로의 컨트롤러는 다음과 같이 주입된다.
+
+```javascript
+.controller('EditUserCtrl', function($scope, user){
+	$scope.user = user;
+	...
+})
+```
+
+이 방법은 경로를 정의할 때 지역 변수를 선언함으로써 해당 경로의 컨트롤러에 이를 주입할 수 있으므로 매우 강력한 패턴이다
+
+```javascript
+$routeProvider.when('/admin/users/new', {
+	templateUrl: 'tpls/users/users-edit.tpl..html',
+	controller: 'UsersEditCtrl',
+	resolve: {
+		user : function(Users){
+		  return new Users(); 
+		}
+	}
+})
+$routeProvider.when('/admin/users/new', {
+	templateUrl: 'tpls/users/users-edit.tpl.html',
+	controller: 'UsersEditCtrl',
+	resolve: {
+		user : function($route, Users){
+		  return Users.getById($route.current.params.userid);
+		}
+	}
+})
+```
+
+경로 정의 단계에서 지역변수를 선언(resolve 프로퍼티 안에)한다는 것은 이 지역 변수들이 경로와 함께 정의한 컨트롤러에 주입될 수 있다는 의미다.
+
+####경로 변경 방지
+
+특정 조건에 따라 경로가 변경되는 것을 막아야 할 때가 있다. 예를 들어 사용자를 가리키는 id가 없는 경우 존재하지 않는 항목에 대해서는 해당 경로로 이동할 수 없게 만드는 것도 한 가지 방법이다.
+
+/users/edit/:userid
+
+경로의 `resolve`의 키로 프라미스를 사용하고 이 프라미스가 거부되면 AngularJS는 경로 변경 작업을 취소하고 템플릿을 변경하지 않는다.
+
+거부된 프라미스로 인해 경로 접근 과정이 실패하면 브라우저의 주소 창과 보이는 UI가 안 맞는 현상이 발생한다.
+
+###$route 서비스의 한계
+
+####한 화면의 한 영역에 대한 경로
+
+`ng-view` 디렉티브를 사용하면 UI에 단 하나의 '영역'에 대해서만 `$route` 서비스로 내용을 보여줄 수 있다. 하지만 실제로는 경로를 변경하고 나서 화면의 여러 영역에 적절한 html 템플릿을 보여주어야 할 때가 많다. AngularJS를 가지고 이런 형태의 내비게이션을 구현하는 방법은 `ng-include` 디렉티브를 여러 번 사용하는 것 뿐이다.
+
+#####- ng-include로 여러 UI 영역 다루기
+
+경로를 정의하는 객체는 일반적인 자바스크립트 객체이므로 원하는 프로퍼티를 마음대로 추가할 수 있다. 추가로 넣은 프로퍼티는 `$route` 동작에 아무런 영향을 미치지 않는다.
+
+이 방식으로 경로 정의 단계에서 menuUrl과 contentUrl 프로퍼티를 새로 추가 해보자.
+
+```javascript
+$routeProvider.when('/admin/users/new', {
+	templateUrl: 'admin/admin.tpl.html',
+	contentUrl: 'admin/users/users-edit.tpl.html',
+	menuUrl: 'admin/menu.tpl.html',
+	controller: 'UsersEditCtrl',
+	...
+})
+```
+
+그러고 나서 templateUrl을 통해 호출되는 템플릿 문서는 메뉴와 내용을 처리하는 다음과 같은 새로운 템플릿 문서를 가리키게 설정해야 한다.
+
+```
+<div>
+	<div ng-include="$route.current.menuUrl">
+		<!-- 메뉴 -->
+	</div>
+	<div ng-include="$route.current.contentUrl">
+		<!-- 내용 -->
+	</div>
+</div>
+```
+
+하지만 이 방법은 경로가 변경될때마다 menu DOM 요소를 매번 다시 그리는 단점이 있다.
+
+###경로 패턴, 팁, 트릭
+
+####링크 다루기
+
+#####- 클릭 가능한 링크 다루기
+
+HTML 앵커태그(a)는 내비게이션 링크를 만들기에 가장 좋은 태그며 다음과 같이 세가지 방법으로 링크를 작성할 수 있다.
+
+```
+<a href="/admin/users/list">List users</a>
+```
+
+다른 방법은 기본동작을 제거한 `a` 태그와 `ng-click` 디렉티브를 사용해 클릭 가능한 요소를 만들 수 있다.
+
+```
+<a ng-click="listUsers()">List users</a>
+```
+```javascript
+$scope.listUsers = function(){
+	$location.path("/admin/users/list");
+};
+```
+
+다른 하나는 AngularJS의 `ng-href`를 사용하면 동적인 URL을 쉽게 만들 수 있다.
+
+```
+<a ng-href="/admin/users/{{user.$id()}}">Edit users</a>
+```
+
+####경로 정의 구조화
+
+#####- 경로 정의를 여러 개의 모듈로 분할
+
+애플리케이션에서 특정 경로는 해당하는 모듈 안에서 정의한다. 
+
+AngularJS 모듈 시스템에는 모듈마다 `config` 함수가 있으므로 `$routeProvider` 서비스를 주입해서 경로를 정의할 수 있다.
+
+예를 들어 사용자를 관리하는 모듈과 프로젝트를 관리하는 모듈이 있다면 각 모듈에서 다음과 같이 경로를 정의한다.
+
+```javascript
+angular.module('admin-users', [])
+  .config(function($routeProvider) {
+    $routeProvider
+      .when('/admin/users', {templateUrl: 'tpls/users/list.html'})
+      .when('/admin/users/new',  {templateUrl: 'tpls/users/new.html'})
+      .when('/admin/users/:userid', {templateUrl: 'tpls/users/edit.html'})
+      .otherwise({redirectTo: '/admin/users/list'});
+  })
+```
+```javascript
+angular.module('admin-projects', [])
+  .config(function($routeProvider) {
+    $routeProvider
+      .when('/admin/projects', {templateUrl: 'tpls/projects/list.html'})
+      .when('/admin/projects/new',  {templateUrl: 'tpls/projects/new.html'})
+      .when('/admin/projects/:userid', {templateUrl: 'tpls/projects/edit.html'})
+      .otherwise({redirectTo: '/admin/projects/list'});
+  })
+```
+```javascript
+angular.module('admin', ['admin-projects', 'admin-users']);
+```
+
 ##애플리케이션 보안
 
 ##디렉티브 작성
+
+다음과 같은 경우에 사용자 정의 디렉티브가 필요하다.
+
+- 제이쿼리로 DOM을 직접 조작해야 하는 경우
+- 중복된 코드를 제거해 애플리케이션의 특정 부분을 리팩토링하고 싶은 경우
+- 개발자가 아닌 디자이너도 사용할 수 있는 새로운 HTML 마크업을 만들고 싶은 경우
+
+###AngularJS 디렉티브란
+
+디렉티브는 애플리케이션 로직과 HTML DOM 사이를 이어주는 접착제 역할을 한다. 디렉티브 안에서는 제이쿼리나 AngularJS의 jqLite를 통해 좀 더 어려운 저수준의 DOM 조작이 일어난다.
+
+*디렉티브의 주 업무는 DOM 구조를 변경하고 스코프와 DOM을 연결해주는 것이다.* 즉, 스코프의 데이터에 DOM 노드를 연결하고 조작하는 것은 물론 스코프의 메소드를 호출하기 위해 DOM 이벤트를 연결하는 역할도 맡는다.
+
+###디렉티브 컴파일 생명주기
+
+AngularJS가 HTML 템플릿을 컴파일할 때는 브라우저가 제공하는 DOM을 돌아다니면서 각 요소, 속성, 주석, CSS 클래스에 대해 등록된 디렉티브 목록과 일치하는게 있는지 하나씩 확인한다. 그러다 *일치하는 디렉티브를 발견하면 AngularJS는 디렉티브의 컴파일 함수를 호출하고, 이 함수는 링크 함수를 반환한다.* 그리고 AngularJS는 이런 링크 함수를 모두 모아놓는다.
+
+>스코프가 준비되기 전에 컴파일 단계는 모두 완료된다. 따라서 *컴파일 함수에서는 스코프 데이터를 사용할 수 없다.*
+
+모든 *디렉티브가 컴파일되면 AngularJS는 스코프를 생성하고 각 디렉티브의 링크함수를 호춣해서 디렉티브와 스코프를 연결한다.*
+
+>링크 단계에서 스코프와 디렉티브가 연결되고 나면 링크 함수는 스코프와 DOM에 대한 바인딩을 설정한다.
+
+반복적으로 사용할 디렉티브를 고려하고 있다면 *디렉티브의 컴파일 함수는 오직 한 번만 호출되지만 링크 함수는 반복되는 각 디렉티브마다, 즉 데이터가 변경될 때마다 호출된다는 점을 알아두자.*
+
+스코프의 데이터와 상관없이 복잡한 기능을 구현해야 한다면 컴파일 함수에 구현하는 것이 좋다. 오직 한번만 호출되기 때문이다.
+
+###디렉티브 정의
+
+각 디렉티브는 반드시 모듈로 정의해야 한다. 그리고 모듈에서 `directive()` 함수를 호출하면 된다. 매개변수로는 디렉티브의 이름과 디렉티브를 정의한 객체를 반환하는 팩토리 함수를 넘긴다.
+
+```javascript
+angular.module('app', [])
+	.directive('myDir', function(){
+		return myDirectiveDefinition;
+	});
+```
+
+디렉티브에서 서비스를 사용하고 싶다면 팩토리 함수로 주입해서 사용하면 된다.
+
+다음 표는 디렉티브를 정의할 때 사용할 수 있는 모든 필드에 대한 설명이다.
+
+필드 | 설명
+-----|------------------------
+name | 디렉티브 이름
+restrict | 디렉티브를 표시할 마크업의 종류
+priority | 컴파일러를 위해 정의하는 디렉티브의 실행 우선순위
+terminal | 컴파일러가 바로 다음 디렉티브도 컴파일해야 하는지의 여부
+link | 디렉티브를 스코프에 연결해주는 링크 함수
+template | 디렉티브가 생성하는 문자열로 표현된 마크업
+templateUrl | 디렉티브를 위한 템플릿의 URL
+replace | 디렉티브의 요소가 템플릿으로 정의한 내용으로 변경돼야 하는지의 여부
+transclude | 디렉티브의 요소 내용을 템플릿과 컴파일 함수에 제공할지의 여부
+scope | 디렉티브에 새로운 자식 스코프나 isolate 스코프를 만들지의 여부
+controller | 디렉티브의 컨트롤러 역할을 해줄 함수
+require | 디렉티브의 링크 함수에 주입되는 또 다른 컨트롤러를 정의한 디렉티브
+compile | DOM을 조작하고 링크 함수를 만들어내며 링크를 따로 정의하지 않으면 이 함수만 사용되는 컴파일 함수
+
+###디렉티브로 버튼 꾸미기
+
+부트스트랩 CSS로 버튼 디렉티브를 만들어 보자.
+
+먼저 부트스트랩을 이용한 마크업과 CSS 클래스는 다음과 같다.
+
+```
+<button type="submit" class="btn btn-primary btn-large">Click Me!</button>
+```
+
+먼저 모든 버튼에 `class="btn"`을 추가해야 하고 `type="submit"`인 모든 버튼에는 `class="btn-primary"`도 추가해야 한다.
+그리고 size 속성으로 버튼의 크기도 정할 수 있다고 하자.
+
+디렉티브가 적용된 마크업은 다음과 같다.
+
+```
+<button type="submit" size="large">Submit</button>
+```
+
+디렉티브는 다음과 같이 구현할 수 있다.
+
+```javascript
+myModule.directive('button', function(){
+	return {
+		restrict : 'E',
+		compile : function(element, attributes){
+			element.addClass('btn');
+			if(attributes.type == 'submit'){
+				element.addClass('btn-primary');
+			}
+			if(attributes.size){
+				element.addClass('btn-'+attributes.size);
+			}
+		}
+	};
+});
+```
+
+AngularJS 컴파일러가 버튼 요소를 발견할 때마다 이 디렉티브가 적용된다. 사실상 *표준 HTML 요소에 새로운 동작을 추가*한 것이다.
+
+컴파일 함수에는 `element`라는 매개변수를 넘기는데, 이 매개변수는 제이쿼리 혹인 jqList 객체로 디렉티브를 정의한 DOM 요소, 즉 여기서는 버튼 요소를 가리킨다.
+
+컴파일 함수에서는 요소의 속성 값을 기준으로 클래스를 요소에 추가한다. 이때 요소의 속성에 접근하기 위해 주입된 `attributes` 매개변수를 사용한다.
+
+이런 작업을 링크 함수가 아닌 컴파일 함수에서 하는 이유는 요소마다 바인딩되는 스코프 데이터와는 아무런 상관이 없기 때문이다. 물론 링크함수에도 넣을 수 있껬지만, 버튼을 `ng-repeat`의 루프 안에서 사용한다면 `addClass()`가 매번 호출될 것이다.
+
+*컴파일 함수에 기능을 추가하면 오직 한 번만 호출되기 때문에 `ng-repeat` 디렉티브는 단순히 버튼을 복제한다. DOM에 대한 복잡한 기능을 추가해야 한다면 이런 선택이 굉장한 성능 차이를 만들 수 있다. 특히 매우 많은 컬렉션을 반복해야 할 때는 더욱 큰 차이를 만든다.*
+
+
+
+
 
 ##고급 디렉티브 작성
 

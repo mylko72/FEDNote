@@ -268,7 +268,7 @@ git checkout gh-pages
 
 **git checkout -b (새로운 브랜치)**
 
-***브랜치를 생성하려면 `git checkout -b (branch이름)`을 입력한다.***
+***브랜치 생성과 체크아웃을 한번에 하려면 `git checkout -b (branch이름)`을 입력한다.***
 
 ```
 git checkout -b utility
@@ -366,6 +366,89 @@ contact 브랜치에 있는 두 개의 커밋이 작업 디렉토리에 적용�
 ```
 git commit -m 'add contact page'
 ```
+
+####- 선택하여 합치기
+
+브랜치 간에 전체를 합치는 대신 오직 하나의 커밋만 합칠 필요가 있다. 브랜치에 아직 사용할 수 없는 기능이 있거나 해당 브랜치에는
+아직 준비가 안 된 변경사항이 있을 수 있기 때문에 전체 합치기가 적합하지 않은 경우가 있다.
+
+*`git cherry-pick`을 사용하면 개별적인 커밋을 밀어 넣을 수 있다.*
+
+먼저 contact 브랜치로 체크아웃후 트위터 계정 같은 새로운 링크를 추가하고 커밋한다.
+
+```
+git checkout contact
+vi contact.html
+```
+![실행결과](http://mylko72.maru.net/jquerylab/images/img_git02.gif)
+
+추가된 커밋명은 '9941f44'이다. 이 커밋명을 이용하면 어디에서나 선택하여 합칠 수 있다.
+
+master 브랜치로 체크아웃한 다음 `cherry-pick` 명령어를 실행하여 추가된 커밋명을 선택하여 합칠 수 있다.
+
+```
+git checkout master 
+```
+![실행결과](http://mylko72.maru.net/jquerylab/images/img_git03.gif)
+
+기본적으로 `git cherry-pick`은 선택한 커밋의 변경 사항을 가지고 새로운 커밋을 생성한다. 
+
+*선택하려는 커밋이 여러 개라면 `git cherry-pick`에 `-n` 매개변수를 지정한다. `-n` 매개변수는 Git을 합치기는 하지만 커밋하지 않게 만든다.*
+
+```
+git cherry-pick -n 9941f44
+```
+
+`git status`을 실행하여 새로운 파일이 추가되었고 스테이징되어 커밋할 준비가 됐음을 확인할 수 있다.
+
+이제 계속해서 다른 변경 사항을 선택하여 합칠 수 있다. 선택한 커밋을 모두 가져온 후 원하는 대로 메시지를 지정하여 커밋하면 된다.
+커밋할 때 메시지를 추가하는 `-m` 매개변수를 지정하지 않아도 된다. 편집기가 실행되면 기본적으로 가져온 커밋의 메시지가 나타남을 볼 수 있다.
+
+###충돌 다루기
+
+두 개의 다른 브랜치에서 동일한 파일을 다르게 편집한 후 합치려고 하면 때로는 합칠 수 없는 경우도 있다. 
+
+Git에서 커밋을 자동적으로 합칠 수 없는 경우를 충돌이라고 한다.
+
+만약 두개의 다른 브랜치에서 동일한 contact.html 파일을 합치려고 할 때 다음 화면을 보자.
+
+![실행결과](http://mylko72.maru.net/jquerylab/images/img_git04.gif)
+
+CONFLICT를 눈여겨 보면 contact.html 파일에 충돌이 있음을 알 수 있다.
+
+about.html 파일의 코드는 다음과 같다.
+
+```
+	<ul>
+		<li>Erlang</li>
+		<li>Python</li>
+		<li>Objective C</li>
+<<<<<<< HEAD:about.html
+		<li>Javascript</li>
+=======
+		<li>ECMAScrpt</li>
+>>>>>>> about2:about.html
+	</ul>
+```
+
+첫번째 '<<<<<<<' 뒤에 나오는 코드는 현재 브랜치의 코드이고, '>>>>>>>' 앞에 나오는 코드는 다른 브랜치의 코드이다. 
+
+두번째는 파일명 앞에 합치려고 하는 브랜치명이 표시된다는 것이다. 이 경우는 HEAD(현재 브랜치의 가장 최신 커밋)가 about2 브랜치와 충돌했다.
+
+충돌이 발생한 부분을 직접 수정하거나 도구를 선택하여 수정할 수 있다.
+
+![실행결과](http://mylko72.maru.net/jquerylab/images/img_git05.gif)
+
+`git mergetool`은 구성에 있는 merge.tool 값을 확인하여 합치기에 적합한 도구가 있는지 시스템에서 확인한다. 
+
+C:\Documents and Settings\Administrator\.gitconfig 파일을 직접 수정한다.
+
+```
+[merge]
+    tool = vimdiff 
+```
+
+충돌을 성공적으로 해결했다면 변경사항을 커밋한다.
 
 
 
