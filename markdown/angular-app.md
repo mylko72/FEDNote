@@ -190,7 +190,8 @@ AngularJS 새 버전(1.2.x)부터는 ngRepeat 디렉티브의 기본 문법을 �
 
 > 관련내용
 > - [반복적인 데이터 표현을 위한 템플릿](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h3_5)
-> - 예제) [ngRepeat 패턴을 이용한 list와 view](/angularjs/ngrepeat/index.html)
+> 예제
+> - [ngRepeat 패턴을 이용한 list와 view](/angularjs/ngrepeat/index.html)
 
 ###DOM 이벤트 핸들러
 
@@ -451,7 +452,10 @@ angular.module('trimFilter', [])
 ```
 
 > 관련내용
-> - [필터를 사용하고 만들어 보자](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h2_8)
+> - [필터를 사용하고 만들어 보자](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h2_8)  
+
+> 예제
+> - [filter, orderBy, 사용자정의 필터를 사용하기](http://mylko72.github.io/FEDNote/musicy/albumList.html)
 
 
 ##고급 폼 작성
@@ -901,10 +905,185 @@ AngularJS 컴파일러가 버튼 요소를 발견할 때마다 이 디렉티브�
 
 *컴파일 함수에 기능을 추가하면 오직 한 번만 호출되기 때문에 `ng-repeat` 디렉티브는 단순히 버튼을 복제한다. DOM에 대한 복잡한 기능을 추가해야 한다면 이런 선택이 굉장한 성능 차이를 만들 수 있다. 특히 매우 많은 컬렉션을 반복해야 할 때는 더욱 큰 차이를 만든다.*
 
+###AngularJS 위젯 디렉티브 이해
 
+디렉티브의 가장 강력한 장점 중 하나는 도메인 특화된 태그를 직접 만들 수 있다는 점이다. 다른 말로 하면 요소와 속성을 직접 만들어 애플리케이션의 도메인에 특화된 의미를 부여하고, 새로운 동작을 추가할 수 있다는 의미다.
 
+####페이지 번호 디렉티브 작성
 
+다음과 같이 단순히 마크업만 선언하면 재사용할 수 있는 디렉티브를 만들어 보자.
 
+```
+<pagination num-pages="tasks.pageCount" current-page="tasks.currentPage"></pagination>
+```
+
+이 위젯은 디렉티브를 대체하는 HTML 태그를 생성하며 다음은 이를 위한 템플릿의 마크업이다.
+
+```
+<div class="pagination">
+	<ul>
+		<li ng-class="{disabled:noPrevious()}">
+			<a ng-click="selectPrevious()">Previous</a>
+		</li>
+		<li ng-repeat="page in pages"
+			ng-class="{active: isActive(page)}">
+			<a ng-click="selectPage(page)">{{page}}</a>
+		</li>
+		<li ng-class="{disabled:noNext()}">
+			<a ng-click="selectNext()">Next</a>
+		</li>
+	</ul>
+</div>
+```
+
+템플릿이 동작하려면 스코프를 사용해야 하지만 위젯을 사용한 곳의 스코프에 접근해서는 안된다. 즉, 컴파일러에게 템플릿만을 위한 새로운 isolate 스코프가 필요하다고 알려줘야 한다.
+
+####부모 스코프에 독립적인 디렉티브
+
+디렉티브와 템플릿에서 사용되는 scope에는 다음과 같은 세가지 옵션이 있으며, 디렉티브를 정의할 때 같이 정의한다.
+
+- `scope: false`는 새로운 scope 객체를 생성하지 않고 부모가 가진 같은 scope 객체를 공유. (default 옵션)
+- `scope: true`는 새로운 scope 객체를 생성하고 부모 scope 객체를 상속
+- *`scope: {···}`는 완벽히 독립적인 isolate scope를 생성.  
+`scope: {···}`는 재사용 가능한 컴포넌트를 만들 때 사용하는데 컴포넌트가 parent scope의 값을 read/write 못하게 하기 위함이다. parent scope에 접근(access) 하고 싶을 경우 Binding 전략(=, @, &)를 이용한다.*  
+
+디렉티브를 잘 정의된 독립적인 인터페이스로 사용할 려면 부모 스코프에 영향을 받거나 의존할 필요가 없다.
+
+![isolate 스코프](http://mylko72.maru.net/jquerylab/images/img_angular_app01.gif)
+
+> isolate 스코프는 부모를 프로토타입 방식으로 상속하지는 않았지만 `$parent` 프로퍼티를 사용하면 부모 스코프에 접근할 수 있다. 하지만 이런 방식은 isolate 스코프라는 의미 자체를 뒤흔드는 것이므로 잘못된 사용 방법이다.
+
+*스코프를 부모 스코프로부터 완벽히 분리했다면 부모 스코프와 isolate 스코프 사이에 명시적으로 값을 연결해줘야 한다. 값을 연결하려면 디렉티브를 사용한 요소의 속성에 AngularJS 표현식을 사용하면 된다.* 페이지 번호 디렉티브의 경우에는 'num-pages'와 'current-page' 속성이 이런 역할을 해준다.
+
+속성에 정의한 표현식은 템플릿 스코프의 프로퍼티를 감시함으로써 동기를 맞출 수 있는데, 감시하는 코드를 직접 작성해도 되지만 AngularJS에 맡기는 방법도 있다. 즉, *요소의 속성과 isolate 스코프 사이의 인터페이스를 인터폴레이트(@), 데이터 바인딩(=), 표현식(&)이라는 세 가지 형태로 정의할 수 있다.* 이 인터페이스는 디렉티브를 정의할 때 키와 값 형태로 스코프에 같이 정의하면 된다.
+
+키는 isolate 스코프의 필드 이름이다. 그리고 값은 @, =, & 중 하나로 시작하고, 뒤에 요소의 속성 이름이 붙는 형태다.
+
+```javascript
+scope: {
+	isolated1: '@attribute1',
+	isolated2: '=attribute2',
+	isolated3: '&attribute3'
+}
+```
+
+isolate 스코프에 총 세개의 필드를 선언했으므로 AngularJS는 디렉티브를 사용한 요소의 속성에서 해당 값을 찾아 연결시켜 줄 것이다.
+
+> 값에 속성 이름을 생략하면 isolate 스코프의 필드 이름과 속성 이름이 같다고 가정한다.
+
+>```javascript
+>scope: {isolated1: '@'}
+>```
+>즉, 이 코드에서는 isolated1이라는 속성이 있다고 가정한다.
+
+#####- @로 속성 인터폴레이트
+
+@ 기호를 사용하면 AngularJS는 명시된 속성의 값을 인터폴레이트하고, 값이 변경되면 isolate 스코프의 프로퍼티를 갱신한다. 그리고 인터폴레이션은 이중 괄호 {{}}를 통해 부모 스코프의 값으로부터 문자열을 생성해낸다.
+
+>여기서 흔히 하는 실수는 객체를 인터폴레이트하면 객체가 그대로 전달되는 것이 아니라 객체를 문자열로 변환해서 반환한다. 예를 들어 userName이라는 필드가 있는 user 객체를 사용한다고 하면 {{user}}의 인터폴레이션은 user 객체를 문자열로 변환해서 반환한다. 그래서 문자열의 userName 프로퍼티에는 접근할 수 없다.
+
+#####- =로 속성 데이터 바인딩
+
+= 기호를 사용하면 AngularJS는 명시된 속성의 표현식을 유지하고 있다가 isolate 스코프의 값과 서로 동기를 맞춰준다. 즉, 위젯의 외부와 내부 사이에서 객체와 값을 직접 연결하는 양방향 데이터 바인딩이다. 
+
+> 인터페이스가 양방향 데이터 바인딩을 지원하므로 속성으로 정의한 표현식은 할당 가능한 형태여야 한다(즉, 스코프나 객체의 필드를 가리켜야 한다). 임의로 계산된 표현식은 사용할 수 없다.
+
+#####- &로 속성에 콜백 표현식 추가
+
+& 기호를 사용하면 요소의 속성에 정의한 표현식을 스코프에서 함수로 사용할 수 있다. 즉, 함수를 호출하면 해당 표현식이 실행된다. *위젯에 콜백을 추가하기에 아주 좋은 방법이다.*
+
+> 관련내용
+
+>- [사용자정의지시자](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h3_19)
+
+####페이지 번호 위젯 구현
+
+다음은 페이지 번호 디렉티브를 정의하는 객체이다.
+
+```javascript
+myModule.directive('pagination', function(){
+	return {
+		restrict: 'E',
+		scope: {
+			numPages: '=',
+			currentPage: '='
+		},
+	template: ...,
+	replace: true,
+
+```
+
+num-pages와 current-page 속성에 각각 바인딩되는 numPages와 currentPage라는 데이터가 있는 isolate 스코프를 생성한다.
+
+```javascript
+link: function(scope){
+	scope.$watch('numPages', function(value){
+		scope.pages = [];
+		for(var i=1;i<=value;i++){
+			scope.pages.push(i);
+		}
+		if(scope.currentPage > value){
+			scope.selectPage(value);
+		}
+	});
+
+	...
+
+	scope.isActive = function(page){
+		return scope.currentPage === page;
+	};
+
+	scope.selectPage = function(page){
+		if(!scope.isActive(page)){
+			scope.currentPage = page;
+		}
+	};
+
+	...
+
+	scope.selectNext = function(){
+		if(!scope.noNext()){
+			scope.selectPage(scope.currentPage+1);
+		}
+	};
+}
+```
+
+링크 함수에서는 numPages의 값에 따라 페이지 배열을 만들기 위해 `$watch` 프로퍼티를 사용한다. 그리고 디렉티브의 템플릿에서 사용하는 다양한 함수를 isolate 스코프에 추가한다.
+
+####디렉티브에 콜백 추가
+
+페이지가 변경될 때마다 평가되는 표현식이나 함수가 있으면 분명 유용할 것이다. 그러니 디렉티브에 새로운 속성을 추가하고 isolate 스코프에서 &를 사용해 콜백을 한번 연결해보자.
+
+```
+<pagination 
+	num-pages="tasks.pageCount"
+	current-page="tasks.currentpage"
+	on-select-page="selectPage(page)">
+</pagination>
+```
+
+선택한 페이지가 변경될 때마다 디렉티브는 새로운 페이지 번호를 매개변수로 넘기는 selectPage(page) 함수를 호출한다.
+
+이 기능을 구현하기 위해서는 isolate 스코프를 정의할 때 다음과 같이 필드를 하나 추가해줘야 한다.
+
+```javascript
+	scope: {
+		...,
+		onSelectPage: '&'
+	}
+```
+
+이제 isolate 스코프에서 onSelectPage() 함수를 사용할 수 있다. 함수가 호출되면 on-select-page 속성에 정의한 표현식이 실행될 것이다. 이제 isolate 스코프의 selectPage() 함수에서 onSelectPage()를 호출하게 변경할 수 있다.
+
+```javascript
+	scope.selectPage = function(page){
+		if(!scope.isActive(page)){
+			scope.currentPage = page;
+			scope.onSelectPage({page: page});
+		}
+	};
+```
 
 
 ##고급 디렉티브 작성
