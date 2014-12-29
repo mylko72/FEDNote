@@ -1,5 +1,4 @@
-<!-- Site built using grunt includes! -->
- <!doctype html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -567,7 +566,7 @@ $routeProvider.when(<span class="string">'/admin/users/new'</span>, {
 <blockquote>
 <p>스코프가 준비되기 전에 컴파일 단계는 모두 완료된다. 따라서 <em>컴파일 함수에서는 스코프 데이터를 사용할 수 없다.</em></p>
 </blockquote>
-<p>모든 <em>디렉티브가 컴파일되면 AngularJS는 스코프를 생성하고 각 디렉티브의 링크함수를 호춣해서 디렉티브와 스코프를 연결한다.</em></p>
+<p>모든 <em>디렉티브가 컴파일되면 AngularJS는 스코프를 생성하고 각 디렉티브의 링크함수를 호출해서 디렉티브와 스코프를 연결한다.</em></p>
 <blockquote>
 <p>링크 단계에서 스코프와 디렉티브가 연결되고 나면 링크 함수는 스코프와 DOM에 대한 바인딩을 설정한다.</p>
 </blockquote>
@@ -671,6 +670,103 @@ $routeProvider.when(<span class="string">'/admin/users/new'</span>, {
 <p>컴파일 함수에서는 요소의 속성 값을 기준으로 클래스를 요소에 추가한다. 이때 요소의 속성에 접근하기 위해 주입된 <code>attributes</code> 매개변수를 사용한다.</p>
 <p>이런 작업을 링크 함수가 아닌 컴파일 함수에서 하는 이유는 요소마다 바인딩되는 스코프 데이터와는 아무런 상관이 없기 때문이다. 물론 링크함수에도 넣을 수 있껬지만, 버튼을 <code>ng-repeat</code>의 루프 안에서 사용한다면 <code>addClass()</code>가 매번 호출될 것이다.</p>
 <p><em>컴파일 함수에 기능을 추가하면 오직 한 번만 호출되기 때문에 <code>ng-repeat</code> 디렉티브는 단순히 버튼을 복제한다. DOM에 대한 복잡한 기능을 추가해야 한다면 이런 선택이 굉장한 성능 차이를 만들 수 있다. 특히 매우 많은 컬렉션을 반복해야 할 때는 더욱 큰 차이를 만든다.</em></p>
+<p>페이지 변수를 변수의 맵 형태인 표현식으로 넘긴 부분을 주의해서 보자. 이 변수들이 스코프에 있었기 때문에 실행할 때 바인딩 표현식 형태로 사용하는 것이다.</p>
+<blockquote>
+<p>예제</p>
+<p><a href="http://mylko72.github.io/FEDNote/musicy/albumList2.html">pagination 필터링과 디렉티브를 이용한 페이징 구현</a></p>
+</blockquote>
+<h3 id="-">사용자 정의 검증 디렉티브 작성</h3>
+<p>AngularJS는 form의 상태를 관리하기 위해서 <code>FormController</code>를 만들었다. <code>&lt;form&gt;</code>은 <code>FormController</code>의 인스턴스이고 <code>&lt;form&gt;</code>의 name 속성에 준 값을 이용해 <code>$scope</code>에서 접근할 수 있다.</p>
+<p><em><code>FormController</code>가 <code>&lt;form&gt;</code> 요소의 유효성 상태나 사용자의 입력상태를 관리한다면 <code>&lt;form&gt;</code> 요소에 있는 컨트롤 요소 즉 <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code> 요소 개개의 유효성 상태나 사용자 입력상태는 <code>NgModelController</code>가 관리한다.</em> 컨트롤 요소는 모두 이 <code>NgModelController</code>의 인스턴스로 제어가 된다. 스코프에서 NgModelController를 사용하려면 컨트롤 요소의 name 속성 값을 정의하면 된다.</p>
+<h4 id="-">디렉티브 컨트롤러 요청</h4>
+<p>검증 디렉티브는 <code>ng-model</code> 디렉티브의 컨트롤러인 <code>NgModelController</code>에 접근해야 하는데, 이를 위해서는 디렉티브를 정의할 때 <em>require 필드를 정의해야 한다.</em> 이 필드는 필요한 컨트롤러의 디렉티브 이름을 설정하면 해당 컨트롤러를 주입받게 된다.</p>
+<p><em>필요한 디렉티브를 발견하면 디렉티브 컨트롤러는 다음과 같이 링크 함수의 4번째 매개변수로 주입된다.</em></p>
+<pre><code class="lang-javascript">require: <span class="string">'ngModel'</span>,
+link: <span class="keyword">function</span>(scope, element, attrs, NgModelController){···}</code></pre>
+<p>컨트롤러를 하나 이상 요청한 경우 4번째 매개변수로는 컨트롤러의 배열이 주입되며, 배열의 순서는 요청한 컨트롤러 순서대로다.</p>
+<blockquote>
+<p>명시한 디렉티브가 현재 요소에 없으면 컴파일러는 오류를 반환한다. 디렉티브가 제대로 제공되는지 확인할 수 있는 좋은 방법으로 활용할 수 있다.</p>
+</blockquote>
+<h5 id="-">- 선택적인 컨트롤러 작성</h5>
+<p>require 필드의 디렉티브 이름 맨 앞에 &#39;?&#39;를 붙이면 컨트롤러를 선택적으로 지정할 수 있다. 예를 들면 <code>require: &#39;?ngModel&#39;</code> 처럼 설정하면 디렉티브가 제공되지 않으면 4번째 매개변수는 null이 되고 에러를 발생시키지 않는다. 여러 개의 컨트롤러를 요청했다면 컨트롤러의 배열에서 찾지 못한 컨트롤러만 null이 된다.</p>
+<h5 id="-">- 부모 컨트롤러 검색</h5>
+<p>디렉티브에서 요청한 컨트롤러는 현재 요소에 있을 수도 있지만 상위 요소에 있을 수도 있다. 이런 경우에는 디렉티브 이름의 맨 앞에 &#39;^&#39;를 붙이면 된다. 예를 들면 <code>require: &#39;^ngModel&#39;</code>처럼 설정하면 컴파일러는 디렉티브가 선언된 현재 요소부터 시작해서 상위 요소로 올라가면서 컨트롤러를 찾기 시작하고, 처음으로 일치하는 컨트롤러를 반환해준다.</p>
+<blockquote>
+<p><code>require:&#39;^?form&#39;</code>으로 선언하면 컨트롤러는 ng-model 디렉티브에 폼으로 자신을 등록하고, 사용 가능한 form 디렉티브의 컨트롤러를 찾기 시작한다.</p>
+</blockquote>
+<h4 id="ngmodelcontroller-">ngModelController 연동</h4>
+<p><code>NgModelController</code>를 요청하면 검증을 위한 <code>NgModelController</code>의 API를 사용할 수 있다.</p>
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$parsers</td>
+<td>컨트롤러의 값이 변경되면 차례로 호출되는 함수의 배열이다.</td>
+</tr>
+<tr>
+<td>$formatters</td>
+<td>모델의 값이 변경되면 차례로 호출되는 함수의 배열이다.</td>
+</tr>
+<tr>
+<td>$setValidity(validationErrorKey, isValid)</td>
+<td>주어진 검증 오류에 대해 모델이 유효한지의 여부를 결정하는 함수다.</td>
+</tr>
+<tr>
+<td>$valid</td>
+<td>오류가 없으면 True를 반환한다.</td>
+</tr>
+<tr>
+<td>$error</td>
+<td>모델에 발생한 검증 오류에 대한 정보를 담은 객체다.</td>
+</tr>
+</tbody>
+</table>
+<p><code>$parsers</code>와 <code>$formatters</code>에 들어가는 함수는 값을 받아 반환하는 형태다. 예를 들면 <code>function(value){return value;}</code>처럼 말이다. 즉, 함수가 받는 값은 파이프라인의 이전 함수가 반환한 값이다. 검증 로직을 추가하고 <code>$setValidity()</code>를 호출하면 내부에서 이 함수들이 동작한다.</p>
+<blockquote>
+<p>관련내용</p>
+<p><a href="http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&amp;sn=7#h3_8">폼과 유효성 검사를 위한 템플릿(폼/입력 지시자)</a></p>
+</blockquote>
+<h4 id="-">사용자 정의 검증 디렉티브 구현</h4>
+<p>다음 예제는 패스워드 필드와 패스워드 확인용 필드의 값이 동일한지 검사한다. input 요소의 모델이 다른 모델 값과 일치하는지 검사할 수 있는 검증 디렉티브를 만들어보자.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"passwordForm"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">label</span>&gt;</span>Password<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">class</span>=<span class="value">"span6"</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">name</span>=<span class="value">"password"</span> <span class="attribute">ng-model</span>=<span class="value">"user.password"</span> <span class="attribute">required</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"passwordForm['password'].$error['required']"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>This field is required.<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"passwordForm['passwordRepeat'].$error['equal']"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>Passwords do not match.<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">label</span>&gt;</span>Password (repeat)<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">class</span>=<span class="value">"span6"</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">name</span>=<span class="value">"passwordRepeat"</span> <span class="attribute">ng-model</span>=<span class="value">"password"</span> <span class="attribute">required</span> <span class="attribute">validate-equals</span>=<span class="value">"user.password"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"passwordForm['passwordRepeat'].$error['required']"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>This field is required.<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"passwordForm['passwordRepeat'].$error['equal']"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>Passwords do not match.<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<pre><code class="lang-javascript">angular.module(<span class="string">'directives.validate-equals'</span>, [])
+
+.directive(<span class="string">'validateEquals'</span>, <span class="keyword">function</span>() {
+  <span class="keyword">return</span> {
+    restrict: <span class="string">'A'</span>,
+    require: <span class="string">'ngModel'</span>,
+    link: <span class="keyword">function</span>(scope, element, attrs, ngModelCtrl) {
+      <span class="function"><span class="keyword">function</span> <span class="title">validateEqual</span><span class="params">(myValue)</span> {</span>
+        <span class="keyword">var</span> valid = (myValue === scope.$eval(attrs.validateEquals));
+        ngModelCtrl.$setValidity(<span class="string">'equal'</span>, valid);
+        <span class="keyword">return</span> valid ? myValue : <span class="literal">undefined</span>;
+      }
+
+      ngModelCtrl.$parsers.push(validateEqual);
+      ngModelCtrl.$formatters.push(validateEqual);
+
+      scope.$watch(attrs.validateEquals, <span class="keyword">function</span>() {
+        ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+      });
+    }
+  };
+});</code></pre>
+<p>매개변수로 넘긴 값을 표현식의 값과 비교하기 위해 validateEqual(value)를 호출하는 함수를 만든다. 그리고 <strong>모델이나 뷰가 변경될 때마다 이 검증 함수가 호출될 수 있게 <code>$parsers</code>와 <code>$formatters</code> 파이프라인에 이 함수를 집어 넣는다.</strong></p>
+<p>변경된 내용과 비교할 모델도 역시 고려해야 한다. 이를 위해서는 링크 함수의 attrs 매개변수를 통해 표현식을 감시해야 한다. 그리고 <strong>감시하다가 변경이 일어나면 <code>$setViewValue()</code>를 호출해 <code>$parsers</code> 파이프라인이 동작하게 만든다.</strong> 즉, 어떤 경우든 간에 모델 값이 변경되면 <code>$parsers</code>가 동작한다는 것을 보장할 수 있게 한다.</p>
 <h2 id="-">고급 디렉티브 작성</h2>
 <h2 id="-">웹애플리케이션 작성</h2>
 

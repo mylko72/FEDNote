@@ -8,10 +8,12 @@
 	function SongDetailController($scope, $http, $routeParams){
 		var id = $routeParams.songId;
 		$scope.songInfo = {};
+		$scope.isLoading = true;
 
 		$http.get('album.json')
 			.success(function(data){
 				$scope.songs = data;
+				$scope.isLoading = false;
 			})
 			.then(function(response){
 				for(var i=0;i<$scope.songs.length;i++){
