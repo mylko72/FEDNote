@@ -818,7 +818,7 @@ AngularJS가 HTML 템플릿을 컴파일할 때는 브라우저가 제공하는 
 
 >스코프가 준비되기 전에 컴파일 단계는 모두 완료된다. 따라서 *컴파일 함수에서는 스코프 데이터를 사용할 수 없다.*
 
-모든 *디렉티브가 컴파일되면 AngularJS는 스코프를 생성하고 각 디렉티브의 링크함수를 호춣해서 디렉티브와 스코프를 연결한다.*
+모든 *디렉티브가 컴파일되면 AngularJS는 스코프를 생성하고 각 디렉티브의 링크함수를 호출해서 디렉티브와 스코프를 연결한다.*
 
 >링크 단계에서 스코프와 디렉티브가 연결되고 나면 링크 함수는 스코프와 DOM에 대한 바인딩을 설정한다.
 
@@ -1084,6 +1084,112 @@ link: function(scope){
 		}
 	};
 ```
+
+페이지 변수를 변수의 맵 형태인 표현식으로 넘긴 부분을 주의해서 보자. 이 변수들이 스코프에 있었기 때문에 실행할 때 바인딩 표현식 형태로 사용하는 것이다.
+
+> 예제
+
+> [pagination 필터링과 디렉티브를 이용한 페이징 구현](http://mylko72.github.io/FEDNote/musicy/albumList2.html)
+
+### 사용자 정의 검증 디렉티브 작성
+
+AngularJS는 form의 상태를 관리하기 위해서 `FormController`를 만들었다. `<form>`은 `FormController`의 인스턴스이고 `<form>`의 name 속성에 준 값을 이용해 `$scope`에서 접근할 수 있다.
+
+*`FormController`가 `<form>` 요소의 유효성 상태나 사용자의 입력상태를 관리한다면 `<form>` 요소에 있는 컨트롤 요소 즉 `<input>`, `<select>`, `<textarea>` 요소 개개의 유효성 상태나 사용자 입력상태는 `NgModelController`가 관리한다.* 컨트롤 요소는 모두 이 `NgModelController`의 인스턴스로 제어가 된다. 스코프에서 NgModelController를 사용하려면 컨트롤 요소의 name 속성 값을 정의하면 된다.
+
+####디렉티브 컨트롤러 요청
+
+검증 디렉티브는 `ng-model` 디렉티브의 컨트롤러인 `NgModelController`에 접근해야 하는데, 이를 위해서는 디렉티브를 정의할 때 *require 필드를 정의해야 한다.* 이 필드는 필요한 컨트롤러의 디렉티브 이름을 설정하면 해당 컨트롤러를 주입받게 된다.
+
+*필요한 디렉티브를 발견하면 디렉티브 컨트롤러는 다음과 같이 링크 함수의 4번째 매개변수로 주입된다.*
+
+```javascript
+require: 'ngModel',
+link: function(scope, element, attrs, NgModelController){···}
+```
+
+컨트롤러를 하나 이상 요청한 경우 4번째 매개변수로는 컨트롤러의 배열이 주입되며, 배열의 순서는 요청한 컨트롤러 순서대로다.
+
+>명시한 디렉티브가 현재 요소에 없으면 컴파일러는 오류를 반환한다. 디렉티브가 제대로 제공되는지 확인할 수 있는 좋은 방법으로 활용할 수 있다.
+
+#####- 선택적인 컨트롤러 작성
+
+require 필드의 디렉티브 이름 맨 앞에 '?'를 붙이면 컨트롤러를 선택적으로 지정할 수 있다. 예를 들면 `require: '?ngModel'` 처럼 설정하면 디렉티브가 제공되지 않으면 4번째 매개변수는 null이 되고 에러를 발생시키지 않는다. 여러 개의 컨트롤러를 요청했다면 컨트롤러의 배열에서 찾지 못한 컨트롤러만 null이 된다.
+
+#####- 부모 컨트롤러 검색
+
+디렉티브에서 요청한 컨트롤러는 현재 요소에 있을 수도 있지만 상위 요소에 있을 수도 있다. 이런 경우에는 디렉티브 이름의 맨 앞에 '^'를 붙이면 된다. 예를 들면 `require: '^ngModel'`처럼 설정하면 컴파일러는 디렉티브가 선언된 현재 요소부터 시작해서 상위 요소로 올라가면서 컨트롤러를 찾기 시작하고, 처음으로 일치하는 컨트롤러를 반환해준다.
+
+>`require:'^?form'`으로 선언하면 컨트롤러는 ng-model 디렉티브에 폼으로 자신을 등록하고, 사용 가능한 form 디렉티브의 컨트롤러를 찾기 시작한다.
+
+####ngModelController 연동
+
+`NgModelController`를 요청하면 검증을 위한 `NgModelController`의 API를 사용할 수 있다.
+
+이름 | 설명
+---- | ----
+$parsers | 컨트롤러의 값이 변경되면 차례로 호출되는 함수의 배열이다.
+$formatters | 모델의 값이 변경되면 차례로 호출되는 함수의 배열이다.
+$setValidity(validationErrorKey, isValid) | 주어진 검증 오류에 대해 모델이 유효한지의 여부를 결정하는 함수다.
+$valid | 오류가 없으면 True를 반환한다.
+$error | 모델에 발생한 검증 오류에 대한 정보를 담은 객체다.
+
+`$parsers`와 `$formatters`에 들어가는 함수는 값을 받아 반환하는 형태다. 예를 들면 `function(value){return value;}`처럼 말이다. 즉, 함수가 받는 값은 파이프라인의 이전 함수가 반환한 값이다. 검증 로직을 추가하고 `$setValidity()`를 호출하면 내부에서 이 함수들이 동작한다.
+
+> 관련내용
+
+> [폼과 유효성 검사를 위한 템플릿(폼/입력 지시자)](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h3_8)
+
+####사용자 정의 검증 디렉티브 구현
+
+다음 예제는 패스워드 필드와 패스워드 확인용 필드의 값이 동일한지 검사한다. input 요소의 모델이 다른 모델 값과 일치하는지 검사할 수 있는 검증 디렉티브를 만들어보자.
+
+```
+<form name="passwordForm">
+    <label>Password</label>
+    <input class="span6" type="password" name="password" ng-model="user.password" required>
+    <span ng-show="passwordForm['password'].$error['required']" class="help-inline">This field is required.</span>
+    <span ng-show="passwordForm['passwordRepeat'].$error['equal']" class="help-inline">Passwords do not match.</span>
+    <label>Password (repeat)</label>
+    <input class="span6" type="password" name="passwordRepeat" ng-model="password" required validate-equals="user.password">
+    <span ng-show="passwordForm['passwordRepeat'].$error['required']" class="help-inline">This field is required.</span>
+    <span ng-show="passwordForm['passwordRepeat'].$error['equal']" class="help-inline">Passwords do not match.</span>
+  </form>
+```
+
+```javascript
+angular.module('directives.validate-equals', [])
+
+.directive('validateEquals', function() {
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModelCtrl) {
+      function validateEqual(myValue) {
+        var valid = (myValue === scope.$eval(attrs.validateEquals));
+        ngModelCtrl.$setValidity('equal', valid);
+        return valid ? myValue : undefined;
+      }
+
+      ngModelCtrl.$parsers.push(validateEqual);
+      ngModelCtrl.$formatters.push(validateEqual);
+
+      scope.$watch(attrs.validateEquals, function() {
+        ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+      });
+    }
+  };
+});
+```
+
+매개변수로 넘긴 값을 표현식의 값과 비교하기 위해 validateEqual(value)를 호출하는 함수를 만든다. 그리고 **모델이나 뷰가 변경될 때마다 이 검증 함수가 호출될 수 있게 `$parsers`와 `$formatters` 파이프라인에 이 함수를 집어 넣는다.**
+
+변경된 내용과 비교할 모델도 역시 고려해야 한다. 이를 위해서는 링크 함수의 attrs 매개변수를 통해 표현식을 감시해야 한다. 그리고 **감시하다가 변경이 일어나면 `$setViewValue()`를 호출해 `$parsers` 파이프라인이 동작하게 만든다.** 즉, 어떤 경우든 간에 모델 값이 변경되면 `$parsers`가 동작한다는 것을 보장할 수 있게 한다.
+
+
+
+
+
 
 
 ##고급 디렉티브 작성

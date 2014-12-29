@@ -36,7 +36,7 @@
 
 			<table class="table table-bordered table-striped">
 				<colgroup>
-					<col width="8%">
+					<col width="9%">
 					<col width="*">
 					<col width="15%">
 					<col width="25%">
@@ -52,7 +52,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:pageNo:pageSize">
+					<tr ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize">
+						<!-- pagination은 사용자정의 필터로 두개의 매개변수를 받는다. (currentPage:현재 페이지 인덱스, pageSize:한페이지에 표시할 목록의 수)-->
 						<td>{{song.no+1}}</td>
 						<td><img class="cover" ng-src="{{song.album.cover}}" width="50" height="auto"> {{song.title | trim:8}}</td>
 						<td>{{song.singer}}</td>
@@ -61,13 +62,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="pagination">
-				<ul>
-					<li><a ng-click="activePage(page-1)">Prev</a></li>
-					<li ng-repeat="page in pages"><a ng-click="setActivePage(page)">{{page+1}}</a></li>
-					<li><a ng-click="activePage(page+1)">Next</a></li>
-				</ul>
-			</div>
+		  	<pagination num-pages="numPages" current-page="currentPage+1" on-select-page="setActivePage(page-1)"></pagination>
 		</div>
 
 	</div>
@@ -75,25 +70,32 @@
 	<!-- inject-vendor:js -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
-	<script src="../lib/angular-scroll.js"></script>
+	<script src="/musicy/js/directives/directive.js"></script>
 	<script type="text/javascript">
 		(function(){
 			'use strict';
 
-			angular.module('albumApp', ['duScroll']);
+			angular.module('albumApp', ['paginationDirective']);
 
 			angular.module('albumApp')
 				.controller('albumListCtrl', SongListController)
+				/**
+				 @filter pagination 
+				 페이지 번호 사용자 정의 필터
+				 @returnVal function - 실제 필터 함수를 반환 
+			     ***@param inputArray - 필터링 할 입력값
+				 ***@param selectedPage - 선택된 페이지 인덱스
+				 ***@param pageSize - 한 페이지에 표시할 목록의 수
+				**/
 				.filter('pagination', function(){
 					return function(inputArray, selectedPage, pageSize) {
-						console.log(inputArray);
 						var start = selectedPage*pageSize;
 						return inputArray.slice(start, start + pageSize);
 					};
 				})
 				.filter('trim', function(limitToFilter){
 					return function(input, limit) {
-						console.log(input.length, limit);
+						//console.log(input.length, limit);
 						if (input.length > limit) {
 							return limitToFilter(input, limit-3) + '...';
 						}
@@ -110,9 +112,6 @@
 				$http.get('album.json')
 					.success(function(data){
 						$scope.songs = data;
-						for(var i=0; i<$scope.songs.length; i++){
-							$scope.songs[i] = $scope.songs[i];
-						}
 					}).then(function(){
 						if($scope.songs.length>0){
 							filteredController();
@@ -150,21 +149,20 @@
 					};
 
 					//pagination
-					$scope.pageSize = 10;
-					$scope.pageNo = 0;
 					$scope.pages = [];
+					$scope.pageSize = 10;
+					$scope.currentPage = 0;
 					$scope.$watch('filteredSongs.length', function(filteredSize){
-					  $scope.pages.length = 0;
-					  var noOfPages = Math.ceil(filteredSize / $scope.pageSize);
-					  for (var i=0; i<noOfPages; i++) {
+					  console.log(filteredSize);
+					  $scope.numPages = Math.ceil(filteredSize / $scope.pageSize);
+					  for (var i=0; i<$scope.numPages; i++) {
 						$scope.pages.push(i);
 					  }
-					  //$scope.setActivePage(0);
 					});
 
 					$scope.setActivePage = function (pageNo) {
 					  if (pageNo >=0 && pageNo < $scope.pages.length) {
-						$scope.pageNo = pageNo;
+						$scope.currentPage = pageNo;
 					  }
 					};
 
