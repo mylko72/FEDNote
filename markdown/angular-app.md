@@ -1,6 +1,82 @@
 #AngularJS로 하는<br />웹 애플리케이션 개발
 
 ##백엔드 서버와 통신
+
+AngularJS는 범용적인 `$http` 서비스로 XHR, JSONP 통신을 다루고, 특화된 `$resource` 서비스로는 RESTful 엔드포인트를 쉽게 다룰 수 있다.
+
+###$http로 XHR과 JSONP 요청 생성
+
+*`$http` 서비스는 XHR과 JSONP 호출을 생성하는 모든 API의 핵심이다.*
+
+####MongoLab URL에 익숙해지기
+
+MongoLab에서 제공하는 REST API는 다음과 같이 URL을 지정하는 방식으로 사용할 수 있다.
+
+https://api.mongolab.com/api/1/databases/[DB name]/collections/[collection name]/[item id]?apiKey=[secret key]
+
+>MongoLab의 데이터베이스로 REST API를 호출할 때는 apiKey라는 매개변수를 넣어야 한다. 계정에 따라 유일한 값인 apiKey 매개변수는 몽고랩 REST API 호출을 위한 인증 용도로 꼭 필요하다.
+
+####$http API 빠르게 살펴보기
+
+#####단축 메서드
+
+GET 요청으로 JSON 을 받아오는 예제는 다음과 같다.
+
+```javascript
+var futureResponse = $http.get('data.json');
+futureResponse.success(function(data, status, headers, config){
+	$scope.data = data;
+});
+
+futureResponse.error(function(data, status, headers, config){
+	throw new Error('Something went wrong...');	
+});
+```
+
+다음은 `$http`의 단축메서드로 XHRrequests 종류별로 있다.
+
+- **GET** - `$http.get(url, config);`
+- **POST** - `$http.post(url, data, config);`
+- **PUT** -	`$http.put(url, data, config);`
+- **DELETE** - `$http.delete(url, config);`
+- **HEAD** - `$http.head;`
+- **JSONP** - `$http.jsonp(url, config);`
+
+`$http` 메소드에 들어가는 매개변수는 다음과 같다.
+
+- `url` - 호출하는 대상 URL
+- `data` - 요청과 함께 보내는 데이터
+- `config` - 요청과 응답에 영향을 주는 추가 설정 옵션이 담긴 자바스크립트 객체
+
+*`$http` 메소드가 반환하는 객체에는 성공과 실패에 대한 콜백을 등록할 수 있다.*
+
+#####설정 객체 입문
+
+*요청과 응답, 그리고 전송되는 데이터에 대한 여러 설정은 자바스크립트 설정 객체에 선언한다.* 설정객체에는 다음과 같은 프로퍼티를 사용할 수 있다.
+
+- `method` - 보낼 HTTP 메서드
+- `url` - 요청을 보낼 URL
+- `params` - URL 쿼리 문자열에 추가되는 매개변수
+- `headers` - 요청에 추가되는 헤더 정보
+- `timeout` - XHR 요청이 취소되는 제한 시간(ms)
+- `cache` - XHR GET 요청 캐시를 활성화
+- `transformRequest`, `transformResponse` - 백엔드와 데이터를 주고받을 때 선처리 혹은 후처리를 할 수 있는 전송 함수
+
+`$http`는 다음과 같이 일반적인 방식으로 호출할 수 있기 때문에 그 자체가 함수이다.
+
+```
+$http(configObject);
+```
+
+이 방식은 AngularJS가 단축 메소드를 제공하지 않는 경우 유용하게 사용할 수 있다.
+
+>관련내용
+>- [$http 서비스를 이용한 서버 통신](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h2_11) 
+
+#####요청 데이터 변환
+
+어떤 자바스크립트 객체(또는 문자열)든 `$http.post`와 `$http.put` 메서드의 `data` 매개변수로 넣을 수 있으며, 데이터가 자바스크립트 객체면 JSON 문자열로 자동 변환된다.
+
 ##데이터 포맷과 출력
 
 ###디렉티브에 대한 참조

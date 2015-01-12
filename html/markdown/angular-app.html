@@ -46,6 +46,64 @@
 		  <!-- start -->
 		  <h1 id="angularjs-br-">AngularJS로 하는<br />웹 애플리케이션 개발</h1>
 <h2 id="-">백엔드 서버와 통신</h2>
+<p>AngularJS는 범용적인 <code>$http</code> 서비스로 XHR, JSONP 통신을 다루고, 특화된 <code>$resource</code> 서비스로는 RESTful 엔드포인트를 쉽게 다룰 수 있다.</p>
+<h3 id="-http-xhr-jsonp-">$http로 XHR과 JSONP 요청 생성</h3>
+<p><em><code>$http</code> 서비스는 XHR과 JSONP 호출을 생성하는 모든 API의 핵심이다.</em></p>
+<h4 id="mongolab-url-">MongoLab URL에 익숙해지기</h4>
+<p>MongoLab에서 제공하는 REST API는 다음과 같이 URL을 지정하는 방식으로 사용할 수 있다.</p>
+<p><a href="https://api.mongolab.com/api/1/databases/[DB">https://api.mongolab.com/api/1/databases/[DB</a> name]/collections/[collection name]/[item id]?apiKey=[secret key]</p>
+<blockquote>
+<p>MongoLab의 데이터베이스로 REST API를 호출할 때는 apiKey라는 매개변수를 넣어야 한다. 계정에 따라 유일한 값인 apiKey 매개변수는 몽고랩 REST API 호출을 위한 인증 용도로 꼭 필요하다.</p>
+</blockquote>
+<h4 id="-http-api-">$http API 빠르게 살펴보기</h4>
+<h5 id="-">단축 메서드</h5>
+<p>GET 요청으로 JSON 을 받아오는 예제는 다음과 같다.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> futureResponse = $http.get(<span class="string">'data.json'</span>);
+futureResponse.success(<span class="keyword">function</span>(data, status, headers, config){
+    $scope.data = data;
+});
+
+futureResponse.error(<span class="keyword">function</span>(data, status, headers, config){
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Something went wrong...'</span>);    
+});</code></pre>
+<p>다음은 <code>$http</code>의 단축메서드로 XHRrequests 종류별로 있다.</p>
+<ul>
+<li><strong>GET</strong> - <code>$http.get(url, config);</code></li>
+<li><strong>POST</strong> - <code>$http.post(url, data, config);</code></li>
+<li><strong>PUT</strong> -    <code>$http.put(url, data, config);</code></li>
+<li><strong>DELETE</strong> - <code>$http.delete(url, config);</code></li>
+<li><strong>HEAD</strong> - <code>$http.head;</code></li>
+<li><strong>JSONP</strong> - <code>$http.jsonp(url, config);</code></li>
+</ul>
+<p><code>$http</code> 메소드에 들어가는 매개변수는 다음과 같다.</p>
+<ul>
+<li><code>url</code> - 호출하는 대상 URL</li>
+<li><code>data</code> - 요청과 함께 보내는 데이터</li>
+<li><code>config</code> - 요청과 응답에 영향을 주는 추가 설정 옵션이 담긴 자바스크립트 객체</li>
+</ul>
+<p><em><code>$http</code> 메소드가 반환하는 객체에는 성공과 실패에 대한 콜백을 등록할 수 있다.</em></p>
+<h5 id="-">설정 객체 입문</h5>
+<p><em>요청과 응답, 그리고 전송되는 데이터에 대한 여러 설정은 자바스크립트 설정 객체에 선언한다.</em> 설정객체에는 다음과 같은 프로퍼티를 사용할 수 있다.</p>
+<ul>
+<li><code>method</code> - 보낼 HTTP 메서드</li>
+<li><code>url</code> - 요청을 보낼 URL</li>
+<li><code>params</code> - URL 쿼리 문자열에 추가되는 매개변수</li>
+<li><code>headers</code> - 요청에 추가되는 헤더 정보</li>
+<li><code>timeout</code> - XHR 요청이 취소되는 제한 시간(ms)</li>
+<li><code>cache</code> - XHR GET 요청 캐시를 활성화</li>
+<li><code>transformRequest</code>, <code>transformResponse</code> - 백엔드와 데이터를 주고받을 때 선처리 혹은 후처리를 할 수 있는 전송 함수</li>
+</ul>
+<p><code>$http</code>는 다음과 같이 일반적인 방식으로 호출할 수 있기 때문에 그 자체가 함수이다.</p>
+<pre><code><span class="variable">$http</span>(configObject);</code></pre>
+<p>이 방식은 AngularJS가 단축 메소드를 제공하지 않는 경우 유용하게 사용할 수 있다.</p>
+<blockquote>
+<p>관련내용</p>
+<ul>
+<li><a href="http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&amp;sn=7#h2_11">$http 서비스를 이용한 서버 통신</a> </li>
+</ul>
+</blockquote>
+<h5 id="-">요청 데이터 변환</h5>
+<p>어떤 자바스크립트 객체(또는 문자열)든 <code>$http.post</code>와 <code>$http.put</code> 메서드의 <code>data</code> 매개변수로 넣을 수 있으며, 데이터가 자바스크립트 객체면 JSON 문자열로 자동 변환된다.</p>
 <h2 id="-">데이터 포맷과 출력</h2>
 <h3 id="-">디렉티브에 대한 참조</h3>
 <p>HTML 템플릿에서 디렉티브 참조 이름에는 접두사로 x나 data를 사용할 수 있다. 
