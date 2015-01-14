@@ -77,6 +77,127 @@ $http(configObject);
 
 어떤 자바스크립트 객체(또는 문자열)든 `$http.post`와 `$http.put` 메서드의 `data` 매개변수로 넣을 수 있으며, 데이터가 자바스크립트 객체면 JSON 문자열로 자동 변환된다.
 
+새로운 사용자를 생성하기 위해 MongoLab에 POST 요청을 다음과 같이 보내보면 데이터가 변환된다는 것을 알 수 있다.
+
+```javascript
+var userToAdd = {
+	name : 'AngularJS Superhero',
+	email : 'superhero@angularjs.org'
+};
+
+$http.post('https://api.mongolab.com/api/1/databases/ascrum/collections/users',
+	userToAdd, {
+		params: {
+			apiKey : '4fb51e55e4b02e56a67b0b66'
+		}
+	}
+);
+```
+
+#####HTTP 응답 처리
+
+AngularJS는 2개의 다른 콜백인 `success`와 `error` 콜백을 등록해서 처리한다. 두 메서드 모두 다음과 같은 매개변수를 갖는 callback 함수다.
+
+- `data` - 실제 응답 데이터
+- `status` - 응답의 HTTP 상태
+- `headers` - HTTP 응답 헤더
+- `config` - 요청을 보낼 때 적용된 설정 객체
+
+> AngularJS는 HTTP 응답 상태가 200~299 인 경우 `success` 콜백을 호출한다. 이 범위밖의 상태를 갖는 응답에는 `error` 콜백을 호출한다. 리다이렉션 응답(HTTP 상태 3xx 코드)인 경우 브라우저의 처리에 따른다.
+
+#####응답 데이터 변환
+
+`$http` 서비스는 응답의 JSON 문자열을 자바스크립트 객체로 변환한다. 이 변환은 `success`나 `error` 콜백이 수행되기 전에 일어나며 기본 변환 동작을 수정할 수도 있다.
+
+###$q 프라미스 API
+
+브라우저와 node.js 실행환경은 XHR 응답, DOM 이벤트, IO, 타임아웃 등 무작위로 발생되는 비동기 이벤트로 가득 차 있다. 최근 비동기 프로그래밍을 쉽게 작성하기 위한 프라미스 API가 여러 유명 자바스크립트 라이브러리에 차용됐다.
+
+> 프라미스 API의 주요 개념은 동기 프로그래밍 세상에서 쉽게 사용하던 체인 함수 호출과 오류 처리를 비동기 세상에서도 똑같이 쉽게 만들자는 것이다.
+
+AngularJS는 `$q` 서비스라는 아주 간결한 프라미스 API 구현체를 포함하고 있다. 많은 AngularJS 서비스는 프라미스 API 스타일을 기반으로 한다.
+
+####프라미스와 $q 서비스 사용
+
+#####$q 서비스 기본
+
+*지연 객체(deferred object)는 개념상 미래에 성공하거나 실패할 작업을 표현하며 `$q.defer()` 메소드를 호출하여 생성한다.* 지연 객체에는 다음과 같은 2가지 규칙이 있다.
+
+- *프라미스 객체(promise 프로퍼티)를 포함한다. 프라미스는 지연된 작업의 추후 결과(성공 혹은 실패)를 담는다.*
+- 미래에 수행될 작업을 해결하거나 거부하는 메소드를 제공한다.
+
+프라미스 API에는 항상 2가지의 동작이 있다. 미래 작업의 실행을 조정하는 동작(지연 객체의 메소드를 호출함으로써)과 미래 작업의 실행 결과에 의존하는 동작(프라미스 결과에 따라)이다.
+
+> 지연 객체는 미래에 성공하거나 실패할 작업을 표현한다. 그리고 이 작업의 수행 결과는 프라미스 객체에 담긴다.
+
+프라미스에 콜백을 등록하려면 `then(successCallBack, errorCallBack) 메소드를 사용하면 된다. 이 메소드는 성공하는 경우 success 콜백을 혹은 실패할 경우 처리할 error 콜백 함수를 인자로 받는다.
+
+*미래의 작업이 완료됐다는 것을 알리기 위해서는 지연 객체의 `resolve` 메소드를 호출해야 한다.* `resolve` 메소드로 넘긴 인자는 성공 콜백에서 사용된다. 성공 콜백이 호출되고 나면 미래의 작업이 끝나고 프라미스는 해결된다. 비슷하게 `reject` 메소드를 호출하면 실패 콜백을 호출하고 프라미스는 거부된다.
+
+#####일급 자바스크립트 객체인 프라미스
+
+프라미스가 일급 자바스크립트 객체라는 점을 유념하자. 즉 객체를 인자로 전달할 수 있으며 함수 호출의 반환 값으로도 받을 수 있다. 그래서 비동기 동작을 쉽게 서비스로 캡슐화할 수 있다.
+
+다음은 간단한 레스토랑 서비스이다.
+
+
+	  var Person = function (name, $log) {
+
+		this.eat = function (food) {
+		  $log.info(name + " is eating delicious " + food);
+		};
+		this.beHungry = function (reason) {
+		  $log.warn(name + " is hungry because: " + reason);
+		};
+	  };
+
+	  pawel = new Person('Pawel', $log);
+	  pete = new Person('Peter', $log);
+	  
+	  var Restaurant = function ($q, $rootScope) {
+
+		var currentOrder;
+
+		this.takeOrder = function (orderedItems) {
+		  currentOrder = {
+			deferred:$q.defer(),
+			items:orderedItems
+		  };
+		  return currentOrder.deferred.promise;
+		};
+
+		this.deliverOrder = function() {
+		  currentOrder.deferred.resolve(currentOrder.items);
+		  $rootScope.$digest();
+		};
+
+		this.problemWithOrder = function(reason) {
+		  currentOrder.deferred.reject(reason);
+		  $rootScope.$digest();
+		};
+	  };
+
+
+레스토랑 서비스는 비동기 작업을 캡슐화하고 takeOrder 메소드로 프라미스만을 반환한다. 반환된 프라미스는 해당 결과가 필요한 레스토랑 고객이 사용하고, 결과가 결정되면 통보를 받는다.
+
+	pizzaPit = new Restaurant($q, $rootScope);
+	var pizzaDelivered = pizzaPit.takeOrder('Capricciosa');
+	pizzaDelivered.then(pawel.eat, pawel.beHungry);
+
+	pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+
+#####콜백 모음
+
+하나의 프라미스 객체에는 여러 개의 콜백을 등록할 수 있다. 다시 말해 작업 결과에 관심을 표하는 개체에게 프라미스 객체를 제공하고 프라미스 객체에 콜백을 등록해서 그의 관심을 표현한다.
+
+	pizzaDelivered.then(pawel.eat, pawel.beHungry);
+	pizzaDelivered.then(pete.eat, pete.beHungry);
+	
+	pizzaPit.deliverOrder();
+
+여러 개의 성공 콜백을 등록했고 프라미스가 해결되면서 모두 호출됐다.
+
+
 ##데이터 포맷과 출력
 
 ###디렉티브에 대한 참조
