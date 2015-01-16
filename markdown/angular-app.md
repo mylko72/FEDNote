@@ -197,6 +197,55 @@ AngularJS는 `$q` 서비스라는 아주 간결한 프라미스 API 구현체를
 
 여러 개의 성공 콜백을 등록했고 프라미스가 해결되면서 모두 호출됐다.
 
+#####비동기 동작 체인
+
+*진정한 프라미스 API의 강점은 동기적인 함수 호출 방식을 비동기 세상에서도 가능하게 해주는 비동기 이벤트 체인이다.*
+
+예를 들어 피자를 주문하고 피자가 도착하면 정성스레 잘라서 친구들에게 대접할 경우 2개의 프라미스가 해결되어야 한다. 음식점은 피자를 배달할 것이라는 약속을 하고, 집주인은 배달된 피자를 잘라서
+대접한다는 약속을 한다. 이 상황을 코드로 표현하면 다음과 같다.
+
+	var slice = function(pizza){
+		return "sliced " + pizza;
+	};
+
+	pizzaPit.takeOrder('Margherita').then(slice).then(pawel.eat);
+	pizzaPit.deliverOrder();
+
+코드를 보면 프라미스의 체인(then 메소드 호출)을 볼 수 있다.
+
+> *프라미스 체이닝은 `then` 메소드를 통해서만 가능하다. `then` 메소드가 새로운 프라미스를 반환하기 때문이다.* 반환된 프라미스는 콜백 반환 값의 결과로 해결된다.
+
+아래 코드는 약속을 한 사람의 실패가 어떻게 전파되는지 보여준다.
+
+	pizzaPit.takeOrder('Capricciosa').then(slice).then(pawel.eat, pawel.beHungry);
+	pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+
+음식점으로부터의 거부 결과는 최종 결과를 기다리는 사람에게까지 전파되며 이는 동기적인 세상의 예외 처리 방식과 정확히 일치한다.
+
+프라미스 API의 에러 콜백은 `catch` 블록처럼 행동하며, 일반적인 `catch` 블록처럼 여러 가지 방식으로 예외 상황을 처리할 수 있다.
+
+- **recover** - `catch` 블록에서 특정 값을 반환해 적절하게 처리
+- **propagate failure** - 예외를 다시 던져서 실패를 전파
+
+프라미스 API를 사용하면 `catch` 블록의 복구 상황을 구현하기도 쉽다. 예를 들어 집주인이 재료가 다 떨어진 피자를 주문했다고 하자.
+
+	var retry = function(reason){
+		return pizzaPit.takeOrder('Margherita').then(slice);
+	};
+
+	pizzaPit.takeOrder('Capricciosa')
+		.then(slice, retry)
+		.then(pawel.eat, pawel.beHungry);
+
+	pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+	pizzaPit.deliverOrder();
+
+에러 콜백에서 'retry' 함수를 등록하여 새로운 프라미스가 반환되고 반환된 프라미스는 해결 체인으로 흘러 들어가고, 마지막 고객은 뭔가 잘못됐다는 것도 모르는 채로 문제 상황은 복구된다. 이것은 *요청을 재시도해야 하는
+어떤 경우든 사용할 수 있는 매우 강력한 패턴이다.*
+
+
+
+
 
 ##데이터 포맷과 출력
 
