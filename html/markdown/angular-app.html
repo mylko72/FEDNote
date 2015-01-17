@@ -901,6 +901,41 @@ link: <span class="keyword">function</span>(scope, element, attrs, NgModelContro
 <p>매개변수로 넘긴 값을 표현식의 값과 비교하기 위해 validateEqual(value)를 호출하는 함수를 만든다. 그리고 <strong>모델이나 뷰가 변경될 때마다 이 검증 함수가 호출될 수 있게 <code>$parsers</code>와 <code>$formatters</code> 파이프라인에 이 함수를 집어 넣는다.</strong></p>
 <p>변경된 내용과 비교할 모델도 역시 고려해야 한다. 이를 위해서는 링크 함수의 attrs 매개변수를 통해 표현식을 감시해야 한다. 그리고 <strong>감시하다가 변경이 일어나면 <code>$setViewValue()</code>를 호출해 <code>$parsers</code> 파이프라인이 동작하게 만든다.</strong> 즉, 어떤 경우든 간에 모델 값이 변경되면 <code>$parsers</code>가 동작한다는 것을 보장할 수 있게 한다.</p>
 <h2 id="-">고급 디렉티브 작성</h2>
+<h3 id="-">트랜스클루전 사용</h3>
+<h4 id="-">디렉티브에서 트랜스클루전 사용</h4>
+<p>디렉티브에서 기존 내용을 새로운 요소로 바꾸면서도 기존 내용을 새로운 요소 안에서 사용하고 싶다면 <em>트랜스클루전</em>을 사용해야 한다.</p>
+<h4 id="-">트랜스 클루전을 사용해 경고 디렉티브 작성</h4>
+<p>템플릿용 위젯의 간단한 예로 alert 요소 디렉티브를 살펴보자.</p>
+<p>alert 요소의 내용은 경고로 보여줄 메시지를 포함한다. 따라서 메시지를 디렉티브의 템플릿으로 옮겨 넣어야 한다. 또한 여러 개의 경고는 <code>ng-repeat</code>를 사용해서 보여줄 수도 있다.</p>
+<pre><code><span class="tag">&lt;<span class="title">alert</span> <span class="attribute">type</span>=<span class="value">"alert.type"</span> <span class="attribute">close</span>=<span class="value">"closeAlert($index)"</span> <span class="attribute">ng-repeat</span>=<span class="value">"alert in alerts"</span>&gt;</span>
+    <span class="variable">{{alert.msg}}</span>
+<span class="tag">&lt;/<span class="title">alert</span>&gt;</span></code></pre>
+<p>close 속성에는 사용자가 경고창을 닫았을 때 실행되는 표현식을 정의한다. 이제 디렉티브를 구현해 보자.</p>
+<pre><code class="lang-javascript">myModule.directive(<span class="string">'alert'</span>, <span class="keyword">function</span>(){
+    <span class="keyword">return</span> {
+        restrict: <span class="string">'E'</span>,
+        replace: <span class="literal">true</span>,
+        transclude: <span class="literal">true</span>,
+        template:
+            <span class="string">'&lt;div class="alert alert-{{type}}"&gt;'</span> +
+                <span class="string">'&lt;button type="button" class="close"'</span> +
+                    <span class="string">'ng-click="close()"&gt;&amp;times;'</span> +
+                <span class="string">'&lt;/button&gt;'</span> +
+                <span class="string">'&lt;div ng-transclude&gt;&lt;/div&gt;'</span> +
+            <span class="string">'&lt;/div&gt;'</span>,
+        scope: {type:<span class="string">'='</span>, close:<span class="string">'&amp;'</span>}
+    };
+});</code></pre>
+<h5 id="-replace-">디렉티브 정의 시 사용하는 replace 프로퍼티 이해</h5>
+<p><code>replace</code> 프로퍼티는 기존 디렉티브의 요소를 <code>template</code> 필드에 지정한 템플릿으로 교체하라고 컴파일러에게 요청한다. 즉, <code>template</code> 필드만 선언하고 <code>replace</code> 프로퍼티를 사용하지 않으면 컴파일러는 템플릿을 디렉티브의 요소 뒤에 붙여 넣는다.</p>
+<h5 id="-transclude-">디렉티브 정의 시 사용하는 transclude 프로퍼티 이해</h5>
+<p><code>transclude</code> 프로퍼티는 true 혹은 &#39;element&#39;로 지정할 수 있다. </p>
+<ul>
+<li><code>transclude: true</code>는 디렉티브 요소의 자식을 옮겨 넣는다는 의미다. alert 디렉티브에서 사용한 방식으로 디렉티브의 요소를 템플릿으로 교체한다.</li>
+<li><code>transclude: element</code>는 이미 컴파일된 모든 속성 디렉티브를 포함해서 요소 전체를 옮겨 넣는다는 의미다. <code>ng-repeat</code> 디렉티브가 사용하는 방식이다.</li>
+</ul>
+<h5 id="ng-transclude-">ng-transclude로 옮겨 넣은 요소 추가</h5>
+<p><code>ng-transclude</code> 디렉티브는 옮겨 넣은 요소를 가져온 후 템플릿에서 표시할 요소에 추가해준다. 즉, 트랜스클루전을 사용하는 가장 간단하고 일반적인 방식이다.</p>
 <h2 id="-">웹애플리케이션 작성</h2>
 
 		  <!-- //end -->

@@ -1186,12 +1186,61 @@ angular.module('directives.validate-equals', [])
 
 변경된 내용과 비교할 모델도 역시 고려해야 한다. 이를 위해서는 링크 함수의 attrs 매개변수를 통해 표현식을 감시해야 한다. 그리고 **감시하다가 변경이 일어나면 `$setViewValue()`를 호출해 `$parsers` 파이프라인이 동작하게 만든다.** 즉, 어떤 경우든 간에 모델 값이 변경되면 `$parsers`가 동작한다는 것을 보장할 수 있게 한다.
 
-
-
-
-
-
-
 ##고급 디렉티브 작성
+
+###트랜스클루전 사용
+
+####디렉티브에서 트랜스클루전 사용
+
+디렉티브에서 기존 내용을 새로운 요소로 바꾸면서도 기존 내용을 새로운 요소 안에서 사용하고 싶다면 *트랜스클루전*을 사용해야 한다.
+
+####트랜스 클루전을 사용해 경고 디렉티브 작성
+
+템플릿용 위젯의 간단한 예로 alert 요소 디렉티브를 살펴보자.
+
+alert 요소의 내용은 경고로 보여줄 메시지를 포함한다. 따라서 메시지를 디렉티브의 템플릿으로 옮겨 넣어야 한다. 또한 여러 개의 경고는 `ng-repeat`를 사용해서 보여줄 수도 있다.
+
+```
+<alert type="alert.type" close="closeAlert($index)" ng-repeat="alert in alerts">
+	{{alert.msg}}
+</alert>
+```
+
+close 속성에는 사용자가 경고창을 닫았을 때 실행되는 표현식을 정의한다. 이제 디렉티브를 구현해 보자.
+
+```javascript
+myModule.directive('alert', function(){
+	return {
+		restrict: 'E',
+		replace: true,
+		transclude: true,
+		template:
+			'<div class="alert alert-{{type}}">' +
+				'<button type="button" class="close"' +
+					'ng-click="close()">&times;' +
+				'</button>' +
+				'<div ng-transclude></div>' +
+			'</div>',
+		scope: {type:'=', close:'&'}
+	};
+});
+```
+
+#####디렉티브 정의 시 사용하는 replace 프로퍼티 이해
+
+`replace` 프로퍼티는 기존 디렉티브의 요소를 `template` 필드에 지정한 템플릿으로 교체하라고 컴파일러에게 요청한다. 즉, `template` 필드만 선언하고 `replace` 프로퍼티를 사용하지 않으면 컴파일러는 템플릿을 디렉티브의 요소 뒤에 붙여 넣는다.
+
+#####디렉티브 정의 시 사용하는 transclude 프로퍼티 이해
+
+`transclude` 프로퍼티는 true 혹은 'element'로 지정할 수 있다. 
+
+- `transclude: true`는 디렉티브 요소의 자식을 옮겨 넣는다는 의미다. alert 디렉티브에서 사용한 방식으로 디렉티브의 요소를 템플릿으로 교체한다.
+- `transclude: element`는 이미 컴파일된 모든 속성 디렉티브를 포함해서 요소 전체를 옮겨 넣는다는 의미다. `ng-repeat` 디렉티브가 사용하는 방식이다.
+
+#####ng-transclude로 옮겨 넣은 요소 추가
+
+`ng-transclude` 디렉티브는 옮겨 넣은 요소를 가져온 후 템플릿에서 표시할 요소에 추가해준다. 즉, 트랜스클루전을 사용하는 가장 간단하고 일반적인 방식이다.
+
+
 
 ##웹애플리케이션 작성
