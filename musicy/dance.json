@@ -1,0 +1,717 @@
+[
+	{
+		"singer" : "서태지와 아이들",
+		"title" : "하여가(何如歌)",
+		"album" : {
+			"name" : "Seotaiji and Boys II",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1900.jpg",
+			"Lyrics" : "서태지",
+			"Composed" : "서태지",
+			"Release" : "1993.6"
+		}
+	},
+	{
+		"singer" : "서태지와 아이들",
+		"title" : "난 알아요",
+		"album" : {
+			"name" : "1집 난 알아요",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1899.jpg",
+			"Lyrics" : "서태지",
+			"Composed" : "서태지",
+			"Release" : "1992.3"
+		}
+	},
+	{
+		"singer" : "듀스",
+		"title" : "나를 돌아봐",
+		"album" : {
+			"name" : "1집 Deux",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2355.jpg",
+			"Lyrics" : "이현도",
+			"Composed" : "이현도",
+			"Release" : "1993.4"
+		}
+	},
+	{
+		"singer" : "듀스",
+		"title" : "우리는",
+		"album" : {
+			"name" : "2집 Deuxism",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2356.jpg",
+			"Lyrics" : "이현도",
+			"Composed" : "이현도",
+			"Release" : "1993.12"
+		}
+	},
+	{
+		"singer" : "김건모",
+		"title" : "잘못된 만남",
+		"album" : {
+			"name" : "3집 잘못된 만남",
+			"cover" : "http://image.music.naver.net/album/204/000/000/153.jpg",
+			"Lyrics" : "김창환",
+			"Composed" : "김창환",
+			"Release" : "1995.1"
+		}
+	},
+	{
+		"singer" : "현진영",
+		"title" : "흐린 기억 속의 그대",
+		"album" : {
+			"name" : "2집 New Dance 2",
+			"cover" : "http://image.music.naver.net/album/204/000/063/63403.jpg",
+			"Lyrics" : "이탁",
+			"Composed" : "이탁",
+			"Release" : "1992.8"
+		}
+	},
+	{
+		"singer" : "DJ.DOC",
+		"title" : "Run To You",
+		"album" : {
+			"name" : "5집 The Life… Doc Blues",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2294.jpg",
+			"Lyrics" : "이하늘,정재용",
+			"Composed" : "이하늘,박해문",
+			"Release" : "2000.5"
+		}
+	},
+	{
+		"singer" : "신해철",
+		"title" : "그대에게",
+		"album" : {
+			"name" : "2집 Myself",
+			"cover" : "http://image.music.naver.net/album/204/000/000/198.jpg",
+			"Lyrics" : "신해철",
+			"Composed" : "신해철",
+			"Release" : "1991.3"
+		}
+	},
+	{
+		"singer" : "015B",
+		"title" : "아주 오래된 연인들",
+		"album" : {
+			"name" : "3집 The Third Wave",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2003.jpg",
+			"Lyrics" : "정석원",
+			"Composed" : "정석원",
+			"Release" : "1992.8"
+		}
+	},
+	{
+		"singer" : "보아",
+		"title" : "My Name",
+		"album" : {
+			"name" : "4집 My Name BoA",
+			"cover" : "http://image.music.naver.net/album/204/000/027/27735.jpg",
+			"Lyrics" : "Kenzie",
+			"Composed" : "Kenzie",
+			"Release" : "2004.6"
+		}
+	},
+	{
+		"singer" : "빅뱅",
+		"title" : "거짓말",
+		"album" : {
+			"name" : "2집 REMEMBER",
+			"cover" : "http://image.music.naver.net/album/204/000/149/149083.jpg",
+			"Lyrics" : "G-드래곤",
+			"Composed" : "G-드래곤",
+			"Release" : "2008.11"
+		}
+	},
+	{
+		"singer" : "소녀시대",
+		"title" : "다시 만난 세계",
+		"album" : {
+			"name" : "다시 만난 세계",
+			"cover" : "http://image.music.naver.net/album/204/000/061/61241.jpg",
+			"Lyrics" : "김정배",
+			"Composed" : "Kenzie",
+			"Release" : "2007.8"
+		}
+	},
+	{
+		"singer" : "서태지와 아이들",
+		"title" : "환상속의 그대",
+		"album" : {
+			"name" : "1집 난 알아요",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1899.jpg",
+			"Lyrics" : "서태지",
+			"Composed" : "서태지",
+			"Release" : "1992.03"
+		}
+	},
+	{
+		"singer" : "싸이",
+		"title" : "Right Now",
+		"album" : {
+			"name" : "5집 PSYFIVE",
+			"cover" : "http://image.music.naver.net/album/204/000/180/180995.jpg",
+			"Lyrics" : "싸이",
+			"Composed" : "싸이",
+			"Release" : "2010.10"
+		}
+	},
+	{
+		"singer" : "터보",
+		"title" : "나 어릴적 꿈",
+		"album" : {
+			"name" : "1집 280 Km/h Speed",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2320.jpg",
+			"Lyrics" : "이승호",
+			"Composed" : "주영훈",
+			"Release" : "1995.07"
+		}
+	},
+	{
+		"singer" : "이현우",
+		"title" : "꿈",
+		"album" : {
+			"name" : "1집 Black Rainbow",
+			"cover" : "http://image.music.naver.net/album/204/000/000/592.jpg",
+			"Lyrics" : "이현우",
+			"Composed" : "이현우",
+			"Release" : "1991.01"
+		}
+	},
+	{
+		"singer" : "박미경",
+		"title" : "이브의 경고",
+		"album" : {
+			"name" : "2집 Jungle New Style",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1498.jpg",
+			"Lyrics" : "김창환",
+			"Composed" : "천성일",
+			"Release" : "1995.07"
+		}
+	},
+	{
+		"singer" : "베이비복스",
+		"title" : "Get Up",
+		"album" : {
+			"name" : "3집 Come Come Baby",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1983.jpg",
+			"Lyrics" : "서윤경",
+			"Composed" : "김형석",
+			"Release" : "1999.08"
+		}
+	},
+	{
+		"singer" : "솔리드",
+		"title" : "천생연분",
+		"album" : {
+			"name" : "3집 light camera action",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2578.jpg",
+			"Lyrics" : "김수현",
+			"Composed" : "정재윤",
+			"Release" : "1996.04"
+		}
+	},
+	{
+		"singer" : "노이즈",
+		"title" : "너에게 원한 걸",
+		"album" : {
+			"name" : "1집 Sound Shock",
+			"cover" : "http://image.music.naver.net/album/204/000/003/3182.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1993.01"
+		}
+	},
+	{
+		"singer" : "베이비복스",
+		"title" : "Killer",
+		"album" : {
+			"name" : "3집 Come Come Baby",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1983.jpg",
+			"Lyrics" : "김종숙",
+			"Composed" : "김형석",
+			"Release" : "1999.08"
+		}
+	},
+	{
+		"singer" : "The Blue",
+		"title" : "그대와 함께",
+		"album" : {
+			"name" : "2집 The Blue",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2189.jpg",
+			"Lyrics" : "김민종",
+			"Composed" : "서영진",
+			"Release" : "1995"
+		}
+	},
+	{
+		"singer" : "The S#ARP",
+		"title" : "가까이",
+		"album" : {
+			"name" : "2집 가까이",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2032.jpg",
+			"Lyrics" : "최수정",
+			"Composed" : "최수정",
+			"Release" : "1999.10"
+		}
+	},
+	{
+		"singer" : "투투",
+		"title" : "일과 이분의 일",
+		"album" : {
+			"name" : "1집",
+			"cover" : "http://musicy.kr/upload/y-best/20140708005247_81d918ff.jpg",
+			"Lyrics" : "오지훈",
+			"Composed" : "오지훈",
+			"Release" : "1994.04"
+		}
+	},
+	{
+		"singer" : "쿨",
+		"title" : "애상",
+		"album" : {
+			"name" : "4집 애상",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2274.jpg",
+			"Lyrics" : "이승호",
+			"Composed" : "윤일상",
+			"Release" : "1998.04"
+		}
+	},
+	{
+		"singer" : "Girl",
+		"title" : "아스피린",
+		"album" : {
+			"name" : "1집 ROCK`N ROLL REVOLUTION",
+			"cover" : "http://image.music.naver.net/album/204/000/026/26658.jpg",
+			"Lyrics" : "최병훈",
+			"Composed" : "최병훈",
+			"Release" : "1995.12"
+		}
+	},
+	{
+		"singer" : "엄정화",
+		"title" : "Poison",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "넥스트",
+		"title" : "도시인",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "Miss A",
+		"title" : "Bad Girl Good Girl",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "인피니트",
+		"title" : "내꺼하자",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "아이유",
+		"title" : "좋은날",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "HOT",
+		"title" : "캔디",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "유엔",
+		"title" : "파도",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "유피",
+		"title" : "바다",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "베이비복스",
+		"title" : "야야야",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "SES",
+		"title" : "I'm your girl",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "핑클",
+		"title" : "Now",
+		"album" : {
+			"name" : "3집 Now",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2496.jpg",
+			"Lyrics" : "홍지유",
+			"Composed" : "김진권",
+			"Release" : "2000.10"
+		}
+	},
+	{
+		"singer" : "베이비복스",
+		"title" : "우연",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "엄정화",
+		"title" : "배반의 장미",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "써니힐",
+		"title" : "두근두근",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "유피",
+		"title" : "뿌요뿌요",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "유엔",
+		"title" : "평생",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "레인보우",
+		"title" : "A",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "f(x)",
+		"title" : "Beautiful Stranger",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "투애니원",
+		"title" : "I don't care",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "비스트",
+		"title" : "Shock",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "투애니원",
+		"title" : "Can't Nobody",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "태티서",
+		"title" : "Twinkle",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "자자",
+		"title" : "버스안에서",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "베이비복스",
+		"title" : "나 어떡해",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "브라운아이드걸스",
+		"title" : "어쩌다",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "카라",
+		"title" : "STEP",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "처진 달팽이",
+		"title" : "압구정 날라리",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "브라운아이드걸스",
+		"title" : "Must Have Love",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "오렌지 캬라멜",
+		"title" : "방콕시티",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "플라이 투더 스카이",
+		"title" : "Sea Of Love",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		}
+	}
+]
