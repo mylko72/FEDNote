@@ -1438,6 +1438,66 @@ myModule.directive('alert', function(){
 
 `ng-transclude` 디렉티브는 옮겨 넣은 요소를 가져온 후 템플릿에서 표시할 요소에 추가해준다. 즉, 트랜스클루전을 사용하는 가장 간단하고 일반적인 방식이다.
 
+>예제보기 [트랜스 클루전을 사용한 경고 디렉티브](http://embed.plnkr.co/u7uAhnbECFOFnlQqI4Qf/preview)
+
+####트랜스 클루전의 스코프 이해
+
+디렉티브는 정의할 때 `scope` 프로퍼티를 사용해 새로운 스코프를 생성할 수 있다. 
+
+> 디렉티브 중에서 핵심이 되는 몇 개의 디렉티브만이 새로운 스코프를 정의한다. 핵심 디렉티브는 `ng-controller`, `ng-repeat`, `ng-include`, `ng-view`, `ng-switch` 등이며, 대부분은 프로토타입 방식으로 부모 스코프를 상속받는 자식 스코프를 만든다.
+
+isolate 스코프를 사용해서 위젯이 바깥쪽과 안쪽이 서로 엮이지 않게 위젯 디렉티브를 만들 수 있다. 이 말은 템플릿의 표현식이 위젯에 포함된 부모 스코프에 접근할 수 없다는 의미다. 이는 매우 유용한데 템플릿 안에서 일어나는 행위로 인해 부모 스코프의 프로퍼티가 영향을 주거나 받지 않기 때문이다.
+
+> 템플릿에 들어갈 디렉티브 요소의 기존 내용은 isolate 스코프가 아니라 기존 스코프에 연결돼야 한다. 즉, 기존 요소에 옮겨 넣음으로써 이런 요소의 스코프를 정확하게 관리할 수 있는 것이다.
+
+alert 디렉티브는 isolate 스코프를 사용하는 위젯이다. alert 디렉트브가 컴파일되기 전에 DOM과 스코프는 다음과 같다.
+
+```
+  <!-- $rootScope를 정의 -->
+  <div ng-app ng-init="type='success'">
+    <!-- $rootScope에 연결 -->
+    <div>{{type}}</div>
+    <!-- $rootScope에 연결 -->
+    <alert type="'info'">Look at {{type}}</alert>
+  </div>
+```
+
+보다시피 `<div>{{type}}</div>`에는 직접 정의한 스코프가 없다. 대신 `$rootScope`가 정의된 `ng-app` 요소의 하위에 있기 때문에 암묵적으로 `$rootScope`에 연결되고 따라서 `{{type}}`은 'success'로 평가된다.
+
+alert 요소를 보면 type="'info'"라는 속성이 있는데, 템플릿 스코프의 `type` 프로퍼티와 연결돼 있다. alert 디렉티브가 컴파일되고 나면 템플릿으로 변경될 것이고, 이후 DOM과 스코프는 다음과 같을 것이다.
+
+```
+  <!-- $rootScope를 정의 -->
+  <div ng-app ng-init="type='success'">
+    <!-- $rootScope에 연결 -->
+    <div>{{type}}</div>
+    <!-- isolate 스코프 정의 -->
+	<div class="alert alert-{{type}}" type="'info'">
+		<!-- isolate 스코프에 연결 -->
+		<button type="button" class="close" ng-click="close()">×</button>
+		<div ng-transclude="">
+			<!-- 새로운 트랜스클루드 스코프 정의 -->
+			<span>Look at {{type}}</span>
+		</div>
+	</div>
+  </div>
+```
+
+템플릿 안의 class="alert-{{type}}" 속성은 isolate 스코프에 암묵적으로 연결되기 때문에 class="alert-info"로 평가된다.
+
+그에 반해 기존 `<alert>` 요소로 옮겨 넣어진 내용인 `<span>Look at {{type}}</span>`은 새로운 트랜스 클루전 스코프로 연결된다. 단순히 이 내용을 템플릿 안으로 옮기기만 했으면 `$rootScope`에서 isolate 스코프로 바인딩이 변경됐을 것이고, {{type}}은 'info'로 평가됐을 것이다. 
+
+하지만 *새로운 트랜스클루드 스코프는 `$rootScope`를 프로토타입 방식으로 상속받는다.* 즉, span 태그가 `<span>Look at success</span>`로 올바르게 평가된다는 의미다.
+
+
+
+
+
+
+
+
+
+
 
 
 ##웹애플리케이션 작성
