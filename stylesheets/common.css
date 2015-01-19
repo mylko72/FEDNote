@@ -14,7 +14,7 @@ body {
 .tocify > ul > ul > li + ul {border-bottom:none;}
 .tocify > ul > ul > ul > li > a {font-size:11px !important;}
 .tocify > ul > ul > ul > li + ul {border-bottom:none;}
-.tocify > ul > ul > ul > ul > li > a {font-size:11px !important;}
+.tocify > ul > ul > ul > ul > li > a {display:block;width:250px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;font-size:11px !important;}
 .tocify > ul > ul > ul > ul > li:last-child {border-bottom:none;}
 
 em {font-style:normal; color:red;}

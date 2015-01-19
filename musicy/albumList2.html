@@ -55,9 +55,9 @@
 					<tr ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize">
 						<!-- pagination은 사용자정의 필터로 두개의 매개변수를 받는다. (currentPage:현재 페이지 인덱스, pageSize:한페이지에 표시할 목록의 수)-->
 						<td>{{($index+1)+((currentPage)*10)}}</td>
-						<td><img class="cover" ng-src="{{song.album.cover}}" width="50" height="auto"> {{song.title | trim:8}}</td>
+						<td><img class="cover" ng-src="{{song.album.cover}}" width="80" height="auto"> {{song.title | trim:8}}</td>
 						<td>{{song.singer}}</td>
-						<td>{{song.album.name}}</td>
+						<td>{{song.album.name}}<br />발매 {{song.album.Release}}</td>
 						<td>{{song.album.Lyrics}}/{{song.album.Composed}}</td>
 					</tr>
 				</tbody>
