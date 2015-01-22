@@ -243,6 +243,83 @@ AngularJS는 `$q` 서비스라는 아주 간결한 프라미스 API 구현체를
 에러 콜백에서 'retry' 함수를 등록하여 새로운 프라미스가 반환되고 반환된 프라미스는 해결 체인으로 흘러 들어가고, 마지막 고객은 뭔가 잘못됐다는 것도 모르는 채로 문제 상황은 복구된다. 이것은 *요청을 재시도해야 하는
 어떤 경우든 사용할 수 있는 매우 강력한 패턴이다.*
 
+또 고려해야 하는 상황은 문제 상황을 복구하는 것이 불가능해서 예외를 다시 던지는 상황이다. 이때 쓸 수 있는 방법은 *또 다른 에러를 던지는 것이며, `$q` 서비스는 이를 위한 메소드 `$q.reject()`를 제공*한다.
+
+	var explain = function(reason){
+		return $q.reject('ordered pizza not available');
+	};
+
+	pizzaPit.takeOrder('Capricciosa')
+		.then(slice, explain)
+		.then(pawel.eat, pawel.beHungry);
+
+	pizzaPit.problemWithOrder('no Capricciosa, only Margherita left');
+
+`$q.reject` 메소드는 비동기 세상에서 예외를 던지는 것과 동일하다. 이 메소드는 `$q.reject` 메소드 호출 시 인자로 넘긴 실패 이유로 인해 거부된 새로운 프라미스를 반환한다.	
+
+#####$q 심화
+
+######- 프라미스 모음
+
+*`$q.all` 메소드를 사용하면 여러 개의 비동기 작업을 시작하고 모든 작업을 완료할 수 있다.* 여러개의 비동기 동작에 대한 프라미스를 효율적으로 모을 수 있으며, 합쳐진 채로 동작하는 단 하나의 프라미스를 반환한다.
+
+다음은 여러 개의 음식점에서 음식을 주문한 후 모든 주문 음식이 도착한 다음에 식사를 대접해야 하는 상황을 생각해 보자.
+
+	var ordersDelivered = $q.all([
+		pizzaPit.takeOrder('Pepperoni'),
+		saladBar.takeOrder('Fresh salad')
+	]);
+
+	ordersDelivered.then(pawel.eat);
+
+	pizzaPit.deliverOrder();
+	saladBar.deliverOrder();
+
+*`$q.all` 메소드는 프라미스 배열을 인자로 받으며, 이를 모은 프라미스를 반환한다.* 그리고 각 프라미스가 해결된 후에야 프라미스 모음이 해결된다. 하지만 그 중 하나의 동작이 실패하면 프라미스 모음은 다음과 같이 거부된다.
+
+	var ordersDelivered = $q.all([
+		pizzaPit.takeOrder('Pepperoni'),
+		saladBar.takeOrder('Fresh salad')
+	]);
+
+	ordersDelivered.then(pawel.eat, pawel.beHungry);
+
+	pizzaPit.deliverOrder();
+	saladBar.problemWithOrder('no fresh lettuce');
+
+######- 프라미스로 값을 감싸기
+
+때로는 같은 API 안에서 비동기 방식으로 나온 결과와 동기 방식으로 나온 결과를 함께 처리해야 하는 경우도 있다. 이럴 때는 모든 결과를 비동기 방식으로 처리하는 편이 더 낫다.
+
+>`$q.when` 메소드를 사용하면 자바스크립트 객체를 프라미스 객체로 감쌀 수 있다.
+
+예를 들어 샐러드는 준비됐지만(동기 방식) 피자는 주문하고 배달이 와야 하는 상황(비동기 방식)이고 2가지 음식을 모두 한 번에 대접하고 싶다고 해보자. `$q.when`과 `$q.all` 메소드를 사용하면 이 상황을 우아하게 해결할 수 있다.
+
+	var ordersDelivered = $q.all([
+		pizzaPit.takeOrder('Pepperoni'),
+		$q.when('home made salad')
+	]);
+
+	ordersDelivered.then(pawel.eat, pawel.beHungry);
+
+	pizzaPit.deliverOrder();
+
+`$q.when` 메소드는 호출 시 넘긴 인자로 해결되는 프라미스를 반환한다.	
+
+####AngularJS의 $q 통합
+
+스코프에서 프라미스에 직접 접근할 수 있고 프라미스가 해결되자마자 자동으로 렌더링된다. 따라서 프라미스를 모델 값으로 사용할 수 있다.
+
+	<h1>Hello, {{name}}!</h1>
+
+다음 코드는 2초후 'Hello, World!' 문구를 화면에 렌더링한다.
+
+	$scope.name = $timeout(function(){
+		return "World";
+	},2000);
+
+> `$timeout` 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다.
+
 
 
 

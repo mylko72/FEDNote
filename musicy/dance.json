@@ -8,7 +8,8 @@
 			"Lyrics" : "서태지",
 			"Composed" : "서태지",
 			"Release" : "1993.6"
-		}
+		},
+		"videoid" : "RvYGSXUnwdA"
 	},
 	{
 		"singer" : "서태지와 아이들",
@@ -19,7 +20,8 @@
 			"Lyrics" : "서태지",
 			"Composed" : "서태지",
 			"Release" : "1992.3"
-		}
+		},
+		"videoid" : "y8em1w3KIFA"
 	},
 	{
 		"singer" : "듀스",
@@ -30,7 +32,8 @@
 			"Lyrics" : "이현도",
 			"Composed" : "이현도",
 			"Release" : "1993.4"
-		}
+		},
+		"videoid" : "WksfjyGGkOk"
 	},
 	{
 		"singer" : "현진영",
@@ -41,7 +44,8 @@
 			"Lyrics" : "이탁",
 			"Composed" : "이탁",
 			"Release" : "1992.8"
-		}
+		},
+		"videoid" : "YQSDHwADTFA"
 	},
 	{
 		"singer" : "듀스",
@@ -52,7 +56,8 @@
 			"Lyrics" : "이현도",
 			"Composed" : "이현도",
 			"Release" : "1993.12"
-		}
+		},
+		"videoid" : "PtWAx6ZGs-E"
 	},
 	{
 		"singer" : "김건모",
@@ -63,7 +68,8 @@
 			"Lyrics" : "김창환",
 			"Composed" : "김창환",
 			"Release" : "1995.1"
-		}
+		},
+		"videoid" : "eRiX2HO_OCk"
 	},
 	{
 		"singer" : "DJ.DOC",
@@ -74,7 +80,8 @@
 			"Lyrics" : "이하늘,정재용",
 			"Composed" : "이하늘,박해문",
 			"Release" : "2000.5"
-		}
+		},
+		"videoid" : "cENP3aul9lQ"
 	},
 	{
 		"singer" : "서태지와 아이들",
@@ -85,7 +92,8 @@
 			"Lyrics" : "서태지",
 			"Composed" : "서태지",
 			"Release" : "1992.03"
-		}
+		},
+		"videoid" : "BPgujjP6PTc"
 	},
 	{
 		"singer" : "신해철",
@@ -96,7 +104,8 @@
 			"Lyrics" : "신해철",
 			"Composed" : "신해철",
 			"Release" : "1991.3"
-		}
+		},
+		"videoid" : "5dHcVjj_Kq0"
 	},
 	{
 		"singer" : "015B",
@@ -107,29 +116,8 @@
 			"Lyrics" : "정석원",
 			"Composed" : "정석원",
 			"Release" : "1992.8"
-		}
-	},
-	{
-		"singer" : "보아",
-		"title" : "My Name",
-		"album" : {
-			"name" : "4집 My Name BoA",
-			"cover" : "http://image.music.naver.net/album/204/000/027/27735.jpg",
-			"Lyrics" : "Kenzie",
-			"Composed" : "Kenzie",
-			"Release" : "2004.6"
-		}
-	},
-	{
-		"singer" : "빅뱅",
-		"title" : "거짓말",
-		"album" : {
-			"name" : "2집 REMEMBER",
-			"cover" : "http://image.music.naver.net/album/204/000/149/149083.jpg",
-			"Lyrics" : "G-드래곤",
-			"Composed" : "G-드래곤",
-			"Release" : "2008.11"
-		}
+		},
+		"videoid" : "r2_lno9ccHE"
 	},
 	{
 		"singer" : "소녀시대",
@@ -140,51 +128,20 @@
 			"Lyrics" : "김정배",
 			"Composed" : "Kenzie",
 			"Release" : "2007.8"
-		}
+		},
+		"videoid" : "5cB9gRGEB10"
 	},
 	{
-		"singer" : "싸이",
-		"title" : "Right Now",
+		"singer" : "빅뱅",
+		"title" : "거짓말",
 		"album" : {
-			"name" : "5집 PSYFIVE",
-			"cover" : "http://image.music.naver.net/album/204/000/180/180995.jpg",
-			"Lyrics" : "싸이",
-			"Composed" : "싸이",
-			"Release" : "2010.10"
-		}
-	},
-	{
-		"singer" : "터보",
-		"title" : "나 어릴적 꿈",
-		"album" : {
-			"name" : "1집 280 Km/h Speed",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2320.jpg",
-			"Lyrics" : "이승호",
-			"Composed" : "주영훈",
-			"Release" : "1995.07"
-		}
-	},
-	{
-		"singer" : "이현우",
-		"title" : "꿈",
-		"album" : {
-			"name" : "1집 Black Rainbow",
-			"cover" : "http://image.music.naver.net/album/204/000/000/592.jpg",
-			"Lyrics" : "이현우",
-			"Composed" : "이현우",
-			"Release" : "1991.01"
-		}
-	},
-	{
-		"singer" : "박미경",
-		"title" : "이브의 경고",
-		"album" : {
-			"name" : "2집 Jungle New Style",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1498.jpg",
-			"Lyrics" : "김창환",
-			"Composed" : "천성일",
-			"Release" : "1995.07"
-		}
+			"name" : "2집 REMEMBER",
+			"cover" : "http://image.music.naver.net/album/204/000/149/149083.jpg",
+			"Lyrics" : "G-드래곤",
+			"Composed" : "G-드래곤",
+			"Release" : "2008.11"
+		},
+		"videoid" : "2Cv3phvP8Ro"
 	},
 	{
 		"singer" : "베이비복스",
@@ -195,7 +152,8 @@
 			"Lyrics" : "서윤경",
 			"Composed" : "김형석",
 			"Release" : "1999.08"
-		}
+		},
+		"videoid" : "AvQhy0m-Wr4"
 	},
 	{
 		"singer" : "솔리드",
@@ -206,7 +164,32 @@
 			"Lyrics" : "김수현",
 			"Composed" : "정재윤",
 			"Release" : "1996.04"
-		}
+		},
+		"videoid" : "CTVvF7GKnKk"
+	},
+	{
+		"singer" : "소녀시대",
+		"title" : "Gee",
+		"album" : {
+			"name" : "Gee (The First Mini Album)",
+			"cover" : "http://image.music.naver.net/album/204/000/151/151661.jpg",
+			"Lyrics" : "이트라이브",
+			"Composed" : "이트라이브",
+			"Release" : "2009.01"
+		},
+		"videoid" : "05NITCu9Hm4"
+	},
+	{
+		"singer" : "보아",
+		"title" : "My Name",
+		"album" : {
+			"name" : "4집 My Name BoA",
+			"cover" : "http://image.music.naver.net/album/204/000/027/27735.jpg",
+			"Lyrics" : "Kenzie",
+			"Composed" : "Kenzie",
+			"Release" : "2004.6"
+		},
+		"videoid" : "mR8i0fRVmSA"
 	},
 	{
 		"singer" : "노이즈",
@@ -217,7 +200,8 @@
 			"Lyrics" : "",
 			"Composed" : "",
 			"Release" : "1993.01"
-		}
+		},
+		"videoid" : "4o4N2MVkv7w"
 	},
 	{
 		"singer" : "베이비복스",
@@ -228,7 +212,8 @@
 			"Lyrics" : "김종숙",
 			"Composed" : "김형석",
 			"Release" : "1999.08"
-		}
+		},
+		"videoid" : "h2ZLf2SRqYY"
 	},
 	{
 		"singer" : "The Blue",
@@ -239,106 +224,8 @@
 			"Lyrics" : "김민종",
 			"Composed" : "서영진",
 			"Release" : "1995"
-		}
-	},
-	{
-		"singer" : "터보",
-		"title" : "Twist King",
-		"album" : {
-			"name" : "2집 New Sensation",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1929.jpg",
-			"Lyrics" : "이승호",
-			"Composed" : "주영훈",
-			"Release" : "1996.08"
-		}
-	},
-	{
-		"singer" : "The S#ARP",
-		"title" : "가까이",
-		"album" : {
-			"name" : "2집 가까이",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2032.jpg",
-			"Lyrics" : "최수정",
-			"Composed" : "최수정",
-			"Release" : "1999.10"
-		}
-	},
-	{
-		"singer" : "투투",
-		"title" : "일과 이분의 일",
-		"album" : {
-			"name" : "1집",
-			"cover" : "http://musicy.kr/upload/y-best/20140708005247_81d918ff.jpg",
-			"Lyrics" : "오지훈",
-			"Composed" : "오지훈",
-			"Release" : "1994.04"
-		}
-	},
-	{
-		"singer" : "쿨",
-		"title" : "애상",
-		"album" : {
-			"name" : "4집 애상",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2274.jpg",
-			"Lyrics" : "이승호",
-			"Composed" : "윤일상",
-			"Release" : "1998.04"
-		}
-	},
-	{
-		"singer" : "Girl",
-		"title" : "아스피린",
-		"album" : {
-			"name" : "1집 ROCK`N ROLL REVOLUTION",
-			"cover" : "http://image.music.naver.net/album/204/000/026/26658.jpg",
-			"Lyrics" : "최병훈",
-			"Composed" : "최병훈",
-			"Release" : "1995.12"
-		}
-	},
-	{
-		"singer" : "엄정화",
-		"title" : "Poison",
-		"album" : {
-			"name" : "4집 Invitation",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1278.jpg",
-			"Lyrics" : "주영훈",
-			"Composed" : "주영훈",
-			"Release" : "1998.07"
-		}
-	},
-	{
-		"singer" : "넥스트",
-		"title" : "도시인",
-		"album" : {
-			"name" : "1집 Home",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1889.jpg",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : "1993"
-		}
-	},
-	{
-		"singer" : "서태지와 아이들",
-		"title" : "우리들만의 추억",
-		"album" : {
-			"name" : "2집 Seotaiji and Boys II",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1900.jpg",
-			"Lyrics" : "William Byun, 서태지",
-			"Composed" : "서태지",
-			"Release" : "1993.06"
-		}
-	},
-	{
-		"singer" : "인피니트",
-		"title" : "내꺼하자",
-		"album" : {
-			"name" : "1집 OVER THE TOP",
-			"cover" : "http://image.music.naver.net/album/204/000/201/201534.jpg",
-			"Lyrics" : "송수윤",
-			"Composed" : "김승수,한재윤",
-			"Release" : "2011.07"
-		}
+		},
+		"videoid" : "k_j_gT4Sf0o"
 	},
 	{
 		"singer" : "SES",
@@ -349,40 +236,8 @@
 			"Lyrics" : "유영진",
 			"Composed" : "유영진",
 			"Release" : "1997.11"
-		}
-	},
-	{
-		"singer" : "아이유",
-		"title" : "좋은날",
-		"album" : {
-			"name" : "Real",
-			"cover" : "http://image.music.naver.net/album/204/000/184/184117.jpg",
-			"Lyrics" : "김이나",
-			"Composed" : "이민수",
-			"Release" : "2010.12"
-		}
-	},
-	{
-		"singer" : "엄정화",
-		"title" : "Festival",
-		"album" : {
-			"name" : "5집 005.1999.06",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1299.jpg",
-			"Lyrics" : "주영훈",
-			"Composed" : "주영훈",
-			"Release" : "1999.06"
-		}
-	},
-	{
-		"singer" : "빅뱅",
-		"title" : "MONSTER",
-		"album" : {
-			"name" : "STILL ALIVE",
-			"cover" : "http://image.music.naver.net/album/204/000/322/322239.jpg",
-			"Lyrics" : "G-드래곤, TOP",
-			"Composed" : "G-드래곤, 최필강",
-			"Release" : "2012.06"
-		}
+		},
+		"videoid" : "W3NOB_aYMQ0"
 	},
 	{
 		"singer" : "HOT",
@@ -393,18 +248,92 @@
 			"Lyrics" : "장용진",
 			"Composed" : "장용진",
 			"Release" : "1996.09"
-		}
+		},
+		"videoid" : "dqRv2Md6Slg"
 	},
 	{
-		"singer" : "Miss A",
-		"title" : "Bad Girl Good Girl",
+		"singer" : "박미경",
+		"title" : "이브의 경고",
 		"album" : {
-			"name" : "1집 A Class",
-			"cover" : "http://image.music.naver.net/album/204/000/201/201540.jpg",
-			"Lyrics" : "박진영",
-			"Composed" : "박진영",
-			"Release" : "2011.07"
-		}
+			"name" : "2집 Jungle New Style",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1498.jpg",
+			"Lyrics" : "김창환",
+			"Composed" : "천성일",
+			"Release" : "1995.07"
+		},
+		"videoid" : "wCiS9TJP0_4"
+	},
+	{
+		"singer" : "터보",
+		"title" : "나 어릴적 꿈",
+		"album" : {
+			"name" : "1집 280 Km/h Speed",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2320.jpg",
+			"Lyrics" : "이승호",
+			"Composed" : "주영훈",
+			"Release" : "1995.07"
+		},
+		"videoid" : "T5puAjk6nXU"
+	},
+	{
+		"singer" : "이현우",
+		"title" : "꿈",
+		"album" : {
+			"name" : "1집 Black Rainbow",
+			"cover" : "http://image.music.naver.net/album/204/000/000/592.jpg",
+			"Lyrics" : "이현우",
+			"Composed" : "이현우",
+			"Release" : "1991.01"
+		},
+		"videoid" : "6T9yOV7rPh8"
+	},
+	{
+		"singer" : "엄정화",
+		"title" : "Poison",
+		"album" : {
+			"name" : "4집 Invitation",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1278.jpg",
+			"Lyrics" : "주영훈",
+			"Composed" : "주영훈",
+			"Release" : "1998.07"
+		},
+		"videoid" : "enhVGWLahZ0"
+	},
+	{
+		"singer" : "The S#ARP",
+		"title" : "가까이",
+		"album" : {
+			"name" : "2집 가까이",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2032.jpg",
+			"Lyrics" : "최수정",
+			"Composed" : "최수정",
+			"Release" : "1999.10"
+		},
+		"videoid" : "hIkguXxK7T4"
+	},
+	{
+		"singer" : "투투",
+		"title" : "일과 이분의 일",
+		"album" : {
+			"name" : "1집",
+			"cover" : "http://musicy.kr/upload/y-best/20140708005247_81d918ff.jpg",
+			"Lyrics" : "오지훈",
+			"Composed" : "오지훈",
+			"Release" : "1994.04"
+		},
+		"videoid" : "4S509c3KSKY"
+	},
+	{
+		"singer" : "쿨",
+		"title" : "애상",
+		"album" : {
+			"name" : "4집 애상",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2274.jpg",
+			"Lyrics" : "이승호",
+			"Composed" : "윤일상",
+			"Release" : "1998.04"
+		},
+		"videoid" : "0g-_cDxZzMg"
 	},
 	{
 		"singer" : "유엔",
@@ -415,7 +344,140 @@
 			"Lyrics" : "김영아",
 			"Composed" : "윤일상",
 			"Release" : "2001.07"
-		}
+		},
+		"videoid" : "xdPaPzkmmrg"
+	},
+	{
+		"singer" : "터보",
+		"title" : "Twist King",
+		"album" : {
+			"name" : "2집 New Sensation",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1929.jpg",
+			"Lyrics" : "이승호",
+			"Composed" : "주영훈",
+			"Release" : "1996.08"
+		},
+		"videoid" : "iiuRyVs4AlM"
+	},
+	{
+		"singer" : "Girl",
+		"title" : "아스피린",
+		"album" : {
+			"name" : "1집 ROCK`N ROLL REVOLUTION",
+			"cover" : "http://image.music.naver.net/album/204/000/026/26658.jpg",
+			"Lyrics" : "최병훈",
+			"Composed" : "최병훈",
+			"Release" : "1995.12"
+		},
+		"videoid" : "TVjEcwKa3p4"
+	},
+	{
+		"singer" : "015B",
+		"title" : "친구와 연인",
+		"album" : {
+			"name" : "2집 Second Episode",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2006.jpg",
+			"Lyrics" : "정석원",
+			"Composed" : "정석원",
+			"Release" : "1991.05"
+		},
+		"videoid" : "h4P6VUklOuw"
+	},
+	{
+		"singer" : "넥스트",
+		"title" : "도시인",
+		"album" : {
+			"name" : "1집 Home",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1889.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1993"
+		},
+		"videoid" : "p67uMWcIGXk"
+	},
+	{
+		"singer" : "서태지와 아이들",
+		"title" : "우리들만의 추억",
+		"album" : {
+			"name" : "2집 Seotaiji and Boys II",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1900.jpg",
+			"Lyrics" : "William Byun, 서태지",
+			"Composed" : "서태지",
+			"Release" : "1993.06"
+		},
+		"videoid" : "G_fvD7NrDHY"
+	},
+	{
+		"singer" : "싸이",
+		"title" : "Right Now",
+		"album" : {
+			"name" : "5집 PSYFIVE",
+			"cover" : "http://image.music.naver.net/album/204/000/180/180995.jpg",
+			"Lyrics" : "싸이",
+			"Composed" : "싸이",
+			"Release" : "2010.10"
+		},
+		"videoid" : "H6f-8I1pb8k"
+	},
+	{
+		"singer" : "인피니트",
+		"title" : "내꺼하자",
+		"album" : {
+			"name" : "1집 OVER THE TOP",
+			"cover" : "http://image.music.naver.net/album/204/000/201/201534.jpg",
+			"Lyrics" : "송수윤",
+			"Composed" : "김승수,한재윤",
+			"Release" : "2011.07"
+		},
+		"videoid" : "ESpZx1XhBPk"
+	},
+	{
+		"singer" : "아이유",
+		"title" : "좋은날",
+		"album" : {
+			"name" : "Real",
+			"cover" : "http://image.music.naver.net/album/204/000/184/184117.jpg",
+			"Lyrics" : "김이나",
+			"Composed" : "이민수",
+			"Release" : "2010.12"
+		},
+		"videoid" : "jeqdYqsrsA0"
+	},
+	{
+		"singer" : "엄정화",
+		"title" : "숨은 그림찾기",
+		"album" : {
+			"name" : "4집 Invitation",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1278.jpg",
+			"Lyrics" : "김영아",
+			"Composed" : "정재윤",
+			"Release" : "1998.07"
+		},
+		"videoid" : "YWkeTHJX064"
+	},
+	{
+		"singer" : "빅뱅",
+		"title" : "MONSTER",
+		"album" : {
+			"name" : "STILL ALIVE",
+			"cover" : "http://image.music.naver.net/album/204/000/322/322239.jpg",
+			"Lyrics" : "G-드래곤, TOP",
+			"Composed" : "G-드래곤, 최필강",
+			"Release" : "2012.06"
+		},
+		"videoid" : "btDd9rOlc2k"
+	},
+	{
+		"singer" : "Miss A",
+		"title" : "Bad Girl Good Girl",
+		"album" : {
+			"name" : "1집 A Class",
+			"cover" : "http://image.music.naver.net/album/204/000/201/201540.jpg",
+			"Lyrics" : "박진영",
+			"Composed" : "박진영",
+			"Release" : "2011.07"
+		},
+		"videoid" : "8TeeJvcBdLA"
 	},
 	{
 		"singer" : "핑클",
@@ -426,7 +488,8 @@
 			"Lyrics" : "김영아",
 			"Composed" : "주태영",
 			"Release" : "1999.05"
-		}
+		},
+		"videoid" : "sCuNko9qDgA"
 	},
 	{
 		"singer" : "유피",
@@ -437,7 +500,8 @@
 			"Lyrics" : "장용진",
 			"Composed" : "장용진",
 			"Release" : "1997.04"
-		}
+		},
+		"videoid" : "W26H4SDa19U"
 	},
 	{
 		"singer" : "베이비복스",
@@ -448,7 +512,8 @@
 			"Lyrics" : "김형석",
 			"Composed" : "김형석",
 			"Release" : "1998.10"
-		}
+		},
+		"videoid" : "vsuAJZF9Dy0"
 	},
 	{
 		"singer" : "핑클",
@@ -459,7 +524,8 @@
 			"Lyrics" : "홍지유",
 			"Composed" : "김진권",
 			"Release" : "2000.10"
-		}
+		},
+		"videoid" : "e0_mRGf9u1o"
 	},
 	{
 		"singer" : "쿨",
@@ -470,7 +536,8 @@
 			"Lyrics" : "이승호",
 			"Composed" : "윤일상",
 			"Release" : "1997.07"
-		}
+		},
+		"videoid" : "M2RSYAGdybA"
 	},
 	{
 		"singer" : "베이비복스",
@@ -481,18 +548,8 @@
 			"Lyrics" : "임병옥",
 			"Composed" : "임병옥",
 			"Release" : "2002.04"
-		}
-	},
-	{
-		"singer" : "엄정화",
-		"title" : "배반의 장미",
-		"album" : {
-			"name" : "3집 후애",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1412.jpg",
-			"Lyrics" : "주영훈",
-			"Composed" : "주영훈",
-			"Release" : "1997.03"
-		}
+		},
+		"videoid" : "dHHVb8z5S_o"
 	},
 	{
 		"singer" : "쿨",
@@ -503,161 +560,8 @@
 			"Lyrics" : "이승호,윤일상",
 			"Composed" : "윤일상",
 			"Release" : "1996.11"
-		}
-	},
-	{
-		"singer" : "유피",
-		"title" : "뿌요뿌요",
-		"album" : {
-			"name" : "2집 Second Birth",
-			"cover" : "http://image.music.naver.net/album/204/000/026/26827.jpg",
-			"Lyrics" : "장용진",
-			"Composed" : "장용진",
-			"Release" : "1997.04"
-		}
-	},
-	{
-		"singer" : "유엔",
-		"title" : "평생",
-		"album" : {
-			"name" : "1집 UNITED N-GENERATION",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2463.jpg",
-			"Lyrics" : "최수정",
-			"Composed" : "이정현",
-			"Release" : "2000"
-		}
-	},
-	{
-		"singer" : "신승훈",
-		"title" : "처음 그 느낌처럼",
-		"album" : {
-			"name" : "3집 Shin Seung Hun Vol.3",
-			"cover" : "http://image.music.naver.net/album/204/000/000/79.jpg",
-			"Lyrics" : "김창환",
-			"Composed" : "천성일",
-			"Release" : "1993.04"
-		}
-	},
-	{
-		"singer" : "쿨",
-		"title" : "슬퍼지려 하기 전에",
-		"album" : {
-			"name" : "2집 The [Ku:l] : Love Is...Waiting",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2273.jpg",
-			"Lyrics" : "최준영",
-			"Composed" : "최준영",
-			"Release" : "1995.10"
-		}
-	},
-	{
-		"singer" : "김건모",
-		"title" : "핑계",
-		"album" : {
-			"name" : "2집 김건모",
-			"cover" : "http://image.music.naver.net/album/204/000/000/82.jpg",
-			"Lyrics" : "김창환",
-			"Composed" : "김창환",
-			"Release" : "1993"
-		}
-	},
-	{
-		"singer" : "룰라",
-		"title" : "3! 4!",
-		"album" : {
-			"name" : "4집 All System Go",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2391.jpg",
-			"Lyrics" : "이현도",
-			"Composed" : "이현도",
-			"Release" : "1996.06"
-		}
-	},
-	{
-		"singer" : "레인보우",
-		"title" : "A",
-		"album" : {
-			"name" : "A",
-			"cover" : "http://image.music.naver.net/album/204/000/177/177571.jpg",
-			"Lyrics" : "Sweetune",
-			"Composed" : "Sweetune",
-			"Release" : "2010.08"
-		}
-	},
-	{
-		"singer" : "f(x)",
-		"title" : "Beautiful Stranger",
-		"album" : {
-			"name" : "Electric Shock",
-			"cover" : "http://image.music.naver.net/album/204/000/322/322732.jpg",
-			"Lyrics" : "Misfit",
-			"Composed" : "Amy Kabba,Mich Hansen,Jason Gill",
-			"Release" : "2012.06"
-		}
-	},
-	{
-		"singer" : "투애니원",
-		"title" : "I don't care",
-		"album" : {
-			"name" : "1st Mini Album",
-			"cover" : "http://image.music.naver.net/album/204/000/158/158893.jpg",
-			"Lyrics" : "Teddy, KUSH",
-			"Composed" : "Teddy, KUSH",
-			"Release" : "2009.07"
-		}
-	},
-	{
-		"singer" : "비스트",
-		"title" : "Shock",
-		"album" : {
-			"name" : "SHOCK OF THE NEW ERA",
-			"cover" : "http://image.music.naver.net/album/204/000/169/169586.jpg",
-			"Lyrics" : "신사동 호랭이, 이상호",
-			"Composed" : " 신사동 호랭이, 이상호",
-			"Release" : "2010.03"
-		}
-	},
-	{
-		"singer" : "투애니원",
-		"title" : "Can't Nobody",
-		"album" : {
-			"name" : "1집 To Anyone",
-			"cover" : "http://image.music.naver.net/album/204/000/179/179077.jpg",
-			"Lyrics" : "Teddy",
-			"Composed" : "Teddy",
-			"Release" : "2010.09"
-		}
-	},
-	{
-		"singer" : "태티서",
-		"title" : "Twinkle",
-		"album" : {
-			"name" : "Twinkle",
-			"cover" : "http://image.music.naver.net/album/204/000/319/319313.jpg",
-			"Lyrics" : "서지음",
-			"Composed" : "Brandon Fraley, Jamelle Fraley, Javier Solis",
-			"Release" : "2012.04"
-		}
-	},
-	{
-		"singer" : "핑클",
-		"title" : "화이트(White)",
-		"album" : {
-			"name" : "2.5집 Special",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2155.jpg",
-			"Lyrics" : "김영아",
-			"Composed" : "김석찬",
-			"Release" : "1999.11"
-		}
-	},
-	{
-		"singer" : "자자",
-		"title" : "버스안에서",
-		"album" : {
-			"name" : "1집 버스안에서",
-			"cover" : "http://image.music.naver.net/album/204/000/034/34446.jpg",
-			"Lyrics" : "강원석",
-			"Composed" : "강원석",
-			"Release" : "1996.11"
-		}
+		},
+		"videoid" : "wOgBrCwGnOs"
 	},
 	{
 		"singer" : "베이비복스",
@@ -668,7 +572,140 @@
 			"Lyrics" : "김창환",
 			"Composed" : "김창환",
 			"Release" : "2003.04"
-		}
+		},
+		"videoid" : "cXmFksH-wNs"
+	},
+	{
+		"singer" : "엄정화",
+		"title" : "Festival",
+		"album" : {
+			"name" : "5집 005.1999.06",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1299.jpg",
+			"Lyrics" : "주영훈",
+			"Composed" : "주영훈",
+			"Release" : "1999.06"
+		},
+		"videoid" : "K8sXHXusDf0"
+	},
+	{
+		"singer" : "유피",
+		"title" : "뿌요뿌요",
+		"album" : {
+			"name" : "2집 Second Birth",
+			"cover" : "http://image.music.naver.net/album/204/000/026/26827.jpg",
+			"Lyrics" : "장용진",
+			"Composed" : "장용진",
+			"Release" : "1997.04"
+		},
+		"videoid" : "vmTr3fRm2Z8"
+	},
+	{
+		"singer" : "유엔",
+		"title" : "평생",
+		"album" : {
+			"name" : "1집 UNITED N-GENERATION",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2463.jpg",
+			"Lyrics" : "최수정",
+			"Composed" : "이정현",
+			"Release" : "2000"
+		},
+		"videoid" : "WI1XNc9g5Mk"
+	},
+	{
+		"singer" : "신승훈",
+		"title" : "처음 그 느낌처럼",
+		"album" : {
+			"name" : "3집 Shin Seung Hun Vol.3",
+			"cover" : "http://image.music.naver.net/album/204/000/000/79.jpg",
+			"Lyrics" : "김창환",
+			"Composed" : "천성일",
+			"Release" : "1993.04"
+		},
+		"videoid" : "vtDY3cD7vo8"
+	},
+	{
+		"singer" : "쿨",
+		"title" : "슬퍼지려 하기 전에",
+		"album" : {
+			"name" : "2집 The [Ku:l] : Love Is...Waiting",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2273.jpg",
+			"Lyrics" : "최준영",
+			"Composed" : "최준영",
+			"Release" : "1995.10"
+		},
+		"videoid" : "IxwjmnV69Lc"
+	},
+	{
+		"singer" : "김건모",
+		"title" : "핑계",
+		"album" : {
+			"name" : "2집 김건모",
+			"cover" : "http://image.music.naver.net/album/204/000/000/82.jpg",
+			"Lyrics" : "김창환",
+			"Composed" : "김창환",
+			"Release" : "1993"
+		},
+		"videoid" : "p_7qu9LmRYc"
+	},
+	{
+		"singer" : "태티서",
+		"title" : "Twinkle",
+		"album" : {
+			"name" : "Twinkle",
+			"cover" : "http://image.music.naver.net/album/204/000/319/319313.jpg",
+			"Lyrics" : "서지음",
+			"Composed" : "Brandon Fraley, Jamelle Fraley, Javier Solis",
+			"Release" : "2012.04"
+		},
+		"videoid" : "p8IvOWMIPIc"
+	},
+	{
+		"singer" : "레인보우",
+		"title" : "A",
+		"album" : {
+			"name" : "A",
+			"cover" : "http://image.music.naver.net/album/204/000/177/177571.jpg",
+			"Lyrics" : "Sweetune",
+			"Composed" : "Sweetune",
+			"Release" : "2010.08"
+		},
+		"videoid" : "4HXj763uclM"
+	},
+	{
+		"singer" : "핑클",
+		"title" : "화이트(White)",
+		"album" : {
+			"name" : "2.5집 Special",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2155.jpg",
+			"Lyrics" : "김영아",
+			"Composed" : "김석찬",
+			"Release" : "1999.11"
+		},
+		"videoid" : "bFD2P7raTwU"
+	},
+	{
+		"singer" : "엄정화",
+		"title" : "배반의 장미",
+		"album" : {
+			"name" : "3집 후애",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1412.jpg",
+			"Lyrics" : "주영훈",
+			"Composed" : "주영훈",
+			"Release" : "1997.03"
+		},
+		"videoid" : "1qnAcez7zcU"
+	},
+	{
+		"singer" : "f(x)",
+		"title" : "Beautiful Stranger",
+		"album" : {
+			"name" : "Electric Shock",
+			"cover" : "http://image.music.naver.net/album/204/000/322/322732.jpg",
+			"Lyrics" : "Misfit",
+			"Composed" : "Amy Kabba,Mich Hansen,Jason Gill",
+			"Release" : "2012.06"
+		},
+		"videoid" : "bJdVfmSBLSk"
 	},
 	{
 		"singer" : "써니힐",
@@ -679,7 +716,20 @@
 			"Lyrics" : "",
 			"Composed" : "",
 			"Release" : "2011.06"
-		}
+		},
+		"videoid" : "mLlqbaj8y5E"
+	},
+	{
+		"singer" : "김민종",
+		"title" : "하얀 그리움",
+		"album" : {
+			"name" : "7집 You`re My Life",
+			"cover" : "http://image.music.naver.net/album/204/000/000/849.jpg",
+			"Lyrics" : "김태훈",
+			"Composed" : "황세준",
+			"Release" : "2001.09"
+		},
+		"videoid" : "aPzBwEVbPkY"
 	},
 	{
 		"singer" : "브라운아이드걸스",
@@ -690,7 +740,80 @@
 			"Lyrics" : "김이나",
 			"Composed" : "용감한 형제",
 			"Release" : "2008.09"
-		}
+		},
+		"videoid" : "OsSlxBluwc0"
+	},
+	{
+		"singer" : "원더걸스",
+		"title" : "Tell me",
+		"album" : {
+			"name" : "1집 The Wonder Years",
+			"cover" : "http://image.music.naver.net/album/204/000/061/61549.jpg",
+			"Lyrics" : "박진영",
+			"Composed" : "박진영",
+			"Release" : "2007.09"
+		},
+		"videoid" : "3vVHy0XoIN4"
+	},
+	{
+		"singer" : "투애니원",
+		"title" : "I don't care",
+		"album" : {
+			"name" : "1st Mini Album",
+			"cover" : "http://image.music.naver.net/album/204/000/158/158893.jpg",
+			"Lyrics" : "Teddy, KUSH",
+			"Composed" : "Teddy, KUSH",
+			"Release" : "2009.07"
+		},
+		"videoid" : "4MgAxMO1KD0"
+	},
+	{
+		"singer" : "비스트",
+		"title" : "Shock",
+		"album" : {
+			"name" : "SHOCK OF THE NEW ERA",
+			"cover" : "http://image.music.naver.net/album/204/000/169/169586.jpg",
+			"Lyrics" : "신사동 호랭이, 이상호",
+			"Composed" : " 신사동 호랭이, 이상호",
+			"Release" : "2010.03"
+		},
+		"videoid" : "QWpmgvWyNf0"
+	},
+	{
+		"singer" : "투애니원",
+		"title" : "Can't Nobody",
+		"album" : {
+			"name" : "1집 To Anyone",
+			"cover" : "http://image.music.naver.net/album/204/000/179/179077.jpg",
+			"Lyrics" : "Teddy",
+			"Composed" : "Teddy",
+			"Release" : "2010.09"
+		},
+		"videoid" : "Ihi_kJJj_8A"
+	},
+	{
+		"singer" : "자자",
+		"title" : "버스안에서",
+		"album" : {
+			"name" : "1집 버스안에서",
+			"cover" : "http://image.music.naver.net/album/204/000/034/34446.jpg",
+			"Lyrics" : "강원석",
+			"Composed" : "강원석",
+			"Release" : "1996.11"
+		},
+		"videoid" : "Mu5ZWMOMbFQ"
+	},
+	{
+		"singer" : "룰라",
+		"title" : "3! 4!",
+		"album" : {
+			"name" : "4집 All System Go",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2391.jpg",
+			"Lyrics" : "이현도",
+			"Composed" : "이현도",
+			"Release" : "1996.06"
+		},
+		"videoid" : "N_0P4M1Uw-o"
 	},
 	{
 		"singer" : "카라",
@@ -701,29 +824,8 @@
 			"Lyrics" : "송수윤",
 			"Composed" : "한재호, 김승수",
 			"Release" : "2011.09"
-		}
-	},
-	{
-		"singer" : "처진 달팽이",
-		"title" : "압구정 날라리",
-		"album" : {
-			"name" : "무한도전 서해안 고속도로 가요제",
-			"cover" : "http://image.music.naver.net/album/204/000/200/200515.jpg",
-			"Lyrics" : "이적",
-			"Composed" : "이적",
-			"Release" : "2011.07"
-		}
-	},
-	{
-		"singer" : "브라운아이드걸스",
-		"title" : "Must Have Love",
-		"album" : {
-			"name" : "SG워너비 &amp; 브라운 아이드 걸스",
-			"cover" : "http://image.music.naver.net/album/204/000/042/42339.jpg",
-			"Lyrics" : "김이나",
-			"Composed" : "안정훈",
-			"Release" : "2006.11"
-		}
+		},
+		"videoid" : "zYoYoBtLqOY"
 	},
 	{
 		"singer" : "오렌지 캬라멜",
@@ -734,7 +836,32 @@
 			"Lyrics" : "원태연",
 			"Composed" : "Daniel Barkman, Jorgen Ringqvist",
 			"Release" : "2011.03"
-		}
+		},
+		"videoid" : "V_4eBF4c74Q"
+	},
+	{
+		"singer" : "처진 달팽이",
+		"title" : "압구정 날라리",
+		"album" : {
+			"name" : "무한도전 서해안 고속도로 가요제",
+			"cover" : "http://image.music.naver.net/album/204/000/200/200515.jpg",
+			"Lyrics" : "이적",
+			"Composed" : "이적",
+			"Release" : "2011.07"
+		},
+		"videoid" : "wv5FIPRIkCU"
+	},
+	{
+		"singer" : "브라운아이드걸스",
+		"title" : "Must Have Love",
+		"album" : {
+			"name" : "SG워너비 &amp; 브라운 아이드 걸스",
+			"cover" : "http://image.music.naver.net/album/204/000/042/42339.jpg",
+			"Lyrics" : "김이나",
+			"Composed" : "안정훈",
+			"Release" : "2006.11"
+		},
+		"videoid" : "97XUd2oissY"
 	},
 	{
 		"singer" : "S.E.S",
@@ -745,18 +872,8 @@
 			"Lyrics" : "최수정",
 			"Composed" : "최수정",
 			"Release" : "1998.11"
-		}
-	},
-	{
-		"singer" : "플라이 투더 스카이",
-		"title" : "Sea Of Love",
-		"album" : {
-			"name" : "3집 Sea Of Love",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2856.jpg",
-			"Lyrics" : "유영진",
-			"Composed" : "유영진",
-			"Release" : "2002.04"
-		}
+		},
+		"videoid" : "vWEgD1OEfr8"
 	},
 	{
 		"singer" : "빅뱅",
@@ -767,18 +884,8 @@
 			"Lyrics" : "G-드래곤, Teddy, TOP",
 			"Composed" : "DEE. P, G-드래곤, Teddy",
 			"Release" : "2012.06"
-		}
-	},
-	{
-		"singer" : "인피니트",
-		"title" : "Man In Love",
-		"album" : {
-			"name" : "New Challenge",
-			"cover" : "http://image.music.naver.net/album/204/000/372/372898.jpg",
-			"Lyrics" : "송수윤",
-			"Composed" : "한재호, 김승수, 이창현",
-			"Release" : "2013.03"
-		}
+		},
+		"videoid" : "d4fG3eRUuWg"
 	},
 	{
 		"singer" : "서태지와 아이들",
@@ -789,18 +896,8 @@
 			"Lyrics" : "서태지",
 			"Composed" : "서태지",
 			"Release" : "1993.06"
-		}
-	},
-	{
-		"singer" : "듀스",
-		"title" : "말하자면",
-		"album" : {
-			"name" : "DEUX Forever",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1829.jpg",
-			"Lyrics" : "이현도",
-			"Composed" : "이현도",
-			"Release" : "1993.06"
-		}
+		},
+		"videoid" : "0VC2cqJtIcY"
 	},
 	{
 		"singer" : "S.E.S",
@@ -811,7 +908,8 @@
 			"Lyrics" : "Moonstone",
 			"Composed" : "Moonstone",
 			"Release" : "1997.11"
-		}
+		},
+		"videoid" : "1jGpAmfsGF0"
 	},
 	{
 		"singer" : "김건모",
@@ -822,7 +920,44 @@
 			"Lyrics" : "김창환",
 			"Composed" : "김창환",
 			"Release" : "1995.01"
-		}
+		},
+		"videoid" : "98GStt1eonw"
+	},
+	{
+		"singer" : "다비치",
+		"title" : "사랑과 전쟁",
+		"album" : {
+			"name" : "1.5집 Vivid Summer Edition",
+			"cover" : "http://image.music.naver.net/album/204/000/144/144152.jpg",
+			"Lyrics" : "안영미",
+			"Composed" : "조영수",
+			"Release" : "2008.07"
+		},
+		"videoid" : "sXfsPLBNJ-I"
+	},
+	{
+		"singer" : "김민종",
+		"title" : "세상끝에서의 시작",
+		"album" : {
+			"name" : "4집 愛 (애)",
+			"cover" : "http://image.music.naver.net/album/204/000/000/87.jpg",
+			"Lyrics" : "원태연",
+			"Composed" : "조규만",
+			"Release" : "1998.05"
+		},
+		"videoid" : "LrvCFGR2Lkw"
+	},
+	{
+		"singer" : "플라이 투더 스카이",
+		"title" : "Sea Of Love",
+		"album" : {
+			"name" : "3집 Sea Of Love",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2856.jpg",
+			"Lyrics" : "유영진",
+			"Composed" : "유영진",
+			"Release" : "2002.04"
+		},
+		"videoid" : "aTu_A_PppyY"
 	},
 	{
 		"singer" : "언타이틀",
@@ -833,7 +968,20 @@
 			"Lyrics" : "",
 			"Composed" : "",
 			"Release" : "1996.08"
-		}
+		},
+		"videoid" : "BaJ0MuQ4-s0"
+	},
+	{
+		"singer" : "인피니트",
+		"title" : "Man In Love",
+		"album" : {
+			"name" : "New Challenge",
+			"cover" : "http://image.music.naver.net/album/204/000/372/372898.jpg",
+			"Lyrics" : "송수윤",
+			"Composed" : "한재호, 김승수, 이창현",
+			"Release" : "2013.03"
+		},
+		"videoid" : "vHzyD_djgoA"
 	},
 	{
 		"singer" : "",
@@ -844,7 +992,8 @@
 			"Lyrics" : "",
 			"Composed" : "",
 			"Release" : ""
-		}
+		},
+		"videoid" : ""
 	},
 	{
 		"singer" : "",
@@ -855,6 +1004,163 @@
 			"Lyrics" : "",
 			"Composed" : "",
 			"Release" : ""
-		}
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
+	},
+	{
+		"singer" : "",
+		"title" : "",
+		"album" : {
+			"name" : "",
+			"cover" : "",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : ""
+		},
+		"videoid" : ""
 	}
 ]
