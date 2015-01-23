@@ -51,7 +51,7 @@ ytApp.directive('youtube', function($window, YT_event) {
         player = new YT.Player(element.children()[0], {
 
           playerVars: {
-            autoplay: 0,
+            autoplay: 1,
             html5: 1,
             theme: "light",
             modesbranding: 0,

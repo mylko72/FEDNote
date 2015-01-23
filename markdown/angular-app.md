@@ -1,5 +1,137 @@
 #AngularJS로 하는<br />웹 애플리케이션 개발
 
+##AngularJS 철학
+
+###모듈과 의존성 주입
+
+####서비스 등록
+
+DI 기능을 사용하는 첫 단계는 객체를 AngularJS의 모듈로 등록하는 것이다. 객체의 인스턴스 자체를 AngularJS에 바로 등록하지 않고 AngularJS 의존성 주입 시스템에 객체 생성법을 넘겨주는 방식을 사용한다.
+
+AngularJS의 `$provide` 서비스는 객체 생성법을 등록할 때 사용하는데, 이를 통해 객체 생성법이 등록되면 `$injector` 서비스가 생성법을 해석해서 인스턴스화한 다음 사용할 준비를 마쳐놓는다.
+
+*`$injector` 서비스에 의해 생성된 객체를 서비스라고 부른다.* AngularJS는 객체 생성법을 애플리케이션 생명주기에서 단 한 번만 해석하기 때문에 객체의 인스턴스는 오직 하나만 생성된다.
+
+>`$injector`에 의해서 생성된 서비스는 싱글톤이다. 따라서 실행 중인 애플리케이션별로 해당 서비스의 인스턴스는 단 하나가 된다.
+
+#####값
+
+	var myMod = angular.module('myMod', []);
+	myMod.value('notificationsArchive', new NotificationsArchive());
+
+#####서비스
+
+다른 객체와 의존 관계가 있는 객체를 등록하는 가장 쉬운 방법은 생성자 함수를 등록하는 것이다. 이는 다음처럼 `service` 메소드를 사용하면 된다.
+
+	myMod.service('notificationsService', NotificationsService)
+
+그리고 NotificationsService 생성자 함수는 다음과 같이 작성하면 된다.
+
+	var NotificationsService = function(notificationsArchive){
+		this.notificationsArchive = notificationsArchive;
+	};
+
+AngularJS의 의존성 주입을 사용하면 NotificationsService 생성자 함수에서 이렇게 `new` 연산자를 제거할 수 있다.
+실제로 `service` 메서드가 많이 사용되지는 않지만, 이미 만들어놓은 생성자 함수를 등록하기에는 좋다.
+
+#####팩토리
+
+객체 생성법을 등록하는 또 다른 방법은 `factory` 메소드를 사용하는 것이다. `factory` 메소드는 객체를 생성하는 임의의 함수를 등록할 수 있기 때문에 더 유연하다.
+
+	myMod.factory('notificationsService', function(notificationsArchive){
+
+		var MAX_LEN = 10;
+		var notifications = [];
+
+		return {
+			push: function(notification){
+
+			},
+			...
+		};
+	});
+
+*AngularJS는 반환된 객체를 등록하기 위해 `factory` 함수를 사용한다.* 어떤 자바스크립트 객체든 가능하며, `function` 객체도 가능하다.
+AngularJS 의존성 주입 시스템에 객체를 등록할 때 가장 일반적인 방법이 바로 `factory` 메소드이다. 또한 팩토리도 일반적인 함수이므로 자바스크립트에서 'private' 변수를 만들어 낼 수 있는 렉시컬 스코프도 사용할 수 있다. 
+
+#####상수
+
+AngularJS는 상수를 모듈 수준에서 정의해 의존 객체처럼 주입할 수 있는 해결책을 제공한다.
+
+NotificationsService 서비스가 다음처럼 설정 값을 넘겨받는 것이 가장 이상적이다.
+
+	myMod.factory('NotificationsService', function(notificationsArchive, MAX_LEN){
+		...
+	});
+
+그리고 NotificationsService 서비스 밖에서 설정 값이 모듈 수준으로 다음처럼 제공된다.
+
+	myMod.constant('MAX_LEN', 10);
+
+상수는 많은 애플리케이션에서 재사용되는 서비스를 생성할 때 아주 유용하다.
+
+#####제공자
+
+가장 강력한 메소드는 `provider` 메소드다. 제공자로 notificationsService 서비스를 등록하는 예제는 다음과 같다.
+
+	myMod.provider('notificationsService', function(){
+
+		var config = {
+			maxLen : 10
+		};
+		var notifications = [];
+
+		return {
+			setMaxLen: function(maxLen){
+				config.maxLen = maxLen || config.maxLen;
+			},
+
+			$get: function(notificationsArchive){
+				return {
+					push: function(notification){
+						...
+						if(newLen > config.maxLen){
+							...
+						}
+					},
+					...	
+				}
+			}
+		};
+	});
+
+먼저 *`provider`는 `$get` 프로퍼티를 갖고 있는 객체를 반환하는 함수여야 한다. 즉, `$get` 프로퍼티가 `service` 인스턴스를 반환하는 팩토리 함수여야 한다는 말이다. 그래서 `$get` 프로퍼티로 팩토리 함수를 들고 있는 객체를 제공자라고 생각할 수 있다.*
+
+`provider` 함수가 반환하는 객체는 다른 메소드나 프로퍼티를 가질 수 있기 때문에 `$get` 메소드가 실행되기 전에 설정 값을 변경하는 것도 가능하다.
+
+####모듈 생명주기
+
+AngularJS는 모듈의 생명주기를 다음과 같은 두 단계로 구분한다.
+
+- **설정 단계** - 모든 객체 생성법을 찾아 설정하는 단계
+- **실행 단계** - 인스턴스가 만들어진 후 수행해야 하는 로직을 실행하는 단계
+
+#####설정 단계
+
+제공자의 설정은 설정 단계에서만 변경될 수 있다. 다음은 제공자의 설정을 변경하는 코드다.
+
+	myMod.config(function(notificationsServiceProvider){
+		notificationsServiceProvider.setMaxLen(5);
+	});
+
+여기서 중요한 점은 `Provider`라는 접미사가 붙어있고 실행준비가 끝난 객체 생성법을 뜻하는 notificationsServiceProvider 객체를 사용한다는 점이다. 이렇게 설정 단계를 활용하면 객체 생성 공식의 마지막 순간에 변경에 가할 수 있다.
+
+#####실행 단계
+
+실행 단계를 활용하면 애플리케이션이 초기화될 때 수행해야 하는 작업을 추가할 수 있다. 다음은 실행 단계를 보여주기 위해 애플리케이션이 시작될 때의 시간을 사용자에게 보여줘야 한다고 해보자. 이를 구현하려면 다음 코드처럼 애플리케이션의 시작 시간을 `$rootScope` 인스턴스 프로퍼티에 할당해야 한다.
+
+	angular.module('upTimeApp', []).run(function($rootScope){
+		$rootScope.appStarted = new Date();
+	});
+
+그리고 템플릿에서 다음처럼 가져다 쓰면 된다.
+
+
 ##백엔드 서버와 통신
 
 AngularJS는 범용적인 `$http` 서비스로 XHR, JSONP 통신을 다루고, 특화된 `$resource` 서비스로는 RESTful 엔드포인트를 쉽게 다룰 수 있다.

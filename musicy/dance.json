@@ -168,6 +168,30 @@
 		"videoid" : "CTVvF7GKnKk"
 	},
 	{
+		"singer" : "쿨",
+		"title" : "맥주와 땅콩",
+		"album" : {
+			"name" : "5집 해석남녀",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2271.jpg",
+			"Lyrics" : "한경운",
+			"Composed" : "박해운",
+			"Release" : "2000.04"
+		},
+		"videoid" : "iqoj-zvCk9g"
+	},
+	{
+		"singer" : "SES",
+		"title" : "I'm your girl",
+		"album" : {
+			"name" : "1집 S.E.S",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1846.jpg",
+			"Lyrics" : "유영진",
+			"Composed" : "유영진",
+			"Release" : "1997.11"
+		},
+		"videoid" : "W3NOB_aYMQ0"
+	},
+	{
 		"singer" : "소녀시대",
 		"title" : "Gee",
 		"album" : {
@@ -226,18 +250,6 @@
 			"Release" : "1995"
 		},
 		"videoid" : "k_j_gT4Sf0o"
-	},
-	{
-		"singer" : "SES",
-		"title" : "I'm your girl",
-		"album" : {
-			"name" : "1집 S.E.S",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1846.jpg",
-			"Lyrics" : "유영진",
-			"Composed" : "유영진",
-			"Release" : "1997.11"
-		},
-		"videoid" : "W3NOB_aYMQ0"
 	},
 	{
 		"singer" : "HOT",
@@ -480,6 +492,18 @@
 		"videoid" : "8TeeJvcBdLA"
 	},
 	{
+		"singer" : "싸이",
+		"title" : "강남스타일",
+		"album" : {
+			"name" : "싸이6甲 Part 1",
+			"cover" : "http://image.music.naver.net/album/204/000/325/325692.jpg",
+			"Lyrics" : "싸이",
+			"Composed" : "싸이, 유건형",
+			"Release" : "2012.07"
+		},
+		"videoid" : "9bZkp7q19f0"
+	},
+	{
 		"singer" : "핑클",
 		"title" : "영원한 사랑",
 		"album" : {
@@ -504,30 +528,6 @@
 		"videoid" : "W26H4SDa19U"
 	},
 	{
-		"singer" : "베이비복스",
-		"title" : "야야야",
-		"album" : {
-			"name" : "2집 야야야",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1830.jpg",
-			"Lyrics" : "김형석",
-			"Composed" : "김형석",
-			"Release" : "1998.10"
-		},
-		"videoid" : "vsuAJZF9Dy0"
-	},
-	{
-		"singer" : "핑클",
-		"title" : "Now",
-		"album" : {
-			"name" : "3집 Now",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2496.jpg",
-			"Lyrics" : "홍지유",
-			"Composed" : "김진권",
-			"Release" : "2000.10"
-		},
-		"videoid" : "e0_mRGf9u1o"
-	},
-	{
 		"singer" : "쿨",
 		"title" : "해변의 여인",
 		"album" : {
@@ -550,6 +550,18 @@
 			"Release" : "2002.04"
 		},
 		"videoid" : "dHHVb8z5S_o"
+	},
+	{
+		"singer" : "코요테",
+		"title" : "순정(純情)",
+		"album" : {
+			"name" : "1집 코요태(高耀太)",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1885.jpg",
+			"Lyrics" : "최준영",
+			"Composed" : "최준영",
+			"Release" : "1998.12"
+		},
+		"videoid" : "Y0CeTkncsvk"
 	},
 	{
 		"singer" : "쿨",
@@ -600,16 +612,16 @@
 		"videoid" : "vmTr3fRm2Z8"
 	},
 	{
-		"singer" : "유엔",
-		"title" : "평생",
+		"singer" : "조PD",
+		"title" : "친구여(Feat.인순이)",
 		"album" : {
-			"name" : "1집 UNITED N-GENERATION",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2463.jpg",
-			"Lyrics" : "최수정",
-			"Composed" : "이정현",
-			"Release" : "2000"
+			"name" : "5집 Great Expectation 조PD Pt 2: Love And Life",
+			"cover" : "http://image.music.naver.net/album/204/000/026/26503.jpg",
+			"Lyrics" : "조PD",
+			"Composed" : "박근태",
+			"Release" : "2004.03"
 		},
-		"videoid" : "WI1XNc9g5Mk"
+		"videoid" : "0WFgbT8UASU"
 	},
 	{
 		"singer" : "신승훈",
@@ -636,6 +648,18 @@
 		"videoid" : "IxwjmnV69Lc"
 	},
 	{
+		"singer" : "보아",
+		"title" : "No.1",
+		"album" : {
+			"name" : "2집 No.1",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1646.jpg",
+			"Lyrics" : "김영아",
+			"Composed" : "Ziggy",
+			"Release" : "2002.04"
+		},
+		"videoid" : "2DnSEWHCGxA"
+	},
+	{
 		"singer" : "김건모",
 		"title" : "핑계",
 		"album" : {
@@ -646,6 +670,42 @@
 			"Release" : "1993"
 		},
 		"videoid" : "p_7qu9LmRYc"
+	},
+	{
+		"singer" : "베이비복스",
+		"title" : "야야야",
+		"album" : {
+			"name" : "2집 야야야",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1830.jpg",
+			"Lyrics" : "김형석",
+			"Composed" : "김형석",
+			"Release" : "1998.10"
+		},
+		"videoid" : "vsuAJZF9Dy0"
+	},
+	{
+		"singer" : "핑클",
+		"title" : "Now",
+		"album" : {
+			"name" : "3집 Now",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2496.jpg",
+			"Lyrics" : "홍지유",
+			"Composed" : "김진권",
+			"Release" : "2000.10"
+		},
+		"videoid" : "e0_mRGf9u1o"
+	},
+	{
+		"singer" : "유엔",
+		"title" : "평생",
+		"album" : {
+			"name" : "1집 UNITED N-GENERATION",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2463.jpg",
+			"Lyrics" : "최수정",
+			"Composed" : "이정현",
+			"Release" : "2000"
+		},
+		"videoid" : "WI1XNc9g5Mk"
 	},
 	{
 		"singer" : "태티서",
@@ -816,6 +876,18 @@
 		"videoid" : "N_0P4M1Uw-o"
 	},
 	{
+		"singer" : "S.E.S",
+		"title" : "꿈을 모아서",
+		"album" : {
+			"name" : "4.5집 Surprise",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2692.jpg",
+			"Lyrics" : "S.E.S",
+			"Composed" : "Shimano Momoe",
+			"Release" : "2001.07"
+		},
+		"videoid" : "GPZJE_VrjzU"
+	},
+	{
 		"singer" : "카라",
 		"title" : "STEP",
 		"album" : {
@@ -876,6 +948,18 @@
 		"videoid" : "vWEgD1OEfr8"
 	},
 	{
+		"singer" : "동방신기",
+		"title" : "주문(Mirotic)",
+		"album" : {
+			"name" : "4집 MIROTIC",
+			"cover" : "http://image.music.naver.net/album/204/000/147/147193.jpg",
+			"Lyrics" : "유영진, Sarah Connor, Lucas Secon",
+			"Composed" : "Sarah Connor, Lucas Secon",
+			"Release" : "2008.09"
+		},
+		"videoid" : "HtJS32n6LNQ"
+	},
+	{
 		"singer" : "빅뱅",
 		"title" : "STILL ALIVE",
 		"album" : {
@@ -924,6 +1008,18 @@
 		"videoid" : "98GStt1eonw"
 	},
 	{
+		"singer" : "싸이",
+		"title" : "낙원",
+		"album" : {
+			"name" : "3집 3마이",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1003.jpg",
+			"Lyrics" : "싸이",
+			"Composed" : "싸이",
+			"Release" : "2002.09"
+		},
+		"videoid" : "CJjo1OSHgqQ"
+	},
+	{
 		"singer" : "다비치",
 		"title" : "사랑과 전쟁",
 		"album" : {
@@ -934,6 +1030,18 @@
 			"Release" : "2008.07"
 		},
 		"videoid" : "sXfsPLBNJ-I"
+	},
+	{
+		"singer" : "투애니원",
+		"title" : "Let's Go Party",
+		"album" : {
+			"name" : "1st Mini Album",
+			"cover" : "http://image.music.naver.net/album/204/000/158/158893.jpg",
+			"Lyrics" : "MASTA WU",
+			"Composed" : "Teddy",
+			"Release" : "2009.07"
+		},
+		"videoid" : "z7n6f8JATB8"
 	},
 	{
 		"singer" : "김민종",
@@ -984,8 +1092,44 @@
 		"videoid" : "vHzyD_djgoA"
 	},
 	{
-		"singer" : "",
-		"title" : "",
+		"singer" : "티아라",
+		"title" : "TTL Listen 2",
+		"album" : {
+			"name" : "TTL Listen 2",
+			"cover" : "http://image.music.naver.net/album/204/000/163/163126.jpg",
+			"Lyrics" : "라이머",
+			"Composed" : "김도훈, 라이머",
+			"Release" : "2009.10"
+		},
+		"videoid" : "-HClcp0tMuM"
+	},
+	{
+		"singer" : "카라",
+		"title" : "Pretty Girl",
+		"album" : {
+			"name" : "Pretty Girl",
+			"cover" : "http://image.music.naver.net/album/204/000/150/150563.jpg",
+			"Lyrics" : "송수윤",
+			"Composed" : "한재호, 김승수",
+			"Release" : "2008.12"
+		},
+		"videoid" : "fWZ7J97DtyY"
+	},
+	{
+		"singer" : "싸이",
+		"title" : "연예인",
+		"album" : {
+			"name" : "4집 싸집",
+			"cover" : "http://image.music.naver.net/album/204/000/040/40635.jpg",
+			"Lyrics" : "",
+			"Composed" : "싸이, 유건형",
+			"Release" : "2006.07"
+		},
+		"videoid" : "V0hJlOM89MA"
+	},
+	{
+		"singer" : "소유, 정기고",
+		"title" : "썸(feat. 릴보이 Of 긱스)",
 		"album" : {
 			"name" : "",
 			"cover" : "",
@@ -996,8 +1140,8 @@
 		"videoid" : ""
 	},
 	{
-		"singer" : "",
-		"title" : "",
+		"singer" : "악동뮤지션",
+		"title" : "200%",
 		"album" : {
 			"name" : "",
 			"cover" : "",
@@ -1008,8 +1152,8 @@
 		"videoid" : ""
 	},
 	{
-		"singer" : "",
-		"title" : "",
+		"singer" : "비",
+		"title" : "It's Rainning",
 		"album" : {
 			"name" : "",
 			"cover" : "",
@@ -1020,8 +1164,8 @@
 		"videoid" : ""
 	},
 	{
-		"singer" : "",
-		"title" : "",
+		"singer" : "왁스",
+		"title" : "오빠",
 		"album" : {
 			"name" : "",
 			"cover" : "",
@@ -1032,8 +1176,8 @@
 		"videoid" : ""
 	},
 	{
-		"singer" : "",
-		"title" : "",
+		"singer" : "소녀시대",
+		"title" : "Baby Baby",
 		"album" : {
 			"name" : "",
 			"cover" : "",
@@ -1044,116 +1188,8 @@
 		"videoid" : ""
 	},
 	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "",
-		"title" : "",
+		"singer" : "파파야",
+		"title" : "사랑만들기",
 		"album" : {
 			"name" : "",
 			"cover" : "",
