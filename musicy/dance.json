@@ -321,7 +321,7 @@
 			"Composed" : "최수정",
 			"Release" : "1999.10"
 		},
-		"videoid" : "hIkguXxK7T4"
+		"videoid" : "Xdn5nqpaMEY"
 	},
 	{
 		"singer" : "투투",
@@ -888,6 +888,18 @@
 		"videoid" : "GPZJE_VrjzU"
 	},
 	{
+		"singer" : "악동뮤지션",
+		"title" : "200%",
+		"album" : {
+			"name" : "1집 PLAY",
+			"cover" : "http://image.music.naver.net/album/204/000/423/423078.jpg",
+			"Lyrics" : "이찬혁",
+			"Composed" : "이찬혁",
+			"Release" : "2014.04"
+		},
+		"videoid" : "0Oi8jDMvd_w"
+	},
+	{
 		"singer" : "카라",
 		"title" : "STEP",
 		"album" : {
@@ -910,18 +922,6 @@
 			"Release" : "2011.03"
 		},
 		"videoid" : "V_4eBF4c74Q"
-	},
-	{
-		"singer" : "처진 달팽이",
-		"title" : "압구정 날라리",
-		"album" : {
-			"name" : "무한도전 서해안 고속도로 가요제",
-			"cover" : "http://image.music.naver.net/album/204/000/200/200515.jpg",
-			"Lyrics" : "이적",
-			"Composed" : "이적",
-			"Release" : "2011.07"
-		},
-		"videoid" : "wv5FIPRIkCU"
 	},
 	{
 		"singer" : "브라운아이드걸스",
@@ -958,6 +958,18 @@
 			"Release" : "2008.09"
 		},
 		"videoid" : "HtJS32n6LNQ"
+	},
+	{
+		"singer" : "비",
+		"title" : "It's Rainning",
+		"album" : {
+			"name" : "3집 It`s Raining",
+			"cover" : "http://image.music.naver.net/album/204/000/028/28752.jpg",
+			"Lyrics" : "박진영",
+			"Composed" : "박진영",
+			"Release" : "2004.10"
+		},
+		"videoid" : "WppaByyFugg"
 	},
 	{
 		"singer" : "빅뱅",
@@ -1008,6 +1020,18 @@
 		"videoid" : "98GStt1eonw"
 	},
 	{
+		"singer" : "파파야",
+		"title" : "사랑만들기",
+		"album" : {
+			"name" : "2집 Papaya 2",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2655.jpg",
+			"Lyrics" : "이희승",
+			"Composed" : "조규만",
+			"Release" : "2001.05"
+		},
+		"videoid" : "SLlNoYLFsUU"
+	},
+	{
 		"singer" : "싸이",
 		"title" : "낙원",
 		"album" : {
@@ -1056,6 +1080,18 @@
 		"videoid" : "LrvCFGR2Lkw"
 	},
 	{
+		"singer" : "SS501",
+		"title" : "Snow Prince",
+		"album" : {
+			"name" : "2nd SS501",
+			"cover" : "http://image.music.naver.net/album/204/000/035/35640.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "2005.12"
+		},
+		"videoid" : "qGnnOWN2UpU"
+	},
+	{
 		"singer" : "플라이 투더 스카이",
 		"title" : "Sea Of Love",
 		"album" : {
@@ -1078,6 +1114,18 @@
 			"Release" : "1996.08"
 		},
 		"videoid" : "BaJ0MuQ4-s0"
+	},
+	{
+		"singer" : "처진 달팽이",
+		"title" : "압구정 날라리",
+		"album" : {
+			"name" : "무한도전 서해안 고속도로 가요제",
+			"cover" : "http://image.music.naver.net/album/204/000/200/200515.jpg",
+			"Lyrics" : "이적",
+			"Composed" : "이적",
+			"Release" : "2011.07"
+		},
+		"videoid" : "wv5FIPRIkCU"
 	},
 	{
 		"singer" : "인피니트",
@@ -1128,75 +1176,27 @@
 		"videoid" : "V0hJlOM89MA"
 	},
 	{
-		"singer" : "소유, 정기고",
-		"title" : "썸(feat. 릴보이 Of 긱스)",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "악동뮤지션",
-		"title" : "200%",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "비",
-		"title" : "It's Rainning",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
-		"singer" : "왁스",
-		"title" : "오빠",
-		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
-		},
-		"videoid" : ""
-	},
-	{
 		"singer" : "소녀시대",
-		"title" : "Baby Baby",
+		"title" : "Kissing You",
 		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
+			"name" : "1집 소녀시대",
+			"cover" : "http://image.music.naver.net/album/204/000/062/62191.jpg",
+			"Lyrics" : "LeeOn(이재명), 권윤정",
+			"Composed" : "LeeOn(이재명)",
+			"Release" : "2007.11"
 		},
-		"videoid" : ""
+		"videoid" : "gffUA9GCY0I"
 	},
 	{
-		"singer" : "파파야",
-		"title" : "사랑만들기",
+		"singer" : "카라",
+		"title" : "Umbrella",
 		"album" : {
-			"name" : "",
-			"cover" : "",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : ""
+			"name" : "루팡 (Lupin)",
+			"cover" : "http://image.music.naver.net/album/204/000/169/169010.jpg",
+			"Lyrics" : "송수윤",
+			"Composed" : "한재호, 김승수",
+			"Release" : "2010.02"
 		},
-		"videoid" : ""
+		"videoid" : "9-ajBT2He5s"
 	}
 ]

@@ -4,6 +4,45 @@
 	angular.module('albumApp', ['paginationDirective', 'youTubeApp']);
 
 	angular.module('albumApp')
+		.provider('CurrentLoc', function(){
+			var evt;
+			this.$get = function(){
+				return {
+					processClick : function(event){
+
+						  //event 객체에 접근
+						  evt = event || window.event;
+						  var loc = {'x': 0, 'y': 0};
+
+
+						  //event 객체가 pageX 속성을 포함하고 있다면
+						  //pageX와 pageY를 사용해서 위치를 구함
+						  if(evt.pageX){
+							loc.x = evt.pageX;
+							loc.y = evt.pageY;
+
+						  //event 객체가 clientX 속성을 포함하고 있다면
+						  }else if(evt.clientX){
+							var offsetX = 0,
+								offsetY = 0;
+
+							//documentElement.scrollLeft를 지원하면
+							if(document.documentElement.scrollLeft){
+							  offsetX = document.documentElement.scrollLeft;
+							  offsetY = document.documentElement.scrollTop;
+							}else if(document.body){
+							  offsetX = document.body.scrollLeft;
+							  offsetY = document.body.scrollTop;
+							}
+
+							loc.x = evt.clientX + offsetX;
+							loc.y = evt.clientY + offsetY;
+						  }
+						  return loc; 
+					}
+				};
+			};
+		})
 		.controller('AlbumListCtrl', SongListController)
 		/**
 		 @filter pagination 
@@ -31,7 +70,7 @@
 
 
 	//노래 리스트를 보여주는 컨트롤러
-	function SongListController($scope, $http, $document){
+	function SongListController($scope, $http, $document, CurrentLoc){
 
 		$scope.songs = [];
 		$scope.played = false;
@@ -58,8 +97,10 @@
 			$scope.filteredSongs = $scope.songs;
 
 			$scope.playYouTube = function(song){
+				var loc = CurrentLoc.processClick();
 				$scope.played = true;	
 				$scope.videoId = song.videoid;
+				$scope.locStyle = {'left':(loc.x+320)+'px', 'top':(loc.y+10)+'px'};
 			};
 
 			$scope.closeYouTube = function(){

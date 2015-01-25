@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
 	<style type="text/css">
-		.playLayer {position:absolute; left:50%; top:200px; z-index:10; width:640px; height:480px; margin-left:-320px; padding:20px; border:1px solid #ccc; background:#fff;}
+		.playLayer {position:absolute; z-index:10; width:640px; height:480px; margin-left:-320px; padding:20px; border:1px solid #ccc; background:#fff;}
 	</style>
 </head>
 <body ng-controller="AlbumListCtrl">
@@ -72,7 +72,7 @@
 	</div>
 
 	<div ng-show="played">
-		<div class="playLayer" ng-controller="YouTubeController">
+		<div class="playLayer" ng-style="locStyle" ng-controller="YouTubeController">
 			<button type="button" class="close" ng-click="closeYouTube()" aria-hidden="true">x</button>
 			<youtube width="600" height="440" videoid="{{videoId}}"></youtube>
 		</div>

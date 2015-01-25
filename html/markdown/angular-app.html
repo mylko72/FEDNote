@@ -47,6 +47,20 @@
 		  <h1 id="angularjs-br-">AngularJS로 하는<br />웹 애플리케이션 개발</h1>
 <h2 id="angularjs-">AngularJS 철학</h2>
 <h3 id="-">모듈과 의존성 주입</h3>
+<h4 id="angularjs-">AngularJS의 모듈</h4>
+<pre><code><span class="transposed_variable">angular.</span>module(<span class="string">'hello'</span>, <span class="matrix">[]</span>)
+    .controller(<span class="string">'HelloCtrl'</span>, <span class="keyword">function</span>($scope)<span class="cell">{
+        $scope.name = <span class="string">'World'</span>;
+    }</span>);</code></pre>
+<p><code>$module</code>은 AngularJS가 관리하는 객체(컨트롤러, 서비스 등)의 컨테이너 역할을 한다. <code>angular.module</code> 함수를 호출하면 모듈 인스턴스를 새로 생성해서 반환하므로 이 인스턴스에 바로 새로운 컨트롤러를 정의할 수 있다. 방법은 다음 매개변수들과 함께 <code>controller</code> 함수를 호출하면 된다.</p>
+<ul>
+<li>컨트롤러의 이름(문자열)</li>
+<li>컨트롤러의 생성자 함수</li>
+</ul>
+<h4 id="-">객체들과의 연동</h4>
+<p>AngularJS는 모듈로 객체를 구성하는 방법을 제공한다. 모듈로는 프레임워크에서 직접 호출되는 객체(컨트롤러, 필터 등)뿐만 아니라 개발자가 구현한 어떤 객체든 등록할 수 있다.</p>
+<h5 id="-">의존성 주입</h5>
+<p>AngularJS는 컨트롤러에서 새로운 <code>scope</code> 인스턴스가 필요하다는 사실을 어떻게든 알아차리고 <code>scope</code> 인스턴스를 새로 생성한 후 주입한다. 컨트롤러에서 해줘야 하는 일은 <code>$scope</code> 인스턴스가 필요하다고 정의하는 일뿐이다.</p>
 <h4 id="-">서비스 등록</h4>
 <p>DI 기능을 사용하는 첫 단계는 객체를 AngularJS의 모듈로 등록하는 것이다. 객체의 인스턴스 자체를 AngularJS에 바로 등록하지 않고 AngularJS 의존성 주입 시스템에 객체 생성법을 넘겨주는 방식을 사용한다.</p>
 <p>AngularJS의 <code>$provide</code> 서비스는 객체 생성법을 등록할 때 사용하는데, 이를 통해 객체 생성법이 등록되면 <code>$injector</code> 서비스가 생성법을 해석해서 인스턴스화한 다음 사용할 준비를 마쳐놓는다.</p>
@@ -138,6 +152,54 @@ AngularJS 의존성 주입 시스템에 객체를 등록할 때 가장 일반적
     $rootScope.appStarted = new Date();
 }</span>);</code></pre>
 <p>그리고 템플릿에서 다음처럼 가져다 쓰면 된다.</p>
+<pre><code><span class="class">Application</span> started <span class="method">at:</span> {{appStarted}}</code></pre>
+<blockquote>
+<p>위 예제에서는 <code>$rootScope</code> 인스턴스 프로퍼티에 바로 값을 할당했다. 하지만 <code>$rootScope</code> 인스턴스는 전역 변수이므로 <code>$rootScope</code> 인스턴스 사용을 자제해야 한다.    </p>
+</blockquote>
+<h5 id="-">단계별 등록 메소드 간의 차이</h5>
+<p>객체를 생성하는 방법들이 모듈의 생명주기 단계와 어떻게 연관돼 있는지 요약해보면 다음과 같다.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>무엇이 등록되는가?</th>
+<th>설정단계에서 주입 가능한가</th>
+<th>실행 단계에서 주입 가능한가</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>상수</td>
+<td>상수 값</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>변수</td>
+<td>변수 값</td>
+<td>-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>생성자 함수로 생성된 새로운 객체</td>
+<td>-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Factory</td>
+<td>factory 함수로 반환된 새로운 객체</td>
+<td>-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Provider</td>
+<td>$get 팩토리 함수로 생성된 새로운 객체</td>
+<td>Yes</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 <h2 id="-">백엔드 서버와 통신</h2>
 <p>AngularJS는 범용적인 <code>$http</code> 서비스로 XHR, JSONP 통신을 다루고, 특화된 <code>$resource</code> 서비스로는 RESTful 엔드포인트를 쉽게 다룰 수 있다.</p>
 <h3 id="-http-xhr-jsonp-">$http로 XHR과 JSONP 요청 생성</h3>
