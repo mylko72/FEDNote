@@ -7,7 +7,18 @@
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
 	<style type="text/css">
-		.playLayer {position:absolute; z-index:10; width:640px; height:480px; margin-left:-320px; padding:20px; border:1px solid #ccc; background:#fff;}
+		.table tbody>tr>td {vertical-align: middle;}
+		.table tbody>tr>td:nth-child(0) {text-align: center;}
+		.playLayer {position:absolute; z-index:10; width:860px; height:500px; margin-left:-320px; padding:20px; border:1px solid #ccc; border-radius:5px; background:#fff;
+			-moz-box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+			-webkit-box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+			box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+		}
+		.playLayer .close {margin-top:-20px; margin-bottom:5px; font-size:32px;}
+		.playLayer .song-info {width:204px;}
+		.playLayer .song-info .cover {border:1px solid #eee;}
+		.playLayer .song-info .artist {padding-left:5px; font-size:16px; font-weight:bold;}
+		.playLayer .song-info .song {padding-left:5px; margin-top:-10px; font-size:24px; color:#428bca;}
 	</style>
 </head>
 <body ng-controller="AlbumListCtrl">
@@ -58,7 +69,7 @@
 					<tr ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize">
 						<!-- pagination은 사용자정의 필터로 두개의 매개변수를 받는다. (currentPage:현재 페이지 인덱스, pageSize:한페이지에 표시할 목록의 수)-->
 						<td>{{($index+1)+(currentPage*pageSize)}}</td>
-						<td><img class="cover" ng-src="{{song.album.cover}}" width="80" height="auto"> <a ng-click="playYouTube(song)">{{song.title | trim:8}}</a><br />
+						<td><img class="cover" ng-src="{{song.album.cover}}" width="80" height="auto"> <a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}}</a><br />
 						</td>
 						<td>{{song.singer}}</td>
 						<td>{{song.album.name}}<br />발매 {{song.album.Release}}</td>
@@ -73,8 +84,22 @@
 
 	<div ng-show="played">
 		<div class="playLayer" ng-style="locStyle" ng-controller="YouTubeController">
-			<button type="button" class="close" ng-click="closeYouTube()" aria-hidden="true">x</button>
-			<youtube width="600" height="440" videoid="{{videoId}}"></youtube>
+			<button type="button" class="close" ng-click="closeYouTube(YT_event.STOP)" aria-hidden="true">x</button>
+			<div class="clearfix"></div>
+				<div class="song-info pull-left">
+					<p><img class="cover" ng-src="{{songInfo.albumImg}}" width="204" height="auto"></p>
+					<p class="artist">{{songInfo.singer}}</p>
+					<p class="song">{{songInfo.title}}</p>
+					<ul>
+						<li>앨범명 : {{songInfo.album}}</li>
+						<li>발매일 : {{songInfo.release}}</li>
+						<li>작사: {{songInfo.lyrics}}</li>
+						<li>작곡: {{songInfo.composed}}</li>
+					</ul>
+				</div>
+				<div class="pull-right">
+					<youtube width="600" height="440" videoid="{{songInfo.videoId}}"></youtube>
+				</div>
 		</div>
 	</div>
 
@@ -83,6 +108,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
 	<script src="/musicy/js/directives/directive.js"></script>
 	<script src="/musicy/js/directives/youtube.js"></script>
+	<script src="/musicy/js/services/mouseclick.js"></script>
 	<script src="/musicy/js/albumApp.js"></script>
 
 </body>

@@ -1,47 +1,16 @@
 (function(){
 	'use strict';
 
-	angular.module('albumApp', ['paginationDirective', 'youTubeApp']);
+	angular.module('albumApp', ['paginationDirective', 'youTubeApp','mouseClickServices']);
 
 	angular.module('albumApp')
-		.provider('CurrentLoc', function(){
-			var evt;
-			this.$get = function(){
-				return {
-					processClick : function(event){
-
-						  //event 객체에 접근
-						  evt = event || window.event;
-						  var loc = {'x': 0, 'y': 0};
-
-
-						  //event 객체가 pageX 속성을 포함하고 있다면
-						  //pageX와 pageY를 사용해서 위치를 구함
-						  if(evt.pageX){
-							loc.x = evt.pageX;
-							loc.y = evt.pageY;
-
-						  //event 객체가 clientX 속성을 포함하고 있다면
-						  }else if(evt.clientX){
-							var offsetX = 0,
-								offsetY = 0;
-
-							//documentElement.scrollLeft를 지원하면
-							if(document.documentElement.scrollLeft){
-							  offsetX = document.documentElement.scrollLeft;
-							  offsetY = document.documentElement.scrollTop;
-							}else if(document.body){
-							  offsetX = document.body.scrollLeft;
-							  offsetY = document.body.scrollTop;
-							}
-
-							loc.x = evt.clientX + offsetX;
-							loc.y = evt.clientY + offsetY;
-						  }
-						  return loc; 
-					}
-				};
-			};
+		.constant('YT_event', {
+			STOP: 0, 
+			PLAY: 1,
+			PAUSE: 2
+		})
+		.config(function(MouseClickPosProvider){
+			MouseClickPosProvider.setAddValueXY(320, 10);
 		})
 		.controller('AlbumListCtrl', SongListController)
 		/**
@@ -70,9 +39,10 @@
 
 
 	//노래 리스트를 보여주는 컨트롤러
-	function SongListController($scope, $http, $document, CurrentLoc){
+	function SongListController($scope, $http, $timeout, $document, MouseClickPos, YT_event){
 
 		$scope.songs = [];
+		$scope.songInfo = {'singer':'가수', 'title':'노래제목', 'album':'앨범이름', 'albumImg':'앨범이미지', 'lyrics':'작사', 'composed':'작곡', 'release':'발매일', 'videoId':'동영상'};
 		$scope.played = false;
 		
 		$http.get('dance.json')
@@ -92,19 +62,32 @@
 
 		function filteredController(){
 
-
 			//filtering
 			$scope.filteredSongs = $scope.songs;
 
-			$scope.playYouTube = function(song){
-				var loc = CurrentLoc.processClick();
+			$scope.playYouTube = function(song, yt_event){
+				var loc = MouseClickPos.getCurrentPos();
+
 				$scope.played = true;	
-				$scope.videoId = song.videoid;
-				$scope.locStyle = {'left':(loc.x+320)+'px', 'top':(loc.y+10)+'px'};
+				$scope.songInfo.singer = song.singer;
+				$scope.songInfo.title = song.title;
+				$scope.songInfo.album = song.album.name;
+				$scope.songInfo.albumImg = song.album.cover;
+				$scope.songInfo.lyrics = song.album.Lyrics;
+				$scope.songInfo.composed= song.album.Composed;
+				$scope.songInfo.release = song.album.Release;
+				$scope.songInfo.videoId = song.videoid;
+
+				$scope.locStyle = {'left':loc.x+'px', 'top':loc.y+'px'};
+				
+				$timeout(function(){
+					$scope.$broadcast(yt_event);
+				}, 2000);
 			};
 
-			$scope.closeYouTube = function(){
+			$scope.closeYouTube = function(yt_event){
 				$scope.played = false;
+				this.$broadcast(yt_event);
 			}
 
 			//sorting
