@@ -167,6 +167,92 @@ AngularJS는 모듈의 생명주기를 다음과 같은 두 단계로 구분한�
 |Factory|factory 함수로 반환된 새로운 객체|-|Yes|
 |Provider|$get 팩토리 함수로 생성된 새로운 객체|Yes|-|
 
+####다른 모듈에 의존하는 모듈
+
+AngularJS는 객체의 의존 관계를 관리하는 데 탁월할 뿐만 아니라 모듈의 의존 관계도 역시 관리할 수 있다. 한 모듈에 관련된 서비스들을 쉽게 모을 수 있기 때문에 서비스 라이브러리(재사용 가능한)를 생성할 수도 있다.
+
+	angular.module('application', ['notifications', 'archive']);
+
+이렇게 하면 각 서비스를 재사용 가능한 하나의 모듈로 합칠 수 있다. 그리고 가장 상위(애플리케이션 레벨)의 모듈에서 애플리케이션에 필요한 모든 모듈에 대한 의존 관계를 정의할 수 있다.	
+
+다른 모듈에 의존하는 것이 가장 상위의 모듈에서만 가능한 것은 아니다. 각 모듈마다 자신이 사용할 자식 모듈에 대한 의존 관계를 정의할 수 있으며, 이런 바식으로 모듈의 계층 구조가 만들어질 수 있다.
+
+AngularJS 모듈은 서로 의존 관계를 가질 수 있으며, 모듈은 여러 개의 서비스를 가질 수 있다. 하지만 각 서비스도 역시 다른 서비스에 의존할 수 있다.
+
+#####모듈 간의 서비스 가시성
+
+자식 모듈에 정의된 서비스는 부모 모듈에 정의된 서비스에 주입할 수 있다.
+
+	angular.module('app', ['engines'])
+		.factory('car', function($log, dieselEngine){
+			return {
+				start: function(){
+					$log.info('Starting ' + dieselEngine.type);
+				}
+			};
+		});
+
+	angular.module('engines', [])
+		.factory('dieselEngine', function(){
+			return {
+				type: 'diesel'
+			};
+		});
+
+car 서비스는 app 모듈에 정의된 서비스다. 그리고 app 모듈은 dieselEngine 서비스가 정의된 engines 모듈과의 의존 관계가 있다고 정의했다. 따라서 dieselEngine 인스턴스는 car 서비스에 주입 가능하다. 
+
+여기서 놀라운 점은 *형제 모듈에 정의된 서비스들끼리는 서로가 보인다는 점*이다. 이제 car 서비스를 별개의 모듈로 정의하고 애플리케이션이 engines와 cars 모듈에 대한 의존 관계를 갖게 모듈 의존 관계를 변경해보자.
+
+	angular.module('app', ['cars', 'engines'])
+
+	angular.module('cars', [])
+		.factory('car', function($log, dieselEngine){
+			return {
+				start: function(){
+					$log.info('Starting ' + dieselEngine.type);
+				}
+			};
+		});
+
+	angular.module('engines', [])
+		.factory('dieselEngine', function(){
+			return {
+				type: 'diesel'
+			};
+		});
+
+이렇게 변경해도 dieselEngine을 car에 주입하는 데 역시 아무런 문제가 없다.
+
+>*애플리케이션의 한 모듈에 정의된 서비스는 다른 모든 모듈에서 볼 수 있다.* 다른 말로 표현하자면 모듈 계층 구조는 모듈 간의 서비스 가시성에 전혀 영향을 주지 않는다는 말이다. 이는 AngularJS가 애플리케이션을 초기화할 때 서로 다른 모듈 간에 정의된 모든 서비스를 합쳐 하나의 애플리케이션으로 만들기 때문이다. 즉, 전역 네임스페이스라고 보면 된다.
+
+AngularJS가 전 모듈에 있는 모든 서비스를 하나로 합치기 때문에 애플리케이션 레벨의 서비스 이름은 유일해야 한다. 이런 특징은 하나의 모듈에 의존하면서 그 모듈의 특정 서비스를 오버라이드해야 하는 경우 유용하게 사용할 수 있다. 이전 예제에서 dieselEngine 서비스를 cars 모듈 안에 직접 정의해 이런 특징을 확인해 보자.
+
+	angular.module('app', ['cars', 'engines'])
+
+	angular.module('cars', [])
+		.factory('car', function($log, dieselEngine){
+			return {
+				start: function(){
+					$log.info('Starting ' + dieselEngine.type);
+				}
+			};
+		});
+		.factory('dieselEngine', function(){
+			return {
+				type: 'custom diesel'
+			};
+		});
+
+	angular.module('engines', [])
+		.factory('dieselEngine', function(){
+			return {
+				type: 'diesel'
+			};
+		});
+
+여기서 car 서비스로 주입되는 dieselEngine 서비스는 car 서비스와 같은 모듈에 정의된 dieselEngine 서비스다. cars 모듈 레벨의 dieselEngine이 engines 모듈에 정의된 dieselEngine 서비스를 오버라이드 하는 것이다.
+
+>*AngularJS에서 하나의 이름을 갖는 서비스는 단 하나다. 즉, 모듈 계층 구조에서 루트에 가까운 모듈에 정의된 서비스일수록 자식 모듈에 정의된 서비스를 오버라이드한다.*
 
 
 ##백엔드 서버와 통신

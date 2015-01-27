@@ -200,6 +200,79 @@ AngularJS 의존성 주입 시스템에 객체를 등록할 때 가장 일반적
 </tr>
 </tbody>
 </table>
+<h4 id="-">다른 모듈에 의존하는 모듈</h4>
+<p>AngularJS는 객체의 의존 관계를 관리하는 데 탁월할 뿐만 아니라 모듈의 의존 관계도 역시 관리할 수 있다. 한 모듈에 관련된 서비스들을 쉽게 모을 수 있기 때문에 서비스 라이브러리(재사용 가능한)를 생성할 수도 있다.</p>
+<pre><code>angular.module(<span class="attribute">'application</span>', [<span class="attribute">'notifications</span>', <span class="attribute">'archive</span>']);</code></pre>
+<p>이렇게 하면 각 서비스를 재사용 가능한 하나의 모듈로 합칠 수 있다. 그리고 가장 상위(애플리케이션 레벨)의 모듈에서 애플리케이션에 필요한 모든 모듈에 대한 의존 관계를 정의할 수 있다.    </p>
+<p>다른 모듈에 의존하는 것이 가장 상위의 모듈에서만 가능한 것은 아니다. 각 모듈마다 자신이 사용할 자식 모듈에 대한 의존 관계를 정의할 수 있으며, 이런 바식으로 모듈의 계층 구조가 만들어질 수 있다.</p>
+<p>AngularJS 모듈은 서로 의존 관계를 가질 수 있으며, 모듈은 여러 개의 서비스를 가질 수 있다. 하지만 각 서비스도 역시 다른 서비스에 의존할 수 있다.</p>
+<h5 id="-">모듈 간의 서비스 가시성</h5>
+<p>자식 모듈에 정의된 서비스는 부모 모듈에 정의된 서비스에 주입할 수 있다.</p>
+<pre><code><span class="transposed_variable">angular.</span>module(<span class="string">'app'</span>, <span class="matrix">[<span class="string">'engines'</span>]</span>)
+    .factory(<span class="string">'car'</span>, <span class="keyword">function</span>($<span class="built_in">log</span>, dieselEngine)<span class="cell">{
+        return {
+            start: function(){
+                $log.info(<span class="string">'Starting '</span> + dieselEngine.type);
+            }</span>
+        };
+    });
+
+<span class="transposed_variable">angular.</span>module(<span class="string">'engines'</span>, <span class="matrix">[]</span>)
+    .factory(<span class="string">'dieselEngine'</span>, <span class="keyword">function</span>()<span class="cell">{
+        return {
+            type: <span class="string">'diesel'</span>
+        }</span>;
+    });</code></pre>
+<p>car 서비스는 app 모듈에 정의된 서비스다. 그리고 app 모듈은 dieselEngine 서비스가 정의된 engines 모듈과의 의존 관계가 있다고 정의했다. 따라서 dieselEngine 인스턴스는 car 서비스에 주입 가능하다. </p>
+<p>여기서 놀라운 점은 <em>형제 모듈에 정의된 서비스들끼리는 서로가 보인다는 점</em>이다. 이제 car 서비스를 별개의 모듈로 정의하고 애플리케이션이 engines와 cars 모듈에 대한 의존 관계를 갖게 모듈 의존 관계를 변경해보자.</p>
+<pre><code><span class="transposed_variable">angular.</span>module(<span class="string">'app'</span>, <span class="matrix">[<span class="string">'cars'</span>, <span class="string">'engines'</span>]</span>)
+
+<span class="transposed_variable">angular.</span>module(<span class="string">'cars'</span>, <span class="matrix">[]</span>)
+    .factory(<span class="string">'car'</span>, <span class="keyword">function</span>($<span class="built_in">log</span>, dieselEngine)<span class="cell">{
+        return {
+            start: function(){
+                $log.info(<span class="string">'Starting '</span> + dieselEngine.type);
+            }</span>
+        };
+    });
+
+<span class="transposed_variable">angular.</span>module(<span class="string">'engines'</span>, <span class="matrix">[]</span>)
+    .factory(<span class="string">'dieselEngine'</span>, <span class="keyword">function</span>()<span class="cell">{
+        return {
+            type: <span class="string">'diesel'</span>
+        }</span>;
+    });</code></pre>
+<p>이렇게 변경해도 dieselEngine을 car에 주입하는 데 역시 아무런 문제가 없다.</p>
+<blockquote>
+<p><em>애플리케이션의 한 모듈에 정의된 서비스는 다른 모든 모듈에서 볼 수 있다.</em> 다른 말로 표현하자면 모듈 계층 구조는 모듈 간의 서비스 가시성에 전혀 영향을 주지 않는다는 말이다. 이는 AngularJS가 애플리케이션을 초기화할 때 서로 다른 모듈 간에 정의된 모든 서비스를 합쳐 하나의 애플리케이션으로 만들기 때문이다. 즉, 전역 네임스페이스라고 보면 된다.</p>
+</blockquote>
+<p>AngularJS가 전 모듈에 있는 모든 서비스를 하나로 합치기 때문에 애플리케이션 레벨의 서비스 이름은 유일해야 한다. 이런 특징은 하나의 모듈에 의존하면서 그 모듈의 특정 서비스를 오버라이드해야 하는 경우 유용하게 사용할 수 있다. 이전 예제에서 dieselEngine 서비스를 cars 모듈 안에 직접 정의해 이런 특징을 확인해 보자.</p>
+<pre><code><span class="transposed_variable">angular.</span>module(<span class="string">'app'</span>, <span class="matrix">[<span class="string">'cars'</span>, <span class="string">'engines'</span>]</span>)
+
+<span class="transposed_variable">angular.</span>module(<span class="string">'cars'</span>, <span class="matrix">[]</span>)
+    .factory(<span class="string">'car'</span>, <span class="keyword">function</span>($<span class="built_in">log</span>, dieselEngine)<span class="cell">{
+        return {
+            start: function(){
+                $log.info(<span class="string">'Starting '</span> + dieselEngine.type);
+            }</span>
+        };
+    });
+    .factory(<span class="string">'dieselEngine'</span>, <span class="keyword">function</span>()<span class="cell">{
+        return {
+            type: <span class="string">'custom diesel'</span>
+        }</span>;
+    });
+
+<span class="transposed_variable">angular.</span>module(<span class="string">'engines'</span>, <span class="matrix">[]</span>)
+    .factory(<span class="string">'dieselEngine'</span>, <span class="keyword">function</span>()<span class="cell">{
+        return {
+            type: <span class="string">'diesel'</span>
+        }</span>;
+    });</code></pre>
+<p>여기서 car 서비스로 주입되는 dieselEngine 서비스는 car 서비스와 같은 모듈에 정의된 dieselEngine 서비스다. cars 모듈 레벨의 dieselEngine이 engines 모듈에 정의된 dieselEngine 서비스를 오버라이드 하는 것이다.</p>
+<blockquote>
+<p><em>AngularJS에서 하나의 이름을 갖는 서비스는 단 하나다. 즉, 모듈 계층 구조에서 루트에 가까운 모듈에 정의된 서비스일수록 자식 모듈에 정의된 서비스를 오버라이드한다.</em></p>
+</blockquote>
 <h2 id="-">백엔드 서버와 통신</h2>
 <p>AngularJS는 범용적인 <code>$http</code> 서비스로 XHR, JSONP 통신을 다루고, 특화된 <code>$resource</code> 서비스로는 RESTful 엔드포인트를 쉽게 다룰 수 있다.</p>
 <h3 id="-http-xhr-jsonp-">$http로 XHR과 JSONP 요청 생성</h3>
