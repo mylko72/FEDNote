@@ -6,8 +6,6 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
-<<<<<<< HEAD
-=======
 	<style type="text/css">
 		.table tbody>tr>td {vertical-align: middle;}
 		.table tbody>tr>td:nth-child(0) {text-align: center;}
@@ -22,7 +20,6 @@
 		.playLayer .song-info .artist {padding-left:5px; font-size:16px; font-weight:bold;}
 		.playLayer .song-info .song {padding-left:5px; margin-top:-10px; font-size:24px; color:#428bca;}
 	</style>
->>>>>>> 4aaf370... update html and new service
 </head>
 <body ng-controller="albumListCtrl">
 
@@ -71,14 +68,8 @@
 				<tbody>
 					<tr ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize">
 						<!-- pagination은 사용자정의 필터로 두개의 매개변수를 받는다. (currentPage:현재 페이지 인덱스, pageSize:한페이지에 표시할 목록의 수)-->
-<<<<<<< HEAD
-						<td>{{song.no+1}}</td>
-						<td><img class="cover" ng-src="{{song.album.cover}}" width="50" height="auto"> {{song.title | trim:8}}</td>
-=======
 						<td>{{($index+1)+(currentPage*pageSize)}}</td>
-						<td><img class="cover" ng-src="{{song.album.cover}}" width="80" height="auto"> <a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}}</a><br />
-						</td>
->>>>>>> 4aaf370... update html and new service
+						<td><img class="cover" ng-src="{{song.album.cover}}" width="80" height="auto"> <a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}}</a><br /> </td>
 						<td>{{song.singer}}</td>
 						<td>{{song.album.name}}</td>
 						<td>{{song.album.Lyrics}}/{{song.album.Composed}}</td>
@@ -90,113 +81,6 @@
 
 	</div>
 
-<<<<<<< HEAD
-	<!-- inject-vendor:js -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
-	<script src="http://mylko72.github.io/FEDNote/musicy/js/directives/directive.js"></script>
-	<script type="text/javascript">
-		(function(){
-			'use strict';
-
-			angular.module('albumApp', ['paginationDirective']);
-
-			angular.module('albumApp')
-				.controller('albumListCtrl', SongListController)
-				/**
-				 @filter pagination 
-				 페이지 번호 사용자 정의 필터
-				 @returnVal function - 실제 필터 함수를 반환 
-			     ***@param inputArray - 필터링 할 입력값
-				 ***@param selectedPage - 선택된 페이지 인덱스
-				 ***@param pageSize - 한 페이지에 표시할 목록의 수
-				**/
-				.filter('pagination', function(){
-					return function(inputArray, selectedPage, pageSize) {
-						var start = selectedPage*pageSize;
-						return inputArray.slice(start, start + pageSize);
-					};
-				})
-				.filter('trim', function(limitToFilter){
-					return function(input, limit) {
-						//console.log(input.length, limit);
-						if (input.length > limit) {
-							return limitToFilter(input, limit-3) + '...';
-						}
-						return input;
-					};
-				});
-
-
-			//노래 리스트를 보여주는 컨트롤러
-			function SongListController($scope, $http, $document){
-
-				$scope.songs = [];
-				
-				$http.get('album.json')
-					.success(function(data){
-						$scope.songs = data;
-					}).then(function(){
-						if($scope.songs.length>0){
-							filteredController();
-						}
-
-						$scope.toTheTop = function(){
-							$document.scrollTop(0, 500);
-						}
-					});
-
-
-				function filteredController(){
-
-					//filtering
-					$scope.filteredSongs = $scope.songs;
-
-					//sorting
-					$scope.sortField = undefined;
-					$scope.reverse = false;
-
-					$scope.sort = function (fieldName) {
-						if ($scope.sortField === fieldName) {
-							$scope.reverse = !$scope.reverse;
-						} else {
-							$scope.sortField = fieldName;
-							$scope.reverse = false;
-						}
-					};
-
-					$scope.isSortUp = function (fieldName) {
-						return $scope.sortField === fieldName && !$scope.reverse;
-					};
-					$scope.isSortDown = function (fieldName) {
-						return $scope.sortField === fieldName && $scope.reverse;
-					};
-
-					//pagination
-					$scope.pages = [];
-					$scope.pageSize = 10;
-					$scope.currentPage = 0;
-					$scope.$watch('filteredSongs.length', function(filteredSize){
-					  console.log(filteredSize);
-					  $scope.numPages = Math.ceil(filteredSize / $scope.pageSize);
-					  for (var i=0; i<$scope.numPages; i++) {
-						$scope.pages.push(i);
-					  }
-					});
-
-					$scope.setActivePage = function (pageNo) {
-					  if (pageNo >=0 && pageNo < $scope.pages.length) {
-						$scope.currentPage = pageNo;
-					  }
-					};
-
-				}
-
-			}
-
-		})();
-	</script>
-=======
 	<div ng-show="played">
 		<div class="playLayer" ng-style="locStyle" ng-controller="YouTubeController">
 			<button type="button" class="close" ng-click="closeYouTube(YT_event.STOP)" aria-hidden="true">x</button>
@@ -225,7 +109,6 @@
 	<script src="/musicy/js/directives/youtube.js"></script>
 	<script src="/musicy/js/services/mouseclick.js"></script>
 	<script src="/musicy/js/albumApp.js"></script>
->>>>>>> 4aaf370... update html and new service
 
 </body>
 </html>
