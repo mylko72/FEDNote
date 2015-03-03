@@ -768,8 +768,7 @@ AngularJS 새 버전(1.2.x)부터는 ngRepeat 디렉티브의 기본 문법을 �
 
 > 관련내용
 > - [반복적인 데이터 표현을 위한 템플릿](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h3_5)
-> 예제
-> - [ngRepeat 패턴을 이용한 list와 view](/angularjs/ngrepeat/index.html)
+> 예제 - [ngRepeat 패턴을 이용한 list와 view](/angularjs/ngrepeat/index.html)
 
 ###DOM 이벤트 핸들러
 
@@ -1032,11 +1031,80 @@ angular.module('trimFilter', [])
 > 관련내용
 > - [필터를 사용하고 만들어 보자](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h2_8)  
 
-> 예제
-> - [filter, orderBy, 사용자정의 필터를 사용하기](http://mylko72.github.io/FEDNote/musicy/albumList.html)
+> 예제 - [filter, orderBy, 사용자정의 필터를 사용하기](http://mylko72.github.io/FEDNote/musicy/albumList.html)
 
 
 ##고급 폼 작성
+
+###기본 폼과 AngularJS 폼 비교
+
+AngularJS는 form 디렉티브, input 디렉티브, 검증 디렉티브, 컨트롤러를 사용해 HTML 폼을 개선한다. 이런 디렉티브와 컨트롤러는 HTML 폼의 기본 동작을 오버라이드 한다. 
+
+####ngModel 디렉티브 소개
+
+{{}}를 사용하거나 `ngBind` 디렉티브를 사용한 데이터 바인딩은 오직 한 방향으로만 동작한다. 따라서 input 디렉티브의 값을 바인딩할 때는 `ngModel`을 사용해야 한다.
+
+	<div>Hello <span ng-bind="name" /></div>
+	<div>Hello <input ng-model="name" /></div>
+
+첫번째 `div`에서는 현재 스코프의 `scope.name`을 `span`의 문자와 바인딩한다. 이때의 데이터 바인딩은 단방향이다. 두번째 `div`에서는 현재 스코프의 `scope.name`과 `input` 요소의 값을 바인딩한다. 
+이 데이터 바인딩이 진정한 양방향 바인딩으로 입력 창에 값을 입력하면 `scope.name` 모델에도 즉각 반영된다. 
+
+> 예제  - [양방향 데이터 바인딩](http://plnkr.co/edit/lckIml?p=preview)
+
+###사용자 정보 폼 작성
+
+다음은 기본적인 동작을 하는 폼이다.
+
+	<h1>User Info</h1>
+	<label>E-mail</label>
+	<input type="email" ng-model="user.email">
+	<label>Last name</label>
+	<input type="text" ng-model="user.lastName">
+	<label>First name</label>
+	<input type="text" ng-model="user.firstName">
+	<label>Website</label>
+	<input type="url" ng-model="user.website">
+	<label>Description</label>
+	<textarea ng-model="user.description"></textarea>
+	<label>Password</label>
+	<input type="password" ng-model="user.password">
+	<label>Password (repeat)</label>
+	<input type="password" ng-model="repeatPassword">
+	<label>Roles</label>
+	<label class="checkbox"><input type="checkbox" ng-model="user.admin"> Is Administrator</label>
+
+	<pre ng-bind="user | json"></pre>
+
+> 예제  - [사용자 정보 폼](http://bit.ly/10ZomqS)
+
+각 input마다 `ngModel` 디렉티브를 선언했는데 input 요소의 값이 바인딩될 현재 스코프를 정의한다. 여기서 각 input은 현재 스코프에 있는 `user` 객체의 필드 중 하나로 바인딩된다. 
+그리고 컨트롤러에서 모델의 필드 값을 다음과 같이 로그로 찍어 확인할 수 있다.
+
+	$log($scope.user.firstName);
+
+AngularJS는 input 요소의 값이 항상 모델의 값과 동기화된다는 것을 보장해준다.	
+
+###input 디렉티브의 이해
+
+input 디렉티브는 `ngModel` 디렉티브와 협력해 값을 검증하거나 모델에 값을 바인딩하는 추가적인 기능을 제공한다.
+
+####필요한 값 검증
+
+모든 기본 input 디렉티브에는 `required`(혹은 `ngRequired`) 속성을 사용할 수 있다. input 요소에 이 속성을 추가하면 `ngModel` 값이 null, undefined, ""(빈 문자열)인 경우 AngularJS에게 해당 값이 유효하지 않다고 알려준다.
+
+####문자 기반 input 사용
+
+이메일, URL, 숫자 같은 문자 기반 input 디렉티브는 입력 창에 넣은 값이 적절한 정규 표현식에 맞는 경우에만 모델을 갱신한다. 또한 문자 기반 디렉티브의 검증을 위해 임의의 정규 표현식을 정의하는 것처럼 입력의 최소 길이와 최대 길이도 설정할 수 있다. 다음과 같이 `ngMinLength`, `ngMaxLength`, `ngPattern` 디렉티브를 사용하면 된다.
+
+	<input type="password" ng-model="user.password" 
+		ng-minlength="3" ng-maxlength="10" 
+		ng-pattern="/^.*(?=.*\d)(?=.*[a-zA-Z]).*$/">
+
+여기서 `user.password` 모델 필드는 3개 이상 10개 이하의 글자만 입력할 수 있으며, 최소한 하나의 문자와 하나의 숫자를 포함해야 한다는 이 정규 표현식을 반드시 만족시켜야 한다.	
+
+
+
 
 ##내비게이션 구성
 
@@ -1665,9 +1733,7 @@ link: function(scope){
 
 페이지 변수를 변수의 맵 형태인 표현식으로 넘긴 부분을 주의해서 보자. 이 변수들이 스코프에 있었기 때문에 실행할 때 바인딩 표현식 형태로 사용하는 것이다.
 
-> 예제
-
-> [pagination 필터링과 디렉티브를 이용한 페이징 구현](http://mylko72.github.io/FEDNote/musicy/albumList2.html)
+> 예제 - [pagination 필터링과 디렉티브를 이용한 페이징 구현](http://mylko72.github.io/FEDNote/musicy/albumList2.html)
 
 ### 사용자 정의 검증 디렉티브 작성
 
