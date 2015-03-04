@@ -39,14 +39,14 @@ module.exports = function(grunt){
 		},
 		connect:{
 			server: {
-				options: {port: 9001}
+				options: {port: 9004}
 			}
 		},
 		watch:{
 			markdown: {
 				files:'markdown/*.md',	//감시대상이 되는 파일들을 지정
 				tasks: ['markdown'],
-				options: {livereload:true}	//브라우저 자동갱신
+				options: {livereload:{port: 9000}}	//브라우저 자동갱신
 			}
 		}
 	});

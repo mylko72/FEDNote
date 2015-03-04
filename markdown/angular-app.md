@@ -1103,7 +1103,41 @@ input 디렉티브는 `ngModel` 디렉티브와 협력해 값을 검증하거나
 
 여기서 `user.password` 모델 필드는 3개 이상 10개 이하의 글자만 입력할 수 있으며, 최소한 하나의 문자와 하나의 숫자를 포함해야 한다는 이 정규 표현식을 반드시 만족시켜야 한다.	
 
+####체크박스 input 사용
 
+체크박스는 단순하게 불리언 입력을 의미한다. 그래서 input 디렉티브는 `ngModel`에 정의한 모델 필드를 true 혹은 false로 설정한다.
+
+모델에 true와 false 대신 다른 문자열을 사용할 수도 있다. 예를 들어 다음 코드와 같이 `role` 필드에 admin과 basic이라는 문자열을 사용할 수 있다.
+
+	<input type="checkbox" ng-model="user.role" ng-true-value="admin" ng-false-value="basic">
+
+이 경우 `user.role` 모델에는 체크박스 상태에 따라 admin이나 basic이라는 값이 들어간다.	
+
+> 예제  - [문자열을 사용하는 input 체크박스](http://bit.ly/Yidt37)
+
+####라디오 input 사용
+
+AngularJS에서는 모든 라디오 버튼을 같은 모델 필드에 바인딩하면 된다. 그리고 표준 HTML의 `value` 속성을 사용해 라디오 버튼을 선택했을 때 어떤 값이 모델에 들어가야 하는지도 정의할 수 있다.
+
+	<label class="radio"><input type="radio" ng-model="user.sex" value="male"> Male</label>
+	<label class="radio"><input type="radio" ng-model="user.sex" value="female"> Female</label>
+
+> 예제  - [라디오 input](http://bit.ly/14hYNsN)
+
+####select input 사용
+
+select input 디렉티브를 사용하면 하나 혹은 여러 개의 항목을 선택할 수 있는 드롭다운 리스트를 만들 수 있다. AngularJS에서는 드롭다운 메뉴를 만들 때 고정된 값을 만들 수도 있고, 스코프의 배열을 기준으로 만들 수도 있다.
+
+#####간단한 문자열 옵션
+
+정적인 옵션 목록을 보여주고 싶다면 다음과 같이 select 요소와 option 요소를 사용한다.
+
+	<select ng-model="sex">
+		<option value="m" ng-selected="sex=='m'">Male</option>
+		<option value="f" ng-selected="sex=='f'">Female</option>
+	</select>
+
+value 속성이 문자열만 다룰 수 있기 때문에 바인딩되는 값도 문자열이라는 점에 주의하자.	
 
 
 ##내비게이션 구성
