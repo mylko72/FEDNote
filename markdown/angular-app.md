@@ -1139,6 +1139,137 @@ select input 디렉티브를 사용하면 하나 혹은 여러 개의 항목을 
 
 value 속성이 문자열만 다룰 수 있기 때문에 바인딩되는 값도 문자열이라는 점에 주의하자.	
 
+#####ngOptions 디렉티브를 사용한 동적인 옵션
+
+`ngOptions` 디렉티브는 select 디렉티브의 값을 단순한 문자열이 아닌 객체에 바인딩하고 싶을 때 사용한다. 보여줄 옵션은 포괄적인 표현식(dataSource, optionBinding)을 사용해 정의한다.
+
+`dataSource` 표현식은 옵션으로 표시할 정보의 출처를 정의한다. 보통 배열의 요소나 객체의 프로퍼티를 사용하고 `dataSource` 표현식의 각 항목마다 옵션을 하나씩 생성한다.
+
+`optionBinding` 표현식은 각 항목의 데이터에서 어떤 정보를 사용할지와, 이 항목을 어떻게 select 옵션에 바인딩할지 정의한다.
+
+######ngOptions 예제
+
+- 배열을 데이터 출처로 사용
+
+	다음 코드는 옵션을 user.email로 표시하면서 사용자 객체를 선택하는 방법이다.
+
+		ng-options="user.email for user in users"
+
+	다음은 한 번 계산을 수행한 결과로 옵션을 표시하면서 사용자 객체를 선택하는 방법이다.(함수는 스코프에 정의)
+
+		ng-options="getFullName(user) for user in users"
+	
+	다음은 옵션을 사용자 이름으로 표시하면서 사용자 객체 대신 사용자의 이메일을 선택하는 방법이다.
+
+		ng-options="user.email as getFullName(user) for user in users"
+
+	다음 코드는 성별로 옵션을 구분하고 사용자 객체를 선택한다.
+
+		ng-options="getFullName(user) group by user.sex for user in users"
+
+	> 예제  - [배열을 데이터 출처로 사용](http://bit.ly/1157jqa)
+
+- 객체를 데이터 출처로 사용
+
+	다음과 같이 국가 코드를 담고 있는 2개의 객체가 있다고 해보자.
+
+		$scope.countriesByCode = {
+			'AF' : 'AFGHANISTAN',
+			'AX' : 'ALAND ISLANDS',
+			...
+		};
+		$scope.countriesByName = {
+			'AFGHANISTAN' : 'AF',
+			'ALAND ISLANDS' : 'AX',
+			...
+		};
+
+	다음은 국가 코드로 정렬된 국가 이름을 기준으로 국가 코드를 선택하는 방법이다.
+
+		ng-options="code as name for (code, name) in countriesByCode"
+
+	다음은 국가 이름으로 정렬된 국가 이름을 기준으로 국가 코드를 선택하는 방법이다.
+
+		ng-options="code as name for (name, code) in countriesByName"
+
+	> 예제  - [객체를 데이터 출처로 사용](http://bit.ly/153LKdE)
+
+######dataSource 표현식 이해
+
+데이터 출처가 배열인 경우 arrayExpression이 배열을 평가한다. 그리고 디렉티브는 배열의 각 항목을 순회하면서 현재 항목을 `value` 변수에 할당한다.
+
+데이터 출처가 객체인 경우 objectExpression이 객체를 평가한다. 그리고 디렉티브는 객체의 각 프로퍼티를 순회하면서 프로퍼티의 값은 `value` 변수에 넣고, 키는 `key` 변수에 집어넣는다.
+
+######optionBinding 표현식 이해
+
+`optionBinding` 표현식은 dataSource 표현식이 제공하는 항목으로부터 각 옵션에 표시할 값을 정의한다. 그리고 옵션을 어떤 그룹으로 나눌지도 정의할 수 있으며, 이 표현식에는 필터를 포함한 AngularJS 표현식 문법을 모두 사용할 수 있다.
+
+	value as label group by grouping
+
+#####select 디렉티브로 빈 옵션 처리
+
+모델 값이 옵션 목록의 어떤 값과도 일치하지 않는 경우 빈 옵션을 선택할 수 있다. 빈 옵션을 정의하려면 select 요소 아래에 빈 문자열을 값으로 갖는 option 요소를 추가하면 된다.
+
+	<select ng-model="..." ng-options="...">
+		<option value="">-- No Selection -- </option>
+	</select>
+
+select 디렉티브에 빈옵션을 선언하지 않는 경우 빈 옵션은 저절로 생성된다. 원한다면 빈 옵션을 `display:none` 스타일을 사용해 숨길 수도 있다.
+
+	<option style="display:none" value=""></option>
+
+#####select와 객체 동치 이해
+
+select 디렉티브는 모델 값과 `options`의 값을 `===`를 통해 판단한다. 즉, 옵션의 값이 단순한 값(숫자나 문자열)이 아니라 객체라면 모델의 값은 실제 옵션 값의 참조를 사용해야 한다. 그렇지 않으면 select 디렉티브는 객체가 서로 다르니 옵션과 들어맞지 않는다고 판단할 것이다.
+
+####기존 HTML hidden input 필드
+
+AngularJS에서는 스코프에 모델 데이터를 모두 저장하기 때문에 hidden input 디렉티브가 없다. 하지만 hidden input 필드를 사용해야 하는 2가지 경우가 있다.
+
+#####서버가 생성한 값에 포함된 경우
+
+HTML을 생성하기 위해 서버 측 템플릿 엔진을 사용하는 경우 데이터는 서버에서 템플릿을 통해 AngularJS로 전달될 것이다. 이 경우 스코프에 값을 추가하기 위해서는 서버에서 생성한 HTML 안에 `ng-init` 디렉티브를 넣는 것으로 충분하다.
+
+	<form ng-init="user.hash='13513516'">
+	
+서버가 보낸 HTML의 폼 요소에는 스코프에 `user.hash`를 초기화하는 `ng-init` 디렉티브가 포함돼 있다.
+
+#####기존 HTML 폼 제출
+
+기존에는 뷰에 보이지 않으면서 input과 연관이 없는 특정 값을 서버로 제출해야 할 때 `hidden` 필드를 사용한다. 하지만 AngularJS는 `hidden` 필드가 필요 없다. 그저 스코프에 단순히 값을 추가한다.
+
+###ngModel 데이터 바인딩 심화
+
+####ngModelController
+
+각 ngModel 디렉티브는 `ngModelController`의 인스턴스를 하나씩 생성한다. 이 컨트롤러에서는 input 요소의 모든 디렉티브를 사용할 수 있다. *`ngModelController`는 모델에 저장된 값(ngModel로 정의)과 input 요소에 표시되는 값 사이의 데이터 바인딩을 관리한다.*
+
+또한 `ngModelController`는 input 요소에 의해 값이 변경됐는지의 여부와 뷰의 값이 올바른지를 추적한다.
+
+#####모델과 뷰의 값 변경
+
+`ngModelController`는 데이터 바인딩이 갱신될 때마다 값을 변경하는 파이프라인 역할을 한다. `ngModelController`는 2개의 배열을 관리하는데, *모델에서 뷰 방향으로 변형하는 `$formatters` 배열과 뷰에서 모델 방향으로 변형하는 `$parsers` 배열이다.* input 요소의 각 디렉티브는 데이터 바인딩에 수정을 가하기 위해 각자 자신만의 formatters와 parsers를 이 파이프라인에 추가한다.
+
+#####값 변경 여부 추적
+
+`ngModelController`는 값이 초기화된 이후 변경됐는지 여부와 유효한 값인지를 추적한다.
+
+처음 초기화될 때 `ngModelController`는 값이 한 번도 변경되지 않았다는 의미로 깨끗하다는 표시(pristine)을 해둔다. 그리고 input 요소의 `ng-pristine` CSS를 통해 표시된다. input 창에 글자를 입력해 뷰가 변경되면 값이 변경됐다고 표시(dirty)하고 `ng-pristine` CSS는 `ng-dirty` CSS 클래스로 변경된다.
+
+이런 CSS 스타일을 사용해 사용자가 데이터를 입력하는 것에 따라 input 요소의 모양을 변경할 수 있다.
+
+	.ng-pristine {border:1px solid black;}
+	.ng-dirty {border:3px solid black;}
+
+#####input 필드 유효 여부 추적
+
+`ngModelController`는 input 요소의 디렉티브를 통해 값이 유효한지 검증하기 위해 보통 값이 변경되기 전에 먼저 파이프라인의 변경 과정에 꺼어들어 값을 검증하는 방식을 사용한다. 그리고 `ngModelController`는 추적 결과에 따라 `ng-valid`나 `ng-invalid` CSS 클래스를 적용한다. 그래서 이 클래스를 이용하면 요소의 모양을 변경할 수 있다.
+
+	.ng-valid.ng-dirty {border:3px solid green;}
+	.ng-invalid.ng-dirty {border:3px solid red;}
+
+
+
 
 ##내비게이션 구성
 
