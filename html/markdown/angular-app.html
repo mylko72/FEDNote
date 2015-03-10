@@ -46,6 +46,46 @@
 		  <!-- start -->
 		  <h1 id="angularjs-br-">AngularJS로 하는<br />웹 애플리케이션 개발</h1>
 <h2 id="angularjs-">AngularJS 철학</h2>
+<h3 id="angularjs-mvc-">AngularJS의 MVC 패턴</h3>
+<h4 id="-">스코프</h4>
+<p>AngularJS에서 <code>$scope</code> 객체는 뷰(템플릿)에게 모델을 제공한다. 스코프 인스턴스에 프로퍼티를 할당하면 템플릿이 렌더링할 수 있는 새로운 값을 지정할 수 있다.</p>
+<pre><code><span class="keyword">var</span> HelloCtrl = function(<span class="variable">$scope</span>){
+    <span class="variable">$scope</span>.name = <span class="string">'World'</span>;
+}</code></pre>
+<p>스코프에는 데이터뿐만 아니라 주어진 뷰에 대한 특정 동작도 추가할 수 있다. 예를 들어 name 변수에 대한 getter 함수가 필요하다면 다음처럼 만들면 된다.</p>
+<pre><code>var HelloCtrl = <span class="built_in">function</span>($<span class="keyword">scope</span>){
+    $<span class="keyword">scope</span>.getName = <span class="built_in">function</span>(){
+        <span class="keyword">return</span> $<span class="keyword">scope</span>.name;
+    }
+}</code></pre>
+<p><code>$scope</code> 객체를 사용하면 특정 도메인 모델과 동작을 특정 뷰 레이어에 한정시킬 수 있다.</p>
+<h4 id="-">컨트롤러</h4>
+<p><em>컨트롤러의 가장 중요한 역할은 스코프 객체를 초기화하는 것이다.</em> 실제로 초기화 로직은 다음과 같은 역할을 담당한다.</p>
+<ul>
+<li>초기 모델 값 지정</li>
+<li><code>$scope</code>에 UI 동작 추가</li>
+</ul>
+<p>컨트롤러는 일반적인 자바스크립트 함수다. 즉 프레임워크의 특정 클래스를 상속받거나 AngularJS API를 호출하지 않아도 제 기능을 충분히 발휘한다.</p>
+<blockquote>
+<p>초기 모델 값을 지정하는 부분에 있어서는 컨트롤러가 <code>ng-init</code> 디렉티브와 동일한 동작을 한다. 그래서 컨트롤러를 사용하면 초기화 로직을 HTML 템프릿에 넣지 않고 자바스크립트로만 작성할 수 있다. </p>
+</blockquote>
+<h4 id="-">모델</h4>
+<p>AngularJS의 모델은 평범한 자바스크립트 객체다. 프레임워크의 특정 클래스를 상속받거나 특정 모델 객체를 포함하지 않아도 된다. 기존의 순수한 자바스크립트 클래스나 객체를 모델로 바로 사용할 수 있으며, 객체나 배열도 가능하다. <em>AngularJS에 모델을 제공하려면 <code>$scope</code>의 프로퍼티로 단순히 추가하기만 하면 된다.</em></p>
+<h4 id="-">스코프 심화</h4>
+<p>각 <code>$scope</code>는 Scope 클래스의 인스턴스다. Scope 클래스는 스코프의 생명주기를 관리하는 메소드, 이벤트를 전달하는 메소드, 템플릿을 렌더링하는 과정을 지원하는 메소드를 갖고 있다.</p>
+<h5 id="-">스코프 계층도</h5>
+<pre><code><span class="keyword">var</span> HelloCtrl = function(<span class="variable">$scope</span>){
+    <span class="variable">$scope</span>.name = <span class="string">'World'</span>;
+}</code></pre>
+<p>HelloCtrl은 평범한 자바스크립트 생성자 함수와 비슷한다. 그러면 <code>$scope</code> 인자는 어디서 생성됐을까?</p>
+<p>바로 <code>ng-controller</code> 디렉티브가 <code>Scope.$new()</code> 메소드를 호출해서 새로운 스코프를 생성한 것이다. AngularJS에는 <code>$rootScope</code>라는 다른 모든 스코프의 부모 스코프가 있으며, <code>$rootScope</code> 인스턴스는 애플리케이션이 초기화될 때 만들어진다.</p>
+<p><code>ng-controller</code> 디렉티브는 스코프를 생성하는 디렉티브 중 하나다. <em>AngularJS에는 DOM 트리에서 스코프를 생성하는 디렉티브를 만날 때마다 Scope 클래스의 인스턴스를 새로 생성하며, 이렇게 생성된 스코프는 부모 스코프를 가리키는 <code>$parent</code> 프로퍼티를 갖고 있다.</em> DOM 트리에는 스코프를 생성하는 디렉티브가 많을 수 있으며, 이 경우 많은 스코프가 생성될 것이다.</p>
+<blockquote>
+<p>스코프의 부모-자식 관계는 루트가 <code>$rootScope</code> 인스턴스인 트리 구조며 DOM 구조와 비슷하다.</p>
+</blockquote>
+<h5 id="-">스코프 계층 구조와 상속</h5>
+<p>스코프에 프로퍼티를 하나 정의하면 모든 자식 스코프에서 같은 이름으로 다시 그 프로퍼티를 정의하지 않아도 접근할 수 있다. 스코프를 상속받는 계층 구조인 경우 같은 프로퍼티를 반복해서 정의할 필요가 없기 때문에 실제로 이 기능은 매우 유용하다.</p>
+<p>AngularJS의 스코프 상속은 자바스크립트의 프로토타입 상속 방식(프로퍼티 하나에 접근하면 상속 트리를 계속 타고 올라가면서 프로퍼티를 찾는 방식)을 그대로 따른다.</p>
 <h3 id="-">모듈과 의존성 주입</h3>
 <h4 id="angularjs-">AngularJS의 모듈</h4>
 <pre><code><span class="transposed_variable">angular.</span>module(<span class="string">'hello'</span>, <span class="matrix">[]</span>)
@@ -1421,11 +1461,11 @@ link: <span class="keyword">function</span>(scope, element, attrs, NgModelContro
 <blockquote>
 <p>디렉티브 중에서 핵심이 되는 몇 개의 디렉티브만이 새로운 스코프를 정의한다. 핵심 디렉티브는 <code>ng-controller</code>, <code>ng-repeat</code>, <code>ng-include</code>, <code>ng-view</code>, <code>ng-switch</code> 등이며, 대부분은 프로토타입 방식으로 부모 스코프를 상속받는 자식 스코프를 만든다.</p>
 </blockquote>
-<p>isolate 스코프를 사용해서 위젯이 바깥쪽과 안쪽이 서로 엮이지 않게 위젯 디렉티브를 만들 수 있다. 이 말은 템플릿의 표현식이 위젯에 포함된 부모 스코프에 접근할 수 없다는 의미다. 이는 매우 유용한데 템플릿 안에서 일어나는 행위로 인해 부모 스코프의 프로퍼티가 영향을 주거나 받지 않기 때문이다.</p>
+<p><em>isolate 스코프를 사용해서 위젯이 바깥쪽과 안쪽이 서로 엮이지 않게 위젯 디렉티브를 만들 수 있다. 이 말은 템플릿의 표현식이 위젯에 포함된 부모 스코프에 접근할 수 없다는 의미다. 이는 매우 유용한데 템플릿 안에서 일어나는 행위로 인해 부모 스코프의 프로퍼티가 영향을 주거나 받지 않기 때문이다.</em></p>
 <blockquote>
 <p>템플릿에 들어갈 디렉티브 요소의 기존 내용은 isolate 스코프가 아니라 기존 스코프에 연결돼야 한다. 즉, 기존 요소에 옮겨 넣음으로써 이런 요소의 스코프를 정확하게 관리할 수 있는 것이다.</p>
 </blockquote>
-<p>alert 디렉티브는 isolate 스코프를 사용하는 위젯이다. alert 디렉트브가 컴파일되기 전에 DOM과 스코프는 다음과 같다.</p>
+<p>alert 디렉티브는 isolate 스코프를 사용하는 위젯이다. alert 디렉티브가 컴파일되기 전에 DOM과 스코프는 다음과 같다.</p>
 <pre><code><span class="xml">  <span class="comment">&lt;!-- </span><span class="variable">$rootScope</span><span class="xml">를 정의 --&gt;
   <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-app</span> <span class="attribute">ng-init</span>=<span class="value">"type='success'"</span>&gt;</span>
     <span class="comment">&lt;!-- </span><span class="variable">$rootScope</span><span class="xml">에 연결 --&gt;
@@ -1452,6 +1492,96 @@ link: <span class="keyword">function</span>(scope, element, attrs, NgModelContro
 <p>템플릿 안의 class=&quot;alert-{{type}}&quot; 속성은 isolate 스코프에 암묵적으로 연결되기 때문에 class=&quot;alert-info&quot;로 평가된다.</p>
 <p>그에 반해 기존 <code>&lt;alert&gt;</code> 요소로 옮겨 넣어진 내용인 <code>&lt;span&gt;Look at {{type}}&lt;/span&gt;</code>은 새로운 트랜스 클루전 스코프로 연결된다. 단순히 이 내용을 템플릿 안으로 옮기기만 했으면 <code>$rootScope</code>에서 isolate 스코프로 바인딩이 변경됐을 것이고, {{type}}은 &#39;info&#39;로 평가됐을 것이다. </p>
 <p>하지만 <em>새로운 트랜스클루드 스코프는 <code>$rootScope</code>를 프로토타입 방식으로 상속받는다.</em> 즉, span 태그가 <code>&lt;span&gt;Look at success&lt;/span&gt;</code>로 올바르게 평가된다는 의미다.</p>
+<h3 id="-">트랜스클루전 함수 생성과 사용</h3>
+<p>AngularJS의 트랜스클루전은 트랜스클루전 함수를 사용할 수 있게 한다. 이 함수는 <code>$compile</code> 서비스를 호춣해서 생성하는 단순한 링크 함수다.</p>
+<p>디렉티브가 트랜스클루전을 요청하면 AngularJS는 옮겨 넣을 요소를 DOM에서 골라낸 후 컴파일한다. <code>transclude: true</code>로 지정했을 때 다음 코드를 보자.</p>
+<pre><code><span class="keyword">var</span> elementsToTransclude = directiveElement.contents();
+directiveElement.html(<span class="string">''</span>);
+<span class="keyword">var</span> transcludeFunction = <span class="variable">$compile</span>(elementsToTransclude);</code></pre>
+<p>첫번째 줄은 트랜스클루드를 요청한 디렉티브가 위치한 요소의 내용을 가져오는 코드다. 두번째 줄은 이 요소를 비우는 코드이고, 세번째 줄은 트랜스클루전 함수를 생성하기 위해 옮겨 넣을 내용을 컴파일하는 코드다. 이렇게 생성된 트랜스클루전 함수는 디렉티브에서 사용하기 위해 디렉티브로 다시 전달된다.</p>
+<h4 id="-compile-">$compile 서비스로 트랜스클루전 함수 작성</h4>
+<p>AngularJS는 컴파일러를 <code>$compile</code> 서비스로 제공한다. <code>$compile</code> 서비스를 사용하려면 단순히 DOM 노드의 목록(혹은 DOM 노드의 목록으로 해석될 수 있는 문자열)과 함께 호출하면 된다.</p>
+<pre><code>var linkingFn = $compile('<span class="tag">&lt;<span class="title">div</span> <span class="attribute">som-directive</span>&gt;</span>some <span class="variable">{{"interpola-ted"}}</span> values<span class="tag">&lt;/<span class="title">div</span>&gt;</span>');</code></pre>
+<p>이렇게 <code>$compile</code> 서비스를 호출하면 링크 함수를 반환한다. 그리고 스코프와 함께 이 링크 함수를 호출하면 해당 스코프에 연결되고 컴파일된 DOM 요소를 포함하는 DOM 요소를 얻을 수 있다.</p>
+<pre><code><span class="title">var</span> compiledElement = linkingFn(someScope);</code></pre>
+<h5 id="-">옮겨 넣을 때 기존 요소 복사</h5>
+<p>링크 함수를 호출할 때 매개변수로 콜백 함수를 넘기면 기존 요소 대신 요소의 복사본을 반환한다. 콜백 함수는 동기적으로 호출되며, 매개변수로 요소의 복사본이 주입된다.</p>
+<pre><code><span class="keyword">var</span> <span class="keyword">clone</span> = linkingFn(scope, <span class="function"><span class="keyword">function</span> <span class="title">callback</span><span class="params">(clone)</span>{</span>
+            element.append(<span class="keyword">clone</span>);
+        });</code></pre>
+<blockquote>
+<p><code>ng-repeat</code>처럼 기존 요소의 자식에 대한 복사본을 만들고 싶을 때 아주 유용한 방법이다.</p>
+</blockquote>
+<h4 id="-">디렉티브의 트랜스클루전 함수 사용</h4>
+<p>컴파일러는 트랜스클루전 함수를 디렉티브로 다시 전달한다. 그래서 트랜스클루전 함수는 보통 컴파일 함수나 디렉티브의 컨트롤러에 보관한다.</p>
+<pre><code>myModule.directive(<span class="string">'myDirective'</span>, <span class="keyword">function</span>(){
+    <span class="keyword">return</span> {
+        transclude: true,
+        compile: <span class="keyword">function</span>(element, attrs, transcludeFn){<span class="keyword">...</span>};
+        controller: <span class="keyword">function</span>($scope, $transclude){<span class="keyword">...</span>},
+    };
+});</code></pre>
+<p>컴파일 함수에서는 <code>transcludeFn</code> 매개변수를 사용해서 트랜스클루전 함수에 접근할 수 있으며, 디렉티브 컨트롤러에서는 <code>$transclude</code> 매개변수로 트랜스클루전 함수에 접근할 수있다.</p>
+<h5 id="transcludefn-transclusion-">transcludeFn으로 컴파일 함수에서 transclusion 함수 사용</h5>
+<p>트랜스클루전 함수는 디렉티브의 컴파일 함수에 3번째 매개변수로 사용할 수 있다. 컴파일 단계에서는 스코프를 알 수 없으므로 트랜스클루전 함수는 어떤 스코프와도 연결되지 않는다. 대신 트랜스클루전 함수를 호출할 때는 첫 번째 매개변수로 스코프를 넘길 수 있다.</p>
+<p>스코프는 링크 함수 안에서는 사용할 수 있기 때문에 보통 트랜스클루전 함수를 호출하는 곳은 링크 함수 안이다.</p>
+<pre><code>compile: <span class="keyword">function</span>(element, attrs, transcludeFn){
+    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">postLink</span><span class="params">(scope, element, attrs, controller)</span>{</span>
+        <span class="keyword">var</span> newScope = scope.$parent.$<span class="keyword">new</span>();
+        element.find(<span class="string">'p'</span>).first().append(transcludeFn(newScope));
+    };
+}</code></pre>
+<p>코드를 보면 디렉티브의 요소 다음에 첫번째로 발견되는 <code>&lt;p&gt;</code> 요소에 옮겨 넣은 요소를 추가하고 있다. 그리고 트랜스클루전 함수를 호출하면 옯겨 넣은 요소를 스코프에 연결한다. 이 경우 스코프와 같은 급의 새로운 스코프를 만든다. 즉, 디렉티브 스코프의 <code>$parent</code>에 대한 자식 스코프를 만든다.</p>
+<p>이렇게 새로운 스코프를 만드는 것은 디렉티브가 isolate 스코르를 갖는 경우 꼭 필요한 일이다. 링크함수로 넘기는 스코프는 isolate 스코프라서 옮겨 넣은 요소가 필요로 하는 부모 스코프의 어떤 프러퍼티든 상속받지 않기 때문이다.</p>
+<h5 id="transclude-transclusion-">transclude로 디렉티브 컨트롤러에서 transclusion 함수 사용</h5>
+<p>디렉티브 컨트롤러에 <code>$transclude</code>를 주입하면 transclusion 함수를 사용할 수 있다. 이 경우 <code>$transclude</code>는 부모 스코프의 새로운 자식 스코프에 미리 연결된 함수로 동작하기 때문에 스코프를 따로 넣어줄 필요는 없다.</p>
+<pre><code><span class="method">controller:</span> function(<span class="char">$s</span>cope, <span class="char">$e</span>lement, <span class="char">$t</span>ransclude){
+    <span class="char">$e</span>lement.find(<span class="string">'p'</span>).first().append(<span class="char">$t</span>ransclude());
+}</code></pre>
+<p>마찬가지로 첫 번째 <code>&lt;p&gt;</code> 요소에 옮겨 넣은 요소를 추가하고 있다.</p>
+<blockquote>
+<p><code>$transclude</code>에 미리 정의된 스코프는 옮겨 넣은 요소의 기존 스코프를 프로토타입 방식으로 상속받는다.</p>
+</blockquote>
+<h4 id="-if-">트랜스 클루전을 사용해서 if 디렉티브 작성</h4>
+<p><code>ng-transclude</code> 대신 트랜스클루전 함수를 사용하는 간단한 디렉티브를 만들어 보자. 특정 요소가 필요 없어진 경우 DOM에서 요소를 지우고 싶다면 if 디렉티브를 만들어 사용할 수 있다.</p>
+<pre><code><span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-init</span>=<span class="value">"model={show:true, count:0}"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"model.show = !model.show"</span>&gt;</span>
+        Toggle Div
+    <span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">if</span>=<span class="value">"model.show"</span> <span class="attribute">ng-init</span>=<span class="value">"model.count = model.count+1"</span>&gt;</span>
+        Shown <span class="variable">{{model.count}}</span> times
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span></code></pre>
+<p>코드를 보면 버튼을 클릭할 때마다 model.show 값이 true와 false로 번갈아 가며 변경된다. 그리고 이 동작을 화면에 보여주기 위해 값이 변경될 때마다 model.count 값을 증가시키면서 DOM 요소를 삭제하거나 다시 추가한다.</p>
+<blockquote>
+<p>if 디렉티브를 사용하는 요소를 div로 한번 감싸야 한다. if 디렉티브는 DOM에 요소를 집어넣을 때 부모 요소를 필요로 하는 <code>jqLite.after()</code>를 사용하기 때문이다.</p>
+</blockquote>
+<pre><code>myModule.directive(<span class="string">'if'</span>, <span class="keyword">function</span>(){
+    <span class="keyword">return</span> {
+        transclude: <span class="string">'element'</span>,
+        priority: <span class="number">500</span>,
+        compile: <span class="keyword">function</span>(element, attr, transclude){
+            <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">postLink</span><span class="params">(scope, element, attr)</span>{</span>
+                <span class="keyword">var</span> childElement, childScope;
+
+                scope.$watch(attr[<span class="string">'if'</span>], <span class="keyword">function</span>(newValue){
+                    <span class="keyword">if</span>(childElement){
+                        childEment.remove();
+                        childScope.$destory();
+                        childElement = <span class="literal">undefined</span>;
+                        childScope = <span class="literal">undefined</span>;
+                    }
+                    <span class="keyword">if</span>(newValue){
+                        childScope = scope.$<span class="keyword">new</span>();
+                        childElement = transclude(childScope, <span class="keyword">function</span>(clone){
+                            element.after(clone);
+                        });
+                    }
+                });
+            };
+        }
+    };
+});</code></pre>
 <h2 id="-">웹애플리케이션 작성</h2>
 
 		  <!-- //end -->
