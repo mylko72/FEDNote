@@ -1,0 +1,26 @@
+<!doctype html>
+<html ng-app="tooltipApp">
+<head>
+  <meta charset="utf-8">
+  <title>Tooltip Directive</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <script src="tooltip.js"></script>
+  <script src="app.js"></script>
+  <script src="/angularjs/services/mouseclick.js"></script>
+  <style>
+	.container {position:relative; width:500px; margin:10px auto 0;}
+	.well {padding:50px 0;}
+	p.message {margin:0; text-align:center;}
+	p.message a {display:inline-block;}
+	p.tooltext {position:absolute; top:-9999px; width:240px; border:1px solid #ddd; background-color:#fff; padding:2px; font-size:11px; color:#b6893a;}
+  </style>
+</head>
+<body ng-controller="TooltipCtrl">
+
+<div class="container">
+	<tooltip link="이곳에 마우스를 over하세요." title="마우스를 over하면 말풍선이 나타납니다" posx="pos.x" posy="pos.y" show="showTooltip()"></tooltip>
+</div>
+
+</body>
+</html>
