@@ -31,3 +31,5 @@ footer {bottom:0;}
 footer p {margin-bottom:10px;}
 
 .markdown-body code {border-radius:6px;}
+
+.markdown-body .highlight pre, .markdown-body pre {word-wrap:normal !important;}

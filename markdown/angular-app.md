@@ -2,6 +2,65 @@
 
 ##AngularJS 철학
 
+###AngularJS의 MVC 패턴
+
+####스코프
+
+AngularJS에서 `$scope` 객체는 뷰(템플릿)에게 모델을 제공한다. 스코프 인스턴스에 프로퍼티를 할당하면 템플릿이 렌더링할 수 있는 새로운 값을 지정할 수 있다.
+
+	var HelloCtrl = function($scope){
+		$scope.name = 'World';
+	}
+
+스코프에는 데이터뿐만 아니라 주어진 뷰에 대한 특정 동작도 추가할 수 있다. 예를 들어 name 변수에 대한 getter 함수가 필요하다면 다음처럼 만들면 된다.
+
+	var HelloCtrl = function($scope){
+		$scope.getName = function(){
+			return $scope.name;
+		}
+	}
+
+`$scope` 객체를 사용하면 특정 도메인 모델과 동작을 특정 뷰 레이어에 한정시킬 수 있다.
+
+####컨트롤러
+
+*컨트롤러의 가장 중요한 역할은 스코프 객체를 초기화하는 것이다.* 실제로 초기화 로직은 다음과 같은 역할을 담당한다.
+
+- 초기 모델 값 지정
+- `$scope`에 UI 동작 추가
+
+컨트롤러는 일반적인 자바스크립트 함수다. 즉 프레임워크의 특정 클래스를 상속받거나 AngularJS API를 호출하지 않아도 제 기능을 충분히 발휘한다.
+
+>초기 모델 값을 지정하는 부분에 있어서는 컨트롤러가 `ng-init` 디렉티브와 동일한 동작을 한다. 그래서 컨트롤러를 사용하면 초기화 로직을 HTML 템프릿에 넣지 않고 자바스크립트로만 작성할 수 있다. 
+
+####모델
+
+AngularJS의 모델은 평범한 자바스크립트 객체다. 프레임워크의 특정 클래스를 상속받거나 특정 모델 객체를 포함하지 않아도 된다. 기존의 순수한 자바스크립트 클래스나 객체를 모델로 바로 사용할 수 있으며, 객체나 배열도 가능하다. *AngularJS에 모델을 제공하려면 `$scope`의 프로퍼티로 단순히 추가하기만 하면 된다.*
+
+####스코프 심화
+
+각 `$scope`는 Scope 클래스의 인스턴스다. Scope 클래스는 스코프의 생명주기를 관리하는 메소드, 이벤트를 전달하는 메소드, 템플릿을 렌더링하는 과정을 지원하는 메소드를 갖고 있다.
+
+#####스코프 계층도
+
+	var HelloCtrl = function($scope){
+		$scope.name = 'World';
+	}
+
+HelloCtrl은 평범한 자바스크립트 생성자 함수와 비슷한다. 그러면 `$scope` 인자는 어디서 생성됐을까?
+
+바로 `ng-controller` 디렉티브가 `Scope.$new()` 메소드를 호출해서 새로운 스코프를 생성한 것이다. AngularJS에는 `$rootScope`라는 다른 모든 스코프의 부모 스코프가 있으며, `$rootScope` 인스턴스는 애플리케이션이 초기화될 때 만들어진다.
+
+`ng-controller` 디렉티브는 스코프를 생성하는 디렉티브 중 하나다. *AngularJS에는 DOM 트리에서 스코프를 생성하는 디렉티브를 만날 때마다 Scope 클래스의 인스턴스를 새로 생성하며, 이렇게 생성된 스코프는 부모 스코프를 가리키는 `$parent` 프로퍼티를 갖고 있다.* DOM 트리에는 스코프를 생성하는 디렉티브가 많을 수 있으며, 이 경우 많은 스코프가 생성될 것이다.
+
+>스코프의 부모-자식 관계는 루트가 `$rootScope` 인스턴스인 트리 구조며 DOM 구조와 비슷하다.
+
+#####스코프 계층 구조와 상속
+
+스코프에 프로퍼티를 하나 정의하면 모든 자식 스코프에서 같은 이름으로 다시 그 프로퍼티를 정의하지 않아도 접근할 수 있다. 스코프를 상속받는 계층 구조인 경우 같은 프로퍼티를 반복해서 정의할 필요가 없기 때문에 실제로 이 기능은 매우 유용하다.
+
+AngularJS의 스코프 상속은 자바스크립트의 프로토타입 상속 방식(프로퍼티 하나에 접근하면 상속 트리를 계속 타고 올라가면서 프로퍼티를 찾는 방식)을 그대로 따른다.
+
 ###모듈과 의존성 주입
 
 ####AngularJS의 모듈
@@ -2058,11 +2117,11 @@ myModule.directive('alert', function(){
 
 > 디렉티브 중에서 핵심이 되는 몇 개의 디렉티브만이 새로운 스코프를 정의한다. 핵심 디렉티브는 `ng-controller`, `ng-repeat`, `ng-include`, `ng-view`, `ng-switch` 등이며, 대부분은 프로토타입 방식으로 부모 스코프를 상속받는 자식 스코프를 만든다.
 
-isolate 스코프를 사용해서 위젯이 바깥쪽과 안쪽이 서로 엮이지 않게 위젯 디렉티브를 만들 수 있다. 이 말은 템플릿의 표현식이 위젯에 포함된 부모 스코프에 접근할 수 없다는 의미다. 이는 매우 유용한데 템플릿 안에서 일어나는 행위로 인해 부모 스코프의 프로퍼티가 영향을 주거나 받지 않기 때문이다.
+*isolate 스코프를 사용해서 위젯이 바깥쪽과 안쪽이 서로 엮이지 않게 위젯 디렉티브를 만들 수 있다. 이 말은 템플릿의 표현식이 위젯에 포함된 부모 스코프에 접근할 수 없다는 의미다. 이는 매우 유용한데 템플릿 안에서 일어나는 행위로 인해 부모 스코프의 프로퍼티가 영향을 주거나 받지 않기 때문이다.*
 
 > 템플릿에 들어갈 디렉티브 요소의 기존 내용은 isolate 스코프가 아니라 기존 스코프에 연결돼야 한다. 즉, 기존 요소에 옮겨 넣음으로써 이런 요소의 스코프를 정확하게 관리할 수 있는 것이다.
 
-alert 디렉티브는 isolate 스코프를 사용하는 위젯이다. alert 디렉트브가 컴파일되기 전에 DOM과 스코프는 다음과 같다.
+alert 디렉티브는 isolate 스코프를 사용하는 위젯이다. alert 디렉티브가 컴파일되기 전에 DOM과 스코프는 다음과 같다.
 
 ```
   <!-- $rootScope를 정의 -->
@@ -2101,12 +2160,124 @@ alert 요소를 보면 type="'info'"라는 속성이 있는데, 템플릿 스코
 
 하지만 *새로운 트랜스클루드 스코프는 `$rootScope`를 프로토타입 방식으로 상속받는다.* 즉, span 태그가 `<span>Look at success</span>`로 올바르게 평가된다는 의미다.
 
+###트랜스클루전 함수 생성과 사용
 
+AngularJS의 트랜스클루전은 트랜스클루전 함수를 사용할 수 있게 한다. 이 함수는 `$compile` 서비스를 호춣해서 생성하는 단순한 링크 함수다.
 
+디렉티브가 트랜스클루전을 요청하면 AngularJS는 옮겨 넣을 요소를 DOM에서 골라낸 후 컴파일한다. `transclude: true`로 지정했을 때 다음 코드를 보자.
 
+	var elementsToTransclude = directiveElement.contents();
+	directiveElement.html('');
+	var transcludeFunction = $compile(elementsToTransclude);
 
+첫번째 줄은 트랜스클루드를 요청한 디렉티브가 위치한 요소의 내용을 가져오는 코드다. 두번째 줄은 이 요소를 비우는 코드이고, 세번째 줄은 트랜스클루전 함수를 생성하기 위해 옮겨 넣을 내용을 컴파일하는 코드다. 이렇게 생성된 트랜스클루전 함수는 디렉티브에서 사용하기 위해 디렉티브로 다시 전달된다.
 
+####$compile 서비스로 트랜스클루전 함수 작성
 
+AngularJS는 컴파일러를 `$compile` 서비스로 제공한다. `$compile` 서비스를 사용하려면 단순히 DOM 노드의 목록(혹은 DOM 노드의 목록으로 해석될 수 있는 문자열)과 함께 호출하면 된다.
+
+	var linkingFn = $compile('<div som-directive>some {{"interpola-ted"}} values</div>');
+
+이렇게 `$compile` 서비스를 호출하면 링크 함수를 반환한다. 그리고 스코프와 함께 이 링크 함수를 호출하면 해당 스코프에 연결되고 컴파일된 DOM 요소를 포함하는 DOM 요소를 얻을 수 있다.
+
+	var compiledElement = linkingFn(someScope);
+
+#####옮겨 넣을 때 기존 요소 복사
+
+링크 함수를 호출할 때 매개변수로 콜백 함수를 넘기면 기존 요소 대신 요소의 복사본을 반환한다. 콜백 함수는 동기적으로 호출되며, 매개변수로 요소의 복사본이 주입된다.
+
+	var clone = linkingFn(scope, function callback(clone){
+				element.append(clone);
+			});
+
+> `ng-repeat`처럼 기존 요소의 자식에 대한 복사본을 만들고 싶을 때 아주 유용한 방법이다.
+
+####디렉티브의 트랜스클루전 함수 사용
+
+컴파일러는 트랜스클루전 함수를 디렉티브로 다시 전달한다. 그래서 트랜스클루전 함수는 보통 컴파일 함수나 디렉티브의 컨트롤러에 보관한다.
+
+	myModule.directive('myDirective', function(){
+		return {
+			transclude: true,
+			compile: function(element, attrs, transcludeFn){...};
+			controller: function($scope, $transclude){...},
+		};
+	});
+
+컴파일 함수에서는 `transcludeFn` 매개변수를 사용해서 트랜스클루전 함수에 접근할 수 있으며, 디렉티브 컨트롤러에서는 `$transclude` 매개변수로 트랜스클루전 함수에 접근할 수있다.
+
+#####transcludeFn으로 컴파일 함수에서 transclusion 함수 사용
+
+트랜스클루전 함수는 디렉티브의 컴파일 함수에 3번째 매개변수로 사용할 수 있다. 컴파일 단계에서는 스코프를 알 수 없으므로 트랜스클루전 함수는 어떤 스코프와도 연결되지 않는다. 대신 트랜스클루전 함수를 호출할 때는 첫 번째 매개변수로 스코프를 넘길 수 있다.
+
+스코프는 링크 함수 안에서는 사용할 수 있기 때문에 보통 트랜스클루전 함수를 호출하는 곳은 링크 함수 안이다.
+
+	compile: function(element, attrs, transcludeFn){
+		return function postLink(scope, element, attrs, controller){
+			var newScope = scope.$parent.$new();
+			element.find('p').first().append(transcludeFn(newScope));
+		};
+	}
+
+코드를 보면 디렉티브의 요소 다음에 첫번째로 발견되는 `<p>` 요소에 옮겨 넣은 요소를 추가하고 있다. 그리고 트랜스클루전 함수를 호출하면 옯겨 넣은 요소를 스코프에 연결한다. 이 경우 스코프와 같은 급의 새로운 스코프를 만든다. 즉, 디렉티브 스코프의 `$parent`에 대한 자식 스코프를 만든다.
+
+이렇게 새로운 스코프를 만드는 것은 디렉티브가 isolate 스코르를 갖는 경우 꼭 필요한 일이다. 링크함수로 넘기는 스코프는 isolate 스코프라서 옮겨 넣은 요소가 필요로 하는 부모 스코프의 어떤 프러퍼티든 상속받지 않기 때문이다.
+
+#####transclude로 디렉티브 컨트롤러에서 transclusion 함수 사용
+
+디렉티브 컨트롤러에 `$transclude`를 주입하면 transclusion 함수를 사용할 수 있다. 이 경우 `$transclude`는 부모 스코프의 새로운 자식 스코프에 미리 연결된 함수로 동작하기 때문에 스코프를 따로 넣어줄 필요는 없다.
+
+	controller: function($scope, $element, $transclude){
+		$element.find('p').first().append($transclude());
+	}
+
+마찬가지로 첫 번째 `<p>` 요소에 옮겨 넣은 요소를 추가하고 있다.
+
+>`$transclude`에 미리 정의된 스코프는 옮겨 넣은 요소의 기존 스코프를 프로토타입 방식으로 상속받는다.
+
+####트랜스 클루전을 사용해서 if 디렉티브 작성
+
+`ng-transclude` 대신 트랜스클루전 함수를 사용하는 간단한 디렉티브를 만들어 보자. 특정 요소가 필요 없어진 경우 DOM에서 요소를 지우고 싶다면 if 디렉티브를 만들어 사용할 수 있다.
+
+	<body ng-init="model={show:true, count:0}">
+		<button ng-click="model.show = !model.show">
+			Toggle Div
+		</button>
+		<div if="model.show" ng-init="model.count = model.count+1">
+			Shown {{model.count}} times
+		</div>
+	</body>
+
+코드를 보면 버튼을 클릭할 때마다 model.show 값이 true와 false로 번갈아 가며 변경된다. 그리고 이 동작을 화면에 보여주기 위해 값이 변경될 때마다 model.count 값을 증가시키면서 DOM 요소를 삭제하거나 다시 추가한다.
+
+> if 디렉티브를 사용하는 요소를 div로 한번 감싸야 한다. if 디렉티브는 DOM에 요소를 집어넣을 때 부모 요소를 필요로 하는 `jqLite.after()`를 사용하기 때문이다.
+
+	myModule.directive('if', function(){
+		return {
+			transclude: 'element',
+			priority: 500,
+			compile: function(element, attr, transclude){
+				return function postLink(scope, element, attr){
+					var childElement, childScope;
+
+					scope.$watch(attr['if'], function(newValue){
+						if(childElement){
+							childEment.remove();
+							childScope.$destory();
+							childElement = undefined;
+							childScope = undefined;
+						}
+						if(newValue){
+							childScope = scope.$new();
+							childElement = transclude(childScope, function(clone){
+								element.after(clone);
+							});
+						}
+					});
+				};
+			}
+		};
+	});
 
 
 
