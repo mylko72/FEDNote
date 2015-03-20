@@ -82,7 +82,7 @@
 			this.$broadcast(yt_event);
 		}
 
-		$http.get('album.json')
+		$http.get('ballad.json')
 			.success(function(data){
 				$scope.songs = data;
 			}).then(function(){
