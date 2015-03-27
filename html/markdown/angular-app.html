@@ -998,6 +998,227 @@ $scope.setActivePage = <span class="function"><span class="keyword">function</sp
 <p><code>ngModelController</code>는 input 요소의 디렉티브를 통해 값이 유효한지 검증하기 위해 보통 값이 변경되기 전에 먼저 파이프라인의 변경 과정에 꺼어들어 값을 검증하는 방식을 사용한다. 그리고 <code>ngModelController</code>는 추적 결과에 따라 <code>ng-valid</code>나 <code>ng-invalid</code> CSS 클래스를 적용한다. 그래서 이 클래스를 이용하면 요소의 모양을 변경할 수 있다.</p>
 <pre><code><span class="class">.ng-valid</span><span class="class">.ng-dirty</span> <span class="rules">{<span class="rule"><span class="attribute">border</span>:<span class="value"><span class="number">3</span>px solid green;</span></span><span class="rule">}</span></span>
 <span class="class">.ng-invalid</span><span class="class">.ng-dirty</span> <span class="rules">{<span class="rule"><span class="attribute">border</span>:<span class="value"><span class="number">3</span>px solid red;</span></span><span class="rule">}</span></span></code></pre>
+<p>여기서는 사용자가 값을 변경한 input 필드만 골라내기 위해 조금 전에 살펴본 값 변경 여부와 유효 여부를 동시에 사용했다. 값이 유효하지 않은 경우 빨간색 선이 표시되고 유효한 경우 녹색 선이 표시된다.</p>
+<h3 id="angularjs-">AngularJS 폼 검증</h3>
+<h4 id="ngformcontroller">ngFormController</h4>
+<p>각 폼 디렉티브는 <code>ngFormController</code>의 인스턴스를 생성하는데, 이 객체는 폼이 유효한지 아닌지와 값 변경 여부를 관리한다. 중요한 점은 <code>ngFormController</code>가 폼의 각 <code>ngModel</code> 필드를 추적하기 위해 <code>ngModelController</code>와 함께 동작한다는 사실이다.</p>
+<p><code>ngModelController</code>가 생성되면 부모 요소에서부터 위로 탐색해 첫 번째 발견하는 <code>ngFormController</code>에 자신을 등록한다. 이 방법으로 <code>ngFormController</code>는 어떤 input 디렉티브를 추적해야 하는지 판단한다.ㅐ</p>
+<h4 id="-">사용자 정보 폼에 동적인 동작 추가</h4>
+<p>스코프의 <code>ngFormController</code>와 <code>ngModelController</code> 객체를 사용하면 프로그램상에서 폼의 상태를 변경할 수 있다.</p>
+<h5 id="-">유효 검사 오류 보여주기</h5>
+<p>다음은 폼의 입력값이 유효하지 않은 경우 에러 메시지를 보여주는 예제이며 이를 위한 템플릿이다.</p>
+<pre><code>  <span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"userInfoForm"</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"control-group"</span> <span class="attribute">ng-class</span>=<span class="value">"getCssClasses(userInfoForm.email)"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">label</span>&gt;</span>E-mail<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"email"</span> <span class="attribute">ng-model</span>=<span class="value">"user.email"</span> <span class="attribute">name</span>=<span class="value">"email"</span> <span class="attribute">required</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(userInfoForm.email, 'email')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>You must enter a valid email<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(userInfoForm.email, 'required')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>This field is required<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+      <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+      ...
+  <span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>그리고 다음은 컨트롤러다.      </p>
+<pre><code>app.controller(<span class="string">'MainCtrl'</span>, function(<span class="variable">$scope</span>) {
+    <span class="variable">$scope</span>.getCssClasses = function(ngModelContoller) {
+        <span class="keyword">return</span> {
+          <span class="keyword">error</span>: ngModelContoller.<span class="variable">$invalid</span> &amp;&amp; ngModelContoller.<span class="variable">$dirty</span>,
+          success: ngModelContoller.<span class="variable">$valid</span> &amp;&amp; ngModelContoller.<span class="variable">$dirty</span>
+        };
+    };
+
+    <span class="variable">$scope</span>.showError = function(ngModelController, <span class="keyword">error</span>) {
+        <span class="keyword">return</span> ngModelController.<span class="variable">$error</span>[<span class="keyword">error</span>];
+    };
+});</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/XwLUFZ">유효검사 오류 보여주기</a></p>
+</blockquote>
+<p><code>getCssClasses()</code> 메소드는 포함돼야 하는 CSS 클래스를 정의해놓은 객체를 반환한다. 객체의 키는 CSS 클래스의 이름이고, 값이 <code>true</code>이면 CSS 클래스가 추가된다. 예제의 <code>getCssClasses()</code> 메소드는 모델이 변경됐고, 유효하지 않은 경우 <code>error</code>를 반환하고 모델이 변경되긴 했지만 유효한 경우에는 <code>success</code>를 반환한다.</p>
+<h5 id="-">저장 버튼 비활성화</h5>
+<p>폼을 저장할 수 있는 상태가 아닐 때는 저장 버튼을 비활성화할 수 있다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"userInfoForm"</span>&gt;</span>
+    ...
+    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-disabled</span>=<span class="value">"!canSave()"</span>&gt;</span>Save<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>뷰에 <code>ngDisabled</code> 디렉티브를 사용하여 표현식이 참인 경우 버튼을 비활성화한다. 예제에서는 <code>canSave()</code> 메소드를 호출한 결과에 따라 동작한다. </p>
+<pre><code>  <span class="variable">$scope</span>.canSave = function() {
+    <span class="keyword">return</span> <span class="variable">$scope</span>.userInfoForm.<span class="variable">$dirty</span> &amp;&amp; <span class="variable">$scope</span>.userInfoForm.<span class="variable">$valid</span>;
+  };</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/123zlhw">저장버튼 비활성화</a></p>
+</blockquote>
+<h4 id="-">브라우저 자체 검증 기능 비활성화</h4>
+<p>브라우저에서 제공하는 자체 검증 기능을 사용하지 않으려면 HTML5 <code>novalidate</code> 속성을 폼 요소에 적용하면 된다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"novalidateForm"</span> <span class="attribute">novalidate</span>&gt;</span></code></pre>
+<h3 id="-">다른 폼과 중첩된 폼</h3>
+<p>AngularJS 폼은 다른 폼안에 중첩된 폼을 만들 수 있다. 중첩 폼을 구현하기 위한 <code>ngForm</code> 디렉티브를 따로 제공한다.</p>
+<blockquote>
+<p>중첩된 폼은 선언한 이름으로 부모 폼에 추가된다. 부모 폼이 없다면 스코프에 직접 추가된다.</p>
+</blockquote>
+<h4 id="-">재사용 가능한 컴포넌트로서의 서브 폼 사용</h4>
+<p>중첩된 폼은 필드에 대한 자체 검증 기능을 갖고 있어 다른 폼에도 재사용할 수 있는 서브 폼으로도 활용할 수 있다. 다음 코드는
+비밀번호를 입력하는 2개의 입력 창에 대한 예제이다.</p>
+<pre><code><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/ng-template"</span> <span class="attribute">id</span>=<span class="value">"password-form"</span>&gt;</span><span class="javascript">
+  &lt;ng-form name=<span class="string">"passwordForm"</span>&gt;
+    <span class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-show</span>=<span class="value">"user.password != user.password2"</span>&gt;</span>Passwords do not match<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">label</span>&gt;</span>Password<span class="tag">&lt;/<span class="title">label</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"user.password"</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">required</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">label</span>&gt;</span>Confirm Password<span class="tag">&lt;/<span class="title">label</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"user.password2"</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">required</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">ng-form</span>&gt;</span>
+</span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"form1"</span> <span class="attribute">novalidate</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">legend</span>&gt;</span>User Form<span class="tag">&lt;/<span class="title">legend</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">label</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">label</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"user.name"</span> <span class="attribute">required</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">ng-include</span> <span class="attribute">src</span>=<span class="value">"'password-form'"</span>&gt;</span><span class="tag">&lt;/<span class="title">ng-include</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/10QWwyu">재사용 가능한 서브 폼</a></p>
+</blockquote>
+<p>여기서는 서브 폼을 스크립트 블록을 이용해서 템플릿 조각으로 정의했지만 다른 파일로 분리해도 된다. <em>서브 폼을 사용하는 <code>form1</code>에서는
+<code>ngInclude</code> 디렉티브를 사용해 서브 폼을 집어 넣는다.</em></p>
+<p>서브 폼은 자신만의 입력 값에 대한 유효 여부와 이에 따른 CSS 클래스를 갖고 있다.</p>
+<h3 id="-">서브 폼 반복 사용</h3>
+<p>때로는 데이터에 따라 여러 번 반복해야 하는 필드가 있을 수 있다. <code>ngRepeat</code> 디렉티브를 사용해 다음과 같이 구현할 수 있다.</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">ng-controller</span>=<span class="value">"MainCtrl"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>User Info<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">label</span>&gt;</span>Websites<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-repeat</span>=<span class="value">"website in user.websites"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"url"</span> <span class="attribute">ng-model</span>=<span class="value">"website.url"</span>&gt;</span><span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">ng-click</span>=<span class="value">"remove(</span><span class="variable">$index</span><span class="xml">)"&gt;X<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-small"</span> <span class="attribute">ng-click</span>=<span class="value">"add()"</span>&gt;</span>Add Website<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span>
+
+app.controller('MainCtrl', function(</span><span class="variable">$scope</span><span class="xml">) {
+  </span><span class="variable">$scope.user</span><span class="xml"> = {
+    websites: [
+      {url: 'http://www.bloggs.com'},
+      {url: 'http://www.jo-b.com'}
+    ]
+  };
+
+  </span><span class="variable">$scope.remove</span><span class="xml"> = function(index) {
+    </span><span class="variable">$scope.user.websites.splice</span><span class="xml">(index, </span><span class="number">1</span><span class="xml">);
+  };
+
+  </span><span class="variable">$scope.add</span><span class="xml"> = function() {
+    </span><span class="variable">$scope.user.websites.push</span><span class="xml">({ url: ''});
+  };
+
+});</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/XHLEWQ">반복 사용하는 필드</a></p>
+</blockquote>
+<p>템플릿에서는 <code>ngRepeat</code> 디렉티브를 사용해 사용자 프로필의 웹사이트 정보를 출력했다. 각 input 디렉티브는 <code>user.websites</code>의 <code>website.url</code> 모델에
+바인딩돼 있다. 이어지는 2개의 함수는 배열에 항목을 추가하거나 제거하고 AngularJS 데이터 바인딩이 나머지 부분을 처리해준다.</p>
+<h4 id="-input-">반복되는 input 검증</h4>
+<p>반복적인 폼을 사용하면서 각 필드에 대한 검증이 필요한 경우 폼의 input마다 각각 다른 이름을 사용해야 하지만 AngularJS에서는 input 디렉티브에 <code>name</code> 속성을 동적으로 생성할 수 없다는 문제가 있다. </p>
+<p>이 문제는 중첩 폼을 사용하면 해결할 수 있다. 각 폼이 현재 스코프에 추가되므로 input 디렉티브를 포함하고 있는 폼을 중첩하면 필드 검증을 위해 각각의 스코프에 접근할 수 있다.</p>
+<p>다음은 템플릿 코드이다.</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">novalidate</span> <span class="attribute">ng-controller</span>=<span class="value">"MainCtrl"</span> <span class="attribute">name</span>=<span class="value">"userForm"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">label</span>&gt;</span>Websites<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-show</span>=<span class="value">"userForm.</span><span class="variable">$invalid</span><span class="xml">"&gt;The User Form is invalid.<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"control-group"</span> <span class="attribute">ng-repeat</span>=<span class="value">"website in user.websites"</span> <span class="attribute">ng-form</span>=<span class="value">"websiteForm"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"input-append"</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"url"</span> <span class="attribute">name</span>=<span class="value">"website"</span> <span class="attribute">ng-model</span>=<span class="value">"website.url"</span> <span class="attribute">required</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">ng-click</span>=<span class="value">"remove(</span><span class="variable">$index</span><span class="xml">)"&gt;X<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(websiteForm.website, 'url')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>You must enter a valid url (including http://)<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(websiteForm.website, 'required')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>This field is required<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-small"</span> <span class="attribute">ng-click</span>=<span class="value">"add()"</span>&gt;</span>Add Website<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></span></code></pre>
+<p>다음은 컨트롤러 코드이다.</p>
+<pre><code>app.controller(<span class="string">'MainCtrl'</span>, function(<span class="variable">$scope</span>) {
+  <span class="variable">$scope</span>.showError = function(ngModelController, error) {
+    <span class="keyword">return</span> ngModelController.<span class="variable">$error</span>[error];
+  };
+
+  <span class="variable">$scope</span>.user = {
+    websites: [{url: <span class="string">'http://www.bloggs.com'</span>}, {url: <span class="string">'http://www.jo-b.com'</span>}]
+  };
+
+  <span class="variable">$scope</span>.remove = function(<span class="keyword">index</span>) {
+    <span class="variable">$scope</span>.user.websites.<span class="keyword">splice</span>(<span class="keyword">index</span>, <span class="number">1</span>);
+  };
+
+  <span class="variable">$scope</span>.add = function() {
+    <span class="variable">$scope</span>.user.websites.<span class="keyword">push</span>({ url: <span class="string">''</span>});
+  };
+
+});</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/14i1sTp">반복되는 input 검증</a></p>
+</blockquote>
+<p>여기서는 div에 <code>ngForm</code> 디렉티브를 사용해 스코프의 websites 배열에 따라 반복되는 중첩 폼을 만들었다. 이 말은 <code>ngRepeat</code> 스코프 안에서 각 웹사이트에 대해 <code>ngModel</code>의 검증 기능을 사용할 수 있다는 의미다.</p>
+<p>오류 메시지를 보여주기 위한 <code>showError</code> 함수는 매개변수로 넘긴 <code>ngModelController</code>의 <code>$error</code> 필드에 해당 항목이 있는지 검사한다. 이 함수에 websiteForm.website를 넘긴 이유는 이것이 해당 웹사이트 입력 창의
+<code>ngModelController</code> 객체에 대한 참조이기 때문이다.</p>
+<p><code>ngForm</code> 밖에서는 websiteForm 객체나 websiteForm.website 객체를 참조할 수 없다. 스코프에 있지 않기 때문이다. 하지만 userForm 객체는 참조할 수 있다.</p>
+<h3 id="-html-">기존 HTML 폼 제출</h3>
+<h4 id="-">서버로 바로 폼 제출</h4>
+<p>AngularJS 애플리케이션의 폼에 <code>action</code> 속성을 추가하면 기존 방식처럼 정의한 URL로 폼을 제출할 수 있다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">method</span>=<span class="value">"get"</span> <span class="attribute">action</span>=<span class="value">"http://www.google.com/search"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">name</span>=<span class="value">"q"</span>&gt;</span> Press enter in the input to submit
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<h4 id="-">제출 이벤트 다루기</h4>
+<p><code>action</code> 속성을 사용하지 않으면 AngularJS는 클라이언트 측에서 스코프의 함수를 통해 폼 제출을 다룬다고 생각한다. 그래서 AngularJS는 서버로 바로 폼을 제출하는 동작을 막는다.</p>
+<p>클라이언트 측 함수는 button의 <code>ngClick</code> 디렉티브나 form의 <code>ngSubmit</code> 디렉티브를 사용해 호출할 수 있다.</p>
+<blockquote>
+<p><code>ngSubmit</code>과 <code>ngClick</code> 디렉티브를 같은 form에서 사용하지 않는다. 제출이 2번 이뤄지기 때문이다.</p>
+</blockquote>
+<h5 id="ngsubmit-">ngSubmit으로 폼 제출</h5>
+<p>폼에서 <code>ngSubmit</code>을 사용하려면 폼 제출 시 평가될 표현식을 작성한다. 폼 제출은 사용자가 입력 창에서 엔터를 누르거나 버튼 중 하나를 클릭하면 된다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">ng-submit</span>=<span class="value">"showAlert(q)"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"q"</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/ZQBLYj">ngSubmit으로 폼 제출</a></p>
+</blockquote>
+<h5 id="ngclick-">ngClick으로 폼 제출</h5>
+<p>button이나 input[type=submit]에 <code>ngClick</code>을 사용하려면 버튼을 클릭했을 때 평가되는 표현식을 작성해야 한다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"q"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"showAlert(q)"</span>&gt;</span>Search<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/153OvLS">ngClick으로 폼 제출</a></p>
+</blockquote>
+<h3 id="-">사용자 정보 폼 초기화</h3>
+<p>사용자 정보 폼에 사용자가 입력한 값을 지우고 디폴트 값으로 돌아가고 싶을 때가 있다. 이를 위해서 기존 모델을 복사해두고 필요할 때마다 사용자가 입력한 변경 사항을 덮어써버리면 된다.</p>
+<p>다음은 템플릿 코드다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"userInfoForm"</span>&gt;</span>
+    ...
+    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"revert()"</span> <span class="attribute">ng-disabled</span>=<span class="value">"!canRevert()"</span>&gt;</span>Revert Changes<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>그리고 컨트롤러 코드다.</p>
+<pre><code>app.controller(<span class="string">'MainCtrl'</span>, <span class="keyword">function</span>($scope) {
+    <span class="keyword">...</span>
+    $scope.user = {
+        <span class="keyword">...</span>
+    };
+
+    $scope.passwordRepeat = $scope.user.password;
+
+    // Make a copy of the user
+    var original = angular.copy($scope.user);
+
+    // Revert the user info back to the original
+    $scope.revert = <span class="keyword">function</span>() {
+        $scope.user = angular.copy(original);
+        $scope.passwordRepeat = $scope.user.password;
+        $scope.userInfoForm.$setPristine();
+    };
+
+    $scope.canRevert = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> !angular.equals($scope.user, original);
+    };
+
+    $scope.canSave = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> $scope.userInfoForm.$valid &amp;&amp; !angular.equals($scope.user, original);
+    };
+});</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/17vHLWX">사용자 정보 폼 초기화</a></p>
+</blockquote>
+<p>컨트롤러에서 <em><code>angular.copy()</code>를 사용해 모델을 지역 변수로 복사했다.</em> 그리고 <code>revert() 메소드는 복사한 내용을 user 모델로 다시 복사한 후 폼을 변경하지 않았다고 설정해서 CSS 클래스가</code>ng-dirty`로 설정되지 않게 만든다.</p>
 <h2 id="-">내비게이션 구성</h2>
 <p>AngularJS는 다음과 같은 것들을 지원한다.</p>
 <ul>

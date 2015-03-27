@@ -1327,6 +1327,280 @@ HTML을 생성하기 위해 서버 측 템플릿 엔진을 사용하는 경우 �
 	.ng-valid.ng-dirty {border:3px solid green;}
 	.ng-invalid.ng-dirty {border:3px solid red;}
 
+여기서는 사용자가 값을 변경한 input 필드만 골라내기 위해 조금 전에 살펴본 값 변경 여부와 유효 여부를 동시에 사용했다. 값이 유효하지 않은 경우 빨간색 선이 표시되고 유효한 경우 녹색 선이 표시된다.
+
+###AngularJS 폼 검증
+
+####ngFormController
+
+각 폼 디렉티브는 `ngFormController`의 인스턴스를 생성하는데, 이 객체는 폼이 유효한지 아닌지와 값 변경 여부를 관리한다. 중요한 점은 `ngFormController`가 폼의 각 `ngModel` 필드를 추적하기 위해 `ngModelController`와 함께 동작한다는 사실이다.
+
+`ngModelController`가 생성되면 부모 요소에서부터 위로 탐색해 첫 번째 발견하는 `ngFormController`에 자신을 등록한다. 이 방법으로 `ngFormController`는 어떤 input 디렉티브를 추적해야 하는지 판단한다.ㅐ
+
+####사용자 정보 폼에 동적인 동작 추가
+
+스코프의 `ngFormController`와 `ngModelController` 객체를 사용하면 프로그램상에서 폼의 상태를 변경할 수 있다.
+
+#####유효 검사 오류 보여주기
+
+다음은 폼의 입력값이 유효하지 않은 경우 에러 메시지를 보여주는 예제이며 이를 위한 템플릿이다.
+
+	  <form name="userInfoForm">
+		  <div class="control-group" ng-class="getCssClasses(userInfoForm.email)">
+			<label>E-mail</label>
+			<input type="email" ng-model="user.email" name="email" required>
+			<span ng-show="showError(userInfoForm.email, 'email')" class="help-inline">You must enter a valid email</span>
+			<span ng-show="showError(userInfoForm.email, 'required')" class="help-inline">This field is required</span>
+		  </div>
+		  ...
+	  </form>
+
+그리고 다음은 컨트롤러다.	  
+
+	app.controller('MainCtrl', function($scope) {
+		$scope.getCssClasses = function(ngModelContoller) {
+			return {
+			  error: ngModelContoller.$invalid && ngModelContoller.$dirty,
+			  success: ngModelContoller.$valid && ngModelContoller.$dirty
+			};
+		};
+	  
+		$scope.showError = function(ngModelController, error) {
+			return ngModelController.$error[error];
+		};
+	});
+
+> 예제  - [유효검사 오류 보여주기](http://bit.ly/XwLUFZ)
+
+`getCssClasses()` 메소드는 포함돼야 하는 CSS 클래스를 정의해놓은 객체를 반환한다. 객체의 키는 CSS 클래스의 이름이고, 값이 `true`이면 CSS 클래스가 추가된다. 예제의 `getCssClasses()` 메소드는 모델이 변경됐고, 유효하지 않은 경우 `error`를 반환하고 모델이 변경되긴 했지만 유효한 경우에는 `success`를 반환한다.
+
+#####저장 버튼 비활성화
+
+폼을 저장할 수 있는 상태가 아닐 때는 저장 버튼을 비활성화할 수 있다.
+
+	<form name="userInfoForm">
+		...
+		<button ng-disabled="!canSave()">Save</button>
+	</form>
+
+뷰에 `ngDisabled` 디렉티브를 사용하여 표현식이 참인 경우 버튼을 비활성화한다. 예제에서는 `canSave()` 메소드를 호출한 결과에 따라 동작한다. 
+
+	  $scope.canSave = function() {
+		return $scope.userInfoForm.$dirty && $scope.userInfoForm.$valid;
+	  };
+
+> 예제  - [저장버튼 비활성화](http://bit.ly/123zlhw)
+
+####브라우저 자체 검증 기능 비활성화
+
+브라우저에서 제공하는 자체 검증 기능을 사용하지 않으려면 HTML5 `novalidate` 속성을 폼 요소에 적용하면 된다.
+
+	<form name="novalidateForm" novalidate>
+
+###다른 폼과 중첩된 폼
+
+AngularJS 폼은 다른 폼안에 중첩된 폼을 만들 수 있다. 중첩 폼을 구현하기 위한 `ngForm` 디렉티브를 따로 제공한다.
+
+> 중첩된 폼은 선언한 이름으로 부모 폼에 추가된다. 부모 폼이 없다면 스코프에 직접 추가된다.
+
+####재사용 가능한 컴포넌트로서의 서브 폼 사용
+
+중첩된 폼은 필드에 대한 자체 검증 기능을 갖고 있어 다른 폼에도 재사용할 수 있는 서브 폼으로도 활용할 수 있다. 다음 코드는
+비밀번호를 입력하는 2개의 입력 창에 대한 예제이다.
+
+	<script type="text/ng-template" id="password-form">
+	  <ng-form name="passwordForm">
+		<div ng-show="user.password != user.password2">Passwords do not match</div>
+		<label>Password</label><input ng-model="user.password" type="password" required>
+		<label>Confirm Password</label><input ng-model="user.password2" type="password" required>
+	  </ng-form>
+	</script>
+
+	<form name="form1" novalidate>
+	  <legend>User Form</legend>
+	  <label>Name</label><input ng-model="user.name" required>
+	  <ng-include src="'password-form'"></ng-include>
+	</form>
+
+> 예제  - [재사용 가능한 서브 폼](http://bit.ly/10QWwyu)
+
+여기서는 서브 폼을 스크립트 블록을 이용해서 템플릿 조각으로 정의했지만 다른 파일로 분리해도 된다. *서브 폼을 사용하는 `form1`에서는
+`ngInclude` 디렉티브를 사용해 서브 폼을 집어 넣는다.*
+
+서브 폼은 자신만의 입력 값에 대한 유효 여부와 이에 따른 CSS 클래스를 갖고 있다.
+
+###서브 폼 반복 사용
+
+때로는 데이터에 따라 여러 번 반복해야 하는 필드가 있을 수 있다. `ngRepeat` 디렉티브를 사용해 다음과 같이 구현할 수 있다.
+
+	<form ng-controller="MainCtrl">
+	  <h1>User Info</h1>
+	  <label>Websites</label>
+	  <div ng-repeat="website in user.websites">
+		<input type="url" ng-model="website.url"><button class="btn" ng-click="remove($index)">X</button>
+	  </div>
+	  <button class="btn btn-small" ng-click="add()">Add Website</button>
+	</form>
+
+	app.controller('MainCtrl', function($scope) {
+	  $scope.user = {
+		websites: [
+		  {url: 'http://www.bloggs.com'},
+		  {url: 'http://www.jo-b.com'}
+		]
+	  };
+	  
+	  $scope.remove = function(index) {
+		$scope.user.websites.splice(index, 1);
+	  };
+	  
+	  $scope.add = function() {
+		$scope.user.websites.push({ url: ''});
+	  };
+	  
+	});
+
+> 예제  - [반복 사용하는 필드](http://bit.ly/XHLEWQ)
+
+템플릿에서는 `ngRepeat` 디렉티브를 사용해 사용자 프로필의 웹사이트 정보를 출력했다. 각 input 디렉티브는 `user.websites`의 `website.url` 모델에
+바인딩돼 있다. 이어지는 2개의 함수는 배열에 항목을 추가하거나 제거하고 AngularJS 데이터 바인딩이 나머지 부분을 처리해준다.
+
+####반복되는 input 검증
+
+반복적인 폼을 사용하면서 각 필드에 대한 검증이 필요한 경우 폼의 input마다 각각 다른 이름을 사용해야 하지만 AngularJS에서는 input 디렉티브에 `name` 속성을 동적으로 생성할 수 없다는 문제가 있다. 
+
+이 문제는 중첩 폼을 사용하면 해결할 수 있다. 각 폼이 현재 스코프에 추가되므로 input 디렉티브를 포함하고 있는 폼을 중첩하면 필드 검증을 위해 각각의 스코프에 접근할 수 있다.
+
+다음은 템플릿 코드이다.
+
+	<form novalidate ng-controller="MainCtrl" name="userForm">
+	  <label>Websites</label>
+	  <div ng-show="userForm.$invalid">The User Form is invalid.</div>
+	  <div class="control-group" ng-repeat="website in user.websites" ng-form="websiteForm">
+		<span class="input-append">
+		  <input type="url" name="website" ng-model="website.url" required>
+		  <button class="btn" ng-click="remove($index)">X</button>
+		</span>
+		<span ng-show="showError(websiteForm.website, 'url')" class="help-inline">You must enter a valid url (including http://)</span>
+		<span ng-show="showError(websiteForm.website, 'required')" class="help-inline">This field is required</span>
+	  </div>
+	  <button class="btn btn-small" ng-click="add()">Add Website</button>
+	</form>
+
+다음은 컨트롤러 코드이다.
+
+	app.controller('MainCtrl', function($scope) {
+	  $scope.showError = function(ngModelController, error) {
+		return ngModelController.$error[error];
+	  };
+
+	  $scope.user = {
+		websites: [{url: 'http://www.bloggs.com'}, {url: 'http://www.jo-b.com'}]
+	  };
+	  
+	  $scope.remove = function(index) {
+		$scope.user.websites.splice(index, 1);
+	  };
+	  
+	  $scope.add = function() {
+		$scope.user.websites.push({ url: ''});
+	  };
+	  
+	});
+
+> 예제  - [반복되는 input 검증](http://bit.ly/14i1sTp)
+
+여기서는 div에 `ngForm` 디렉티브를 사용해 스코프의 websites 배열에 따라 반복되는 중첩 폼을 만들었다. 이 말은 `ngRepeat` 스코프 안에서 각 웹사이트에 대해 `ngModel`의 검증 기능을 사용할 수 있다는 의미다.
+
+오류 메시지를 보여주기 위한 `showError` 함수는 매개변수로 넘긴 `ngModelController`의 `$error` 필드에 해당 항목이 있는지 검사한다. 이 함수에 websiteForm.website를 넘긴 이유는 이것이 해당 웹사이트 입력 창의
+`ngModelController` 객체에 대한 참조이기 때문이다.
+
+`ngForm` 밖에서는 websiteForm 객체나 websiteForm.website 객체를 참조할 수 없다. 스코프에 있지 않기 때문이다. 하지만 userForm 객체는 참조할 수 있다.
+
+###기존 HTML 폼 제출
+
+####서버로 바로 폼 제출
+
+AngularJS 애플리케이션의 폼에 `action` 속성을 추가하면 기존 방식처럼 정의한 URL로 폼을 제출할 수 있다.
+
+	<form method="get" action="http://www.google.com/search">
+		<input name="q"> Press enter in the input to submit
+	</form>
+
+####제출 이벤트 다루기
+
+`action` 속성을 사용하지 않으면 AngularJS는 클라이언트 측에서 스코프의 함수를 통해 폼 제출을 다룬다고 생각한다. 그래서 AngularJS는 서버로 바로 폼을 제출하는 동작을 막는다.
+
+클라이언트 측 함수는 button의 `ngClick` 디렉티브나 form의 `ngSubmit` 디렉티브를 사용해 호출할 수 있다.
+
+> `ngSubmit`과 `ngClick` 디렉티브를 같은 form에서 사용하지 않는다. 제출이 2번 이뤄지기 때문이다.
+
+#####ngSubmit으로 폼 제출
+
+폼에서 `ngSubmit`을 사용하려면 폼 제출 시 평가될 표현식을 작성한다. 폼 제출은 사용자가 입력 창에서 엔터를 누르거나 버튼 중 하나를 클릭하면 된다.
+
+	<form ng-submit="showAlert(q)">
+		<input ng-model="q">
+	</form>
+
+> 예제  - [ngSubmit으로 폼 제출](http://bit.ly/ZQBLYj)
+
+#####ngClick으로 폼 제출
+
+button이나 input[type=submit]에 `ngClick`을 사용하려면 버튼을 클릭했을 때 평가되는 표현식을 작성해야 한다.
+
+	<form>
+		<input ng-model="q">
+		<button ng-click="showAlert(q)">Search</button>
+  	</form>
+
+> 예제  - [ngClick으로 폼 제출](http://bit.ly/153OvLS)
+
+###사용자 정보 폼 초기화
+
+사용자 정보 폼에 사용자가 입력한 값을 지우고 디폴트 값으로 돌아가고 싶을 때가 있다. 이를 위해서 기존 모델을 복사해두고 필요할 때마다 사용자가 입력한 변경 사항을 덮어써버리면 된다.
+
+다음은 템플릿 코드다.
+
+	<form name="userInfoForm">
+		...
+		<button ng-click="revert()" ng-disabled="!canRevert()">Revert Changes</button>
+	</form>
+
+그리고 컨트롤러 코드다.
+
+	app.controller('MainCtrl', function($scope) {
+		...
+		$scope.user = {
+			...
+		};
+
+		$scope.passwordRepeat = $scope.user.password;
+
+		// Make a copy of the user
+		var original = angular.copy($scope.user);
+		  
+		// Revert the user info back to the original
+		$scope.revert = function() {
+			$scope.user = angular.copy(original);
+			$scope.passwordRepeat = $scope.user.password;
+			$scope.userInfoForm.$setPristine();
+		};
+		  
+		$scope.canRevert = function() {
+			return !angular.equals($scope.user, original);
+		};
+
+		$scope.canSave = function() {
+			return $scope.userInfoForm.$valid && !angular.equals($scope.user, original);
+		};
+	});
+
+> 예제  - [사용자 정보 폼 초기화](http://bit.ly/17vHLWX)
+
+컨트롤러에서 *`angular.copy()`를 사용해 모델을 지역 변수로 복사했다.* 그리고 `revert() 메소드는 복사한 내용을 user 모델로 다시 복사한 후 폼을 변경하지 않았다고 설정해서 CSS 클래스가 `ng-dirty`로 설정되지 않게 만든다.
+
+
 
 
 
