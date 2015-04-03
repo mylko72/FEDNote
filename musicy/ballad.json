@@ -1276,318 +1276,101 @@
 		"explain" :""
 	},
 	{
-		"no" : 8,
-		"id" : "best009",
-		"singer" : "박정현",
-		"title" : "꿈에",
+		"singer" : "일기예보",
+		"title" : "인형의 꿈",
 		"album" : {
-			"name" : "Op.4",
-			"cover" : "image/jacket009.jpg?type=w740",
-			"Lyrics" : "정석원",
-			"Composed" : "정석원",
-			"Release" : "2002.06",
-			"Label" : "T-Ent"
-		},
-		"explain" : " 「꿈에」는 박정현의 대표곡임과 동시에 정석원의 2000년대 이후 대표곡이기도 하다. 2002년 발매된 박정현 4집에 수록된 이 곡은, 발매 당시 그리고 발매 후 10년이 흐른  2011년에도 챠트에서 1위를 차지하며 시절을 걸쳐가며 대중들의 사랑을 한 몸에 받았다. 마치 꿈을 꾸듯 종잡을 수 없이 템포, 조를 수없이 바꾸며 전개되는 곡의 구성과 적재적소에 배치된 스트링, 코러스의 사용은 정석원의, 그리고 박정현의 제작자로서, 가창자로서의 천재성을 입증하며 곡의 높은 수준을 여실히 보여준다. 타이타닉의 주제가에서 영감을 얻었다는 이 곡은 높은 음악성과 대중성을 동시에 가져 박정현이란 가수를 규정지어 버렸고, 그 후로 오랫동안 이 임팩트는 좋은 의미로든 나쁜 의미로든 계속해서 강렬하게 남아있다.  [출처] Ballad Best 100 : 1~10위 (음악취향 Y) |작성자 마이너 "
-	},
-	{
-		"no" : 10,
-		"id" : "best011",
-		"singer" : "유재하",
-		"title" : "그대 내 품에",
-		"album" : {
-			"name" : "사랑하기 때문에",
-			"cover" : "image/jacket011.jpg?type=w740",
-			"Lyrics" : "유재하",
-			"Composed" : "유재하",
-			"Release" : "1987.08",
-			"Label" : "서울음반"
-		},
-		"explain" :" 「그대 내 품에」, 「내 마음에 비친 내 모습」, 「가리워진 길」. (설령 그것이 음악외적인 이유였다고 해도) 각각의 독자적인 아우라를 지닌 「사랑하기 때문에」나 「우울한 편지」와는 달리 이 세 곡은 늘 함께 떠오르곤 했다. 지금은 그렇게 생각하지 않지만 어릴 때에는 이 세 곡이 서로 비슷비슷하다고 느꼈던 것 같다. 그러나 그 시절에도 「그대 내 품에」를 가장 좋아했던 까닭은 세 곡 중 가장 단순한 후렴구 멜로디가 가장 큰 간절함으로 와 닿았기 때문이다. 곡의 구성과 편곡 등을 다시 찬찬히 훑으면서 유재하를 진심이나 순수함 같은 단어로만 이야기하는 건 역시 고인에 대한 도리가 아님을 깨닫는다. 마찬가지로 굳이 요절을 들추어내지 않아도 충분히 그의 음악적 훌륭함을 논할 수 있다. 원곡을 훼손하지 않은 추모앨범의 나원주 버전 또한 함께 들어보면 좋을 것이다."
-	},
-	{
-		"no" : 12,
-		"id" : "best013",
-		"singer" : "임재범",
-		"title" : "너를 위해",
-		"album" : {
-			"name" : "Story Of Two Years",
-			"cover" : "image/jacket013.jpg?type=w740",
-			"Lyrics" : "채정은",
-			"Composed" : "신재홍",
-			"Release" : "2000.05",
-			"Label" : "WEA"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 13,
-		"id" : "best014",
-		"singer" : "원미연",
-		"title" : "이별여행",
-		"album" : {
-			"name" : "원미연 2",
-			"cover" : "image/jacket014.jpg?type=w740",
-			"Lyrics" : "김기호",
-			"Composed" : "신재홍",
-			"Release" : "1990.11",
-			"Label" : "서울음반"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 14,
-		"id" : "best015",
-		"singer" : "성시경",
-		"title" : "거리에서",
-		"album" : {
-			"name" : "The Ballads",
-			"cover" : "image/jacket015.jpg?type=w740",
-			"Lyrics" : "윤종신",
-			"Composed" : "윤종신",
-			"Release" : "2006.09",
-			"Label" : "서울음반"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 18,
-		"id" : "best019",
-		"singer" : "김동률",
-		"title" : "다시 사랑한다 말할까",
-		"album" : {
-			"name" : "歸鄕",
-			"cover" : "image/jacket019.jpg?type=w740",
-			"Lyrics" : "김동률",
-			"Composed" : "김동률",
-			"Release" : "2001.10",
-			"Label" : "대영AV"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 19,
-		"id" : "best020",
-		"singer" : "정경화",
-		"title" : "나에게로의 초대",
-		"album" : {
-			"name" : "My Blue Dream",
-			"cover" : "image/jacket020.jpg?type=w740",
-			"Lyrics" : "김형수",
-			"Composed" : "이태섭",
-			"Release" : "1996.04",
-			"Label" : "WEA"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 20,
-		"id" : "best021",
-		"singer" : "윤상",
-		"title" : "가려진 시간 사이로",
-		"album" : {
-			"name" : "Yoon Sang Part 1",
-			"cover" : "image/jacket021.jpg?type=w740",
-			"Lyrics" : "윤상",
-			"Composed" : "윤상",
-			"Release" : "1992.07",
-			"Label" : "지구"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 21,
-		"id" : "best022",
-		"singer" : "이승환",
-		"title" : "애원",
-		"album" : {
-			"name" : "Cycle",
-			"cover" : "image/jacket022.jpg?type=w740",
-			"Lyrics" : "이승환",
-			"Composed" : "유희열,이승환",
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
 			"Release" : "1997.01",
-			"Label" : "서울음반"
+			"Label" : ""
 		},
+ 		"videoid" : "c1gPf16NjsY",
 		"explain" :""
 	},
 	{
-		"no" : 22,
-		"id" : "best023",
-		"singer" : "토이",
-		"title" : "내가 너의 곁에 잠시 살았다는 걸(feat. 김연우)",
+		"singer" : "김현철&이소라",
+		"title" : "그대안의 블루",
 		"album" : {
-			"name" : "어른들을 위한 동화",
-			"cover" : "image/jacket023.jpg?type=w740",
-			"Lyrics" : "유희열",
-			"Composed" : "유희열",
-			"Release" : "1996.02",
-			"Label" : "킹레코드"
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
 		},
+ 		"videoid" : "C67jQ2qFU_A",
 		"explain" :""
 	},
 	{
-		"no" : 23,
-		"id" : "best024",
-		"singer" : "윤종신",
-		"title" : "너에게 간다",
+		"singer" : "장혜진",
+		"title" : "1994년 어느 늦은 밤",
 		"album" : {
-			"name" : "Behind The Smile",
-			"cover" : "image/jacket024.jpg?type=w740",
-			"Lyrics" : "윤종신",
-			"Composed" : "윤종신",
-			"Release" : "2005.04",
-			"Label" : "T-Ent."
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
 		},
+ 		"videoid" : "mKUg4XTknqA",
 		"explain" :""
 	},
 	{
-		"no" : 24,
-		"id" : "best025",
-		"singer" : "이문세",
-		"title" : "그녀의 웃음소리뿐",
+		"singer" : "성시경",
+		"title" : "내게 오는 길",
 		"album" : {
-			"name" : "이문세 4",
-			"cover" : "image/jacket025.jpg?type=w740",
-			"Lyrics" : "이영훈",
-			"Composed" : "이영훈",
-			"Release" : "1987.03",
-			"Label" : "킹레코드"
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
 		},
+ 		"videoid" : "5hINYNZslP0",
 		"explain" :""
 	},
 	{
-		"no" : 26,
-		"id" : "best027",
-		"singer" : "변진섭",
-		"title" : "그대 내게 다시",
-		"album" : {
-			"name" : "Byeon Jin Seob 5",
-			"cover" : "image/jacket027.jpg?type=w740",
-			"Lyrics" : "노영심",
-			"Composed" : "김형석",
-			"Release" : "1992.11",
-			"Label" : "서울음반"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 27,
-		"id" : "best028",
-		"singer" : "조하문",
-		"title" : "이 밤을 다시 한번",
-		"album" : {
-			"name" : "마그마 조하문",
-			"cover" : "image/jacket028.jpg?type=w740",
-			"Lyrics" : "조하문",
-			"Composed" : "조하문",
-			"Release" : "1987.08",
-			"Label" : "한국음반"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 29,
-		"id" : "best030",
-		"singer" : "빛과소금",
-		"title" : "내 곁에서 떠나가지 말아요",
-		"album" : {
-			"name" : "빛과소금 2",
-			"cover" : "image/jacket030.jpg?type=w740",
-			"Lyrics" : "한경훈",
-			"Composed" : "한경훈",
-			"Release" : "1991.09",
-			"Label" : "동아기획"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 30,
-		"id" : "best031",
-		"singer" : "김광진",
-		"title" : "편지",
-		"album" : {
-			"name" : "It's Me",
-			"cover" : "image/jacket031.jpg?type=w740",
-			"Lyrics" : "허승경",
-			"Composed" : "김광진",
-			"Release" : "2000.05",
-			"Label" : "서울음반"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 32,
-		"id" : "best033",
 		"singer" : "김범수",
 		"title" : "보고싶다",
 		"album" : {
-			"name" : "보고싶다",
-			"cover" : "image/jacket033.jpg?type=w740",
-			"Lyrics" : "윤사라",
-			"Composed" : "윤일상",
-			"Release" : "2002.12",
-			"Label" : "유니버셜"
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
 		},
+ 		"videoid" : "Z1rP3RztCP4",
 		"explain" :""
 	},
 	{
-		"no" : 34,
-		"id" : "best035",
-		"singer" : "최용준",
-		"title" : "아마도 그건",
+		"singer" : "푸른하늘",
+		"title" : "겨울바다",
 		"album" : {
-			"name" : "최용준 1",
-			"cover" : "image/jacket035.jpg?type=w740",
-			"Lyrics" : "박병규",
-			"Composed" : "박병규",
-			"Release" : "1989.05",
-			"Label" : "오아시스"
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
 		},
+ 		"videoid" : "dSzwdgTWdW0",
 		"explain" :""
 	},
 	{
-		"no" : 35,
-		"id" : "best036",
-		"singer" : "더클래식",
-		"title" : "내 슬픔만큼 그대가 행복하길",
+		"singer" : "박상민",
+		"title" : "하나의 사랑",
 		"album" : {
-			"name" : "The Classic 2",
-			"cover" : "image/jacket036.jpg?type=w740",
-			"Lyrics" : "박용준/조범구",
-			"Composed" : "박용준",
-			"Release" : "1995.08",
-			"Label" : "킹레코드"
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
 		},
-		"explain" :""
-	},
-	{
-		"no" : 38,
-		"id" : "best039",
-		"singer" : "에코",
-		"title" : "행복한 나를",
-		"album" : {
-			"name" : "ECO 2",
-			"cover" : "image/jacket039.jpg?type=w740",
-			"Lyrics" : "유유진",
-			"Composed" : "박근태",
-			"Release" : "1997.08",
-			"Label" : "뮤직디자인"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 39,
-		"id" : "best040",
-		"singer" : "제이",
-		"title" : "어제처럼",
-		"album" : {
-			"name" : "In Love",
-			"cover" : "image/jacket040.jpg?type=w740",
-			"Lyrics" : "윤사라",
-			"Composed" : "심상원",
-			"Release" : "2000.04",
-			"Label" : "서울음반"
-		},
+ 		"videoid" : "F9i5Q0LfJ_M",
 		"explain" :""
 	}
 ]

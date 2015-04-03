@@ -561,8 +561,19 @@ pizzaPit<span class="preprocessor">.deliverOrder</span>()<span class="comment">;
     <span class="keyword">return</span> <span class="string">"World"</span>;
 },2000);</code></pre>
 <blockquote>
-<p><code>$timeout</code> 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다.</p>
+<p><code>$timeout</code> 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다. $scope에 직접 프라미스를 노출해서 해결된 값을 자동 렌더링하는 방식은 사용하지 말아야 한다.</p>
 </blockquote>
+<h3 id="-http-api">$http와 프라미스 API</h3>
+<p><code>$http</code> 호출로 반환된 객체는 2개의 편리한 메소드(success와 error)가 있는 완전한 프라미스며 <code>then</code> 메소드를 사용해 콜백을 다시 등록할 수 있다.</p>
+<pre><code>var responsePromise = $http.<span class="keyword">get</span>(<span class="comment">'data.json');</span>
+responsePromise.<span class="keyword">then</span>(<span class="keyword">function</span>(<span class="built_in">response</span>){
+    $scope.data = <span class="built_in">response</span>.data;
+}, <span class="keyword">function</span>(<span class="built_in">response</span>){
+    throw <span class="keyword">new</span> <span class="keyword">Error</span>(<span class="comment">'Something went wrong...');</span>
+});</code></pre>
+<h3 id="restful-">RESTful 엔드포인트와 통신</h3>
+<h4 id="-resource-">$resource 서비스</h4>
+<p><code>$http</code> 호출로 반환된 객체는 2개의 편리한 메소드(success와 error)가 있는 완전한 프라미스며 <code>then</code> 메소드를 사용해 콜백을 다시 등록할 수 있다.</p>
 <h2 id="-">데이터 포맷과 출력</h2>
 <h3 id="-">디렉티브에 대한 참조</h3>
 <p>HTML 템플릿에서 디렉티브 참조 이름에는 접두사로 x나 data를 사용할 수 있다. 

@@ -632,9 +632,24 @@ AngularJS는 `$q` 서비스라는 아주 간결한 프라미스 API 구현체를
 		return "World";
 	},2000);
 
-> `$timeout` 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다.
+> `$timeout` 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다. $scope에 직접 프라미스를 노출해서 해결된 값을 자동 렌더링하는 방식은 사용하지 말아야 한다.
 
+###$http와 프라미스 API
 
+`$http` 호출로 반환된 객체는 2개의 편리한 메소드(success와 error)가 있는 완전한 프라미스며 `then` 메소드를 사용해 콜백을 다시 등록할 수 있다.
+
+	var responsePromise = $http.get('data.json');
+	responsePromise.then(function(response){
+		$scope.data = response.data;
+	}, function(response){
+		throw new Error('Something went wrong...');
+	});
+
+###RESTful 엔드포인트와 통신
+
+####$resource 서비스
+
+`$http` 호출로 반환된 객체는 2개의 편리한 메소드(success와 error)가 있는 완전한 프라미스며 `then` 메소드를 사용해 콜백을 다시 등록할 수 있다.
 
 
 
