@@ -553,6 +553,20 @@
 		"explain" :""
 	},
 	{
+		"singer" : "더클래식",
+		"title" : "내 슬픔만큼 그대가 행복하길",
+		"album" : {
+			"name" : "2집 여우야",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2072.jpg",
+			"Lyrics" : "박용준,조범구",
+			"Composed" : "박용준",
+			"Release" : "1995.11",
+			"Label" : "KT 뮤직"
+		},
+ 		"videoid" : "4PRH9-Lz8A0",
+		"explain" :""
+	},
+	{
 		"singer" : "조덕배",
 		"title" : "나의 옛날 이야기",
 		"album" : {
@@ -564,20 +578,6 @@
 			"Label" : "한국음원제작자협회"
 		},
 		"videoid" : "",
-		"explain" :""
-	},
-	{
-		"singer" : "이문세",
-		"title" : "그대와 영원히",
-		"album" : {
-			"name" : "3집 난 아직 모르잖아요",
-			"cover" : "http://image.music.naver.net/album/204/000/130/130150.jpg",
-			"Lyrics" : "유재하",
-			"Composed" : "유재하",
-			"Release" : "1985.11",
-			"Label" : "로엔 엔터테인먼트"
-		},
-		"videoid" : "pWmQVswIcnw",
 		"explain" :""
 	},
 	{
@@ -651,17 +651,18 @@
 		"explain" : "「내 사랑 내 곁에」가 마지막이라면 「비처럼 음악처럼」은 가장 좋았던 시절에 남긴 기록이다. 우리는 가장 좋았던 시절의 김현식을 선택했다. 당시 김현식은 새롭게 피어난 음악인들의 유려한 선율과 남다른 감각, 뛰어난 연주 등을 전폭적으로 수용하여 정점에 도달했고 그 과정에서 「비처럼 음악처럼」이라는 최상의 완성도를 지닌 발라드를 낳았다. 물론 김현식이 발라드라는 장르 영역에서 특별히 상징적인 존재는 아니다. 장르와의 어울림만 놓고 보면 그보다 훨씬 더 그럴듯한 이름을 얼마든지 언급할 수 있을 것이다. 그러나 좋았던 시절과 슬펐던 순간을 구분하지 않고 듣는 이의 가슴을 울리는 김현식의 노래는 그 어떤 발라드 작법보다 위대하다. 그것이야말로 오늘날까지 김현식이 회자되는 까닭이고 「비처럼 음악처럼」이 이 자리에 있는 이유다.  [출처] Ballad Best 100 : 1~10위 (음악취향 Y) |작성자 마이너"
 	},
 	{
-		"singer" : "전람회",
-		"title" : "이방인",
+		"singer" : "이문세",
+		"title" : "그대와 영원히",
 		"album" : {
-			"name" : "2집 Exhibition 2",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1856.jpg",
-			"Lyrics" : "김동률",
-			"Composed" : "김동률",
-			"Release" : "1996.04",
-			"Label" : "오감 엔터테인먼트"
+			"name" : "3집 난 아직 모르잖아요",
+			"cover" : "http://image.music.naver.net/album/204/000/130/130150.jpg",
+			"Lyrics" : "유재하",
+			"Composed" : "유재하",
+			"Release" : "1985.11",
+			"Label" : "로엔 엔터테인먼트"
 		},
-		"videoid" : ""
+		"videoid" : "pWmQVswIcnw",
+		"explain" :""
 	},
 	{
 		"singer" : "김건모",
@@ -772,6 +773,19 @@
 		"explain" :""
 	},
 	{
+		"singer" : "전람회",
+		"title" : "이방인",
+		"album" : {
+			"name" : "2집 Exhibition 2",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1856.jpg",
+			"Lyrics" : "김동률",
+			"Composed" : "김동률",
+			"Release" : "1996.04",
+			"Label" : "오감 엔터테인먼트"
+		},
+		"videoid" : ""
+	},
+	{
 		"singer" : "이문세",
 		"title" : "이별이야기(feat. 고은희)",
 		"album" : {
@@ -825,6 +839,440 @@
 			"Label" : "CJ E&M"
 		},
 		"videoid" : "lUPAwQOdLtU",
+		"explain" :""
+	},
+	{
+		"singer" : "장혜진",
+		"title" : "꿈의 대화",
+		"album" : {
+			"name" : "6집 It`s My Life",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1534.jpg",
+			"Lyrics" : "이승호",
+			"Composed" : "주영훈",
+			"Release" : "2001.05",
+			"Label" : ""
+		},
+		"videoid" : "tlCDlHBEJFk",
+		"explain" :""
+	},
+	{
+		"singer" : "푸른하늘",
+		"title" : "눈물 나는 날에는",
+		"album" : {
+			"name" : "2집 푸른하늘",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2129.jpg",
+			"Lyrics" : "유영석",
+			"Composed" : "유영석",
+			"Release" : "1989.07",
+			"Label" : "다날 엔터테인먼트"
+		},
+		"videoid" : "m9Wc39NWqf8",
+		"explain" :""
+	},
+	{
+		"singer" : "김민우",
+		"title" : "사랑일뿐야",
+		"album" : {
+			"name" : "1집 사랑일뿐야",
+			"cover" : "http://image.music.naver.net/album/204/000/065/65192.jpg",
+			"Lyrics" : "박주연",
+			"Composed" : "하광훈",
+			"Release" : "1990.02",
+			"Label" : "신세계"
+		},
+ 		"videoid" : "s-Gh9lXmqNA",
+		"explain" :""
+	},
+	{
+		"singer" : "원준희",
+		"title" : "사랑은 유리 같은 것",
+		"album" : {
+			"name" : "사랑은 유리같은 것",
+			"cover" : "http://image.music.naver.net/album/204/000/208/208071.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1988.07",
+			"Label" : "한국음원제작자협회"
+		},
+ 		"videoid" : "LPTSzFaO0VM",
+		"explain" :""
+	},
+	{
+		"singer" : "신해철",
+		"title" : "먼 훗날 언젠가",
+		"album" : {
+			"name" : "4집 Lazenca",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2042.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.11",
+			"Label" : "네오위즈인터넷"
+		},
+ 		"videoid" : "PlAO69ILG3w",
+		"explain" :""
+	},
+	{
+		"singer" : "전람회",
+		"title" : "꿈 속에서",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "jW9BivXNKH8",
+		"explain" :""
+	},
+	{
+		"singer" : "박효신",
+		"title" : "바보",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "jkKoA3VIi0M",
+		"explain" :""
+	},
+	{
+		"singer" : "이승환",
+		"title" : "너를 향한 마음",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "DnwjVxfO-70",
+		"explain" :""
+	},
+	{
+		"singer" : "이은미",
+		"title" : "어떤 그리움",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "rAqo2JokTZA",
+		"explain" :""
+	},
+	{
+		"singer" : "이은미",
+		"title" : "기억속으로",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "JfvZbMvNOhM",
+		"explain" :""
+	},
+	{
+		"singer" : "빛과 소금",
+		"title" : "내 곁에서 떠나가지 말아요",
+		"album" : {
+			"name" : "2집 꿈",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2071.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1991",
+			"Label" : "다날 엔터테인먼트"
+		},
+ 		"videoid" : "7a-Fpt6dR0I",
+		"explain" :""
+	},
+	{
+		"singer" : "챠우챠우 ",
+		"title" : "델리스파이스",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "5l6Fz2bgos4",
+		"explain" :""
+	},
+	{
+		"singer" : "신해철",
+		"title" : "날아라 병아리",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "-X41UVzR1qI",
+		"explain" :""
+	},
+	{
+		"singer" : "박효신",
+		"title" : "그곳에 서서",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "bGctVt-LX3I",
+		"explain" :""
+	},
+	{
+		"singer" : "조하문",
+		"title" : "이 밤을 다시 한번",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "U-DheM3Xs8U",
+		"explain" :""
+	},
+	{
+		"singer" : "이정석",
+		"title" : "사랑하기에",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "SIcHvuRlCZM",
+		"explain" :""
+	},
+	{
+		"singer" : "김성호",
+		"title" : "회상",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "ICiPvH6r4oY",
+		"explain" :""
+	},
+	{
+		"singer" : "넥스트",
+		"title" : "힘겨워하는 연인들을 위하여",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "Lwys1VL3Omc",
+		"explain" :""
+	},
+	{
+		"singer" : "나얼",
+		"title" : "바람기억",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "f5ShDNOqq1E",
+		"explain" :""
+	},
+	{
+		"singer" : "박효신",
+		"title" : "좋은 사람",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "wYsNiLvQ__8",
+		"explain" :""
+	},
+	{
+		"singer" : "조성모",
+		"title" : "가시나무",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "POu_1kHWNC8",
+		"explain" :""
+	},
+	{
+		"singer" : "자전거 탄 풍경",
+		"title" : "너에게 난 나에게 넌",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "5ysdHjaeGGU",
+		"explain" :""
+	},
+	{
+		"singer" : "장혜진",
+		"title" : "아름다운 날들",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "X0J37IYJxRk",
+		"explain" :""
+	},
+	{
+		"singer" : "김현철",
+		"title" : "춘천가는 기차",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "82niqWPY6KE",
+		"explain" :""
+	},
+	{
+		"singer" : "조규찬",
+		"title" : "추억#1",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "JkHKbZU85DQ",
+		"explain" :""
+	},
+	{
+		"singer" : "조덕배",
+		"title" : "꿈에",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "",
+		"explain" :""
+	},
+	{
+		"singer" : "이소라",
+		"title" : "난 행복해",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "ilpxwWd0b5Q",
+		"explain" :""
+	},
+	{
+		"singer" : "델리 스파이스",
+		"title" : "고백",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "eh8MvN-3-PU",
+		"explain" :""
+	},
+	{
+		"singer" : "신해철",
+		"title" : "일상으로의 초대",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "9V0O1kiqjfY",
+		"explain" :""
+	},
+	{
+		"singer" : "김동률",
+		"title" : "사랑하지 않으니까요",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "ffho-UF5CZ8",
+		"explain" :""
+	},
+	{
+		"singer" : "피노키오",
+		"title" : "사랑과 우정사이",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "Mevx2mVwa8c",
 		"explain" :""
 	},
 	{
@@ -1064,21 +1512,6 @@
 			"Composed" : "김광진",
 			"Release" : "2000.05",
 			"Label" : "서울음반"
-		},
-		"explain" :""
-	},
-	{
-		"no" : 31,
-		"id" : "best032",
-		"singer" : "김민우",
-		"title" : "사랑일뿐야",
-		"album" : {
-			"name" : "김민우 1",
-			"cover" : "image/jacket032.jpg?type=w740",
-			"Lyrics" : "박주연",
-			"Composed" : "하광훈",
-			"Release" : "1990.02",
-			"Label" : "신세계"
 		},
 		"explain" :""
 	},
