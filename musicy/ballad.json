@@ -1372,5 +1372,33 @@
 		},
  		"videoid" : "F9i5Q0LfJ_M",
 		"explain" :""
+	},
+	{
+		"singer" : "장혜진",
+		"title" : "내게로",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "6oEU10mIvdg",
+		"explain" :""
+	},
+	{
+		"singer" : "김동률",
+		"title" : "아이처럼",
+		"album" : {
+			"name" : "3집 졸업",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1944.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997.01",
+			"Label" : ""
+		},
+ 		"videoid" : "a8OH2vN0O1A",
+		"explain" :""
 	}
 ]

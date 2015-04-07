@@ -647,11 +647,236 @@ AngularJS는 `$q` 서비스라는 아주 간결한 프라미스 API 구현체를
 
 ###RESTful 엔드포인트와 통신
 
+AngularJS는 RESTful 엔드포인트와의 통신에 특화된 `$resource`라는 서비스를 제공한다.
+
 ####$resource 서비스
 
-`$http` 호출로 반환된 객체는 2개의 편리한 메소드(success와 error)가 있는 완전한 프라미스며 `then` 메소드를 사용해 콜백을 다시 등록할 수 있다.
+RESTful 엔드포인트는 보통 동일한 URL에 HTTP 메소드를 다르게 보내는 방식으로 CRUD 연산을 제공한다.
+
+>$resource 서비스는 별도의 파일(angular-resource.js)에 별도의 모듈(ngResource)로 제공되며 애플리케이션 모듈에 ngResource 모듈에 대한 의존 관계를 정의해야 한다.
+
+다음 코드는 `$resource` 서비스로 RESTful 엔드포인트와 통신하는 방법을 보여준다.
+
+	angular.module('resource', ['ngResource'])
+		.factory('Users', function($resource){
+			return $resource('https://api.mongolab.com/api/1/databases/ascrum/collections/users/:id', {
+				apiKey: '4fb51e55e4b02e56a67b0b66',
+				id: '@_id.$oid'
+			});
+		});
+
+다음은 영구 저장소에서 모든 사용자를 받아오는 질의문이다.
+
+	.controller('ResourceCtrl', function($scope, Users){
+		$scope.users = Users.query();
+	});
+
+`User.query()` 메소드를 호출하면 `$http` 요청을 준비하고 발송한다. 그리고 응답이 준비돼 JSON 문자열이 도착하면 각 요소가 Users 타입인 자바스크립트 배열로 변환된다.
+
+#####생성자 기반 메소드와 인스턴스 기반 메소드
+
+`$resource` 서비스는 2개의 편리한 메소드 묶음을 자동으로 생성한다. 하나는 생성자 기반으로 만들어지며 다른 하나는 인스턴스 기반 메소드로 만들어진다.
+
+######생성자 기반 메소드
+
+`$resource`가 생성한 생성자 함수에는 HTTP 동작에 따른 여러 개의 메소드가 있다.
+
+- **Users.query(params, successcb, errorcb)** HTTP GET 요청을 보내고 응답으로 JSON 배열을 기대한다. 여러 개의 요소를 가져오고 싶을 때 사용한다.
+- **Users.get(params, successcb, errorcb)** HTTP GET 요청을 보내고 응답으로 JSOn 객체를 기대한다. 요소 하나만을 가져오고 싶을 때 사용한다.
+- **Users.save(params, payloadData, successcb, errorcb)** 페이로드로 만들어진 요청 body와 함께 HTTP POST 요청을 보낸다.
+- **Users.delete(params, successcb, errorcb)** HTTP DELETE 요청을 보낸다.
+
+######인스턴스 기반 메소드
+
+`$resource` 서비스는 프로토타입(인스턴스) 기반의 메소드도 생성한다. 인스턴스 기반 메소드는 단 하나의 인스턴스에서만 동작한다.
+
+다음과 같이 호출하면 사용자를 지울 수 있다.
+
+	Users.delete({}, user);
+
+혹은 해당 사용자 인스턴스에서 메소드를 호출해도 된다.
+
+	user.$delete();
+
+다음은 새로운 사용자를 등록하는 예제이다.
+
+	var user = new User({
+		name: 'Superhero'
+	});
+
+	user.$save();
+
+이 코드를 클래스 기반 메소드를 사용해서 다시 작성하면 다음과 같다.
+
+	var user = {
+		name: 'Superhero'
+	};
+	
+	Users.save(user);
+
+>$resource 팩토리는 클래스 기반 메소드와 인스턴스 기반 메소드를 모두 생성한다. 그리고 인스턴스 기반 메소드는 $ 문자로 시작한다.	
+
+######사용자 정의 메소드
+
+`$resource` 팩토리는 HTTP PUT 요청에 대응하는 메소드를 기본으로 생성하지 않는다. 필요하다면 대응하는 메소드를 직접 추가해줘야 한다.
+
+예를 들어 MongoLab REST API는 새로운 요소를 생성할 때 HTTP POST 메소드를 사용하지만 기존 요소를 갱신할 때는 PUT 메소드를 사용해야 한다.
+
+		.factory('Users', function($resource){
+			return $resource('https://api.mongolab.com/api/1/databases/ascrum/collections/users/:id', {
+				apiKey: '4fb51e55e4b02e56a67b0b66',
+				id: '@_id.$oid'
+			},{
+				update: {method: 'PUT'}	
+			});
+		});
+
+예제처럼 `$resource` 팩토리 함수에 3번째 매개변수를 넣으면 쉽게 새로운 메소드를 정의할 수 있다. 매개변수는 다음과 같은 형태의 객체여야 한다.
+
+	action: {method:?, params:?, isArray:?, headers:?}
+
+`$resource` 서비스는 백엔드로부터 받은 데이터로 자바스크립트 배열이나 객체만 처리할 수 있다. 값은 지원하지 않는다.
+
+######리소스 객체에 기능 추가
+
+`$resource` 팩토리는 생성자 함수를 만든다. 이 생성자 함수는 다른 모든 자바스크립트에 대해 `new` 키워드를 사용해서 새로운 리소스 인스턴스를 만드는 생성자로 사용할 수 있다.
+뿐만 아니라 이 생성자의 프로토타입을 확장해서 리소스 객체에 새로운 기능을 추가할 수도 있다.
+
+다음 코드는 성과 이름을 합쳐 전체 이름을 출력하는 새로운 메소드를 추가한 예제이다.
+
+		.factory('Users', function($resource){
+			var Users = $resource('https://api.mongolab.com/api/1/databases/ascrum/collections/users/:id', {
+				apiKey: '4fb51e55e4b02e56a67b0b66',
+				id: '@_id.$oid'
+			},{
+				update: {method: 'PUT'}	
+			});
+
+			Users.prototype.getFullName = function(){
+				return this.firstName + ' ' + this.lastName;
+			};
 
 
+			return Users;
+		});
+
+####$http로 만든 사용자 정의 REST 어댑터
+
+`$resource` 팩토리를 사용하기 어려운 상황이라면 `$http` 서비스 기반으로 사용자 정의 팩토리를 만드는 것이 더 쉬운 방법이다.
+
+다음 코드는 MongoLab RESTful API를 사용하는 간단한 사용자 정의 리소스 팩토리다.
+
+	angular.module('mongolabResource', [])
+
+	  .factory('mongolabResource', function ($http, MONGOLAB_CONFIG) {
+
+		return function (collectionName) {
+
+		  //basic configuration
+		  var collectionUrl =
+			'https://api.mongolab.com/api/1/databases/' +
+			  MONGOLAB_CONFIG.DB_NAME +
+			  '/collections/' + collectionName;
+
+		  var defaultParams = {apiKey:MONGOLAB_CONFIG.API_KEY};
+
+		  //utility methods
+		  var getId = function (data) {
+			return data._id.$oid;
+		  };
+
+		  //a constructor for new resources
+		  var Resource = function (data) {
+			angular.extend(this, data);
+		  };
+
+		  Resource.query = function (params) {
+			return $http.get(collectionUrl, {
+			  params:angular.extend({q:JSON.stringify({} || params)}, defaultParams)
+			}).then(function (response) {
+				var result = [];
+				angular.forEach(response.data, function (value, key) {
+				  result[key] = new Resource(value);
+				});
+				return result;
+			  });
+		  };
+
+		  Resource.save = function (data) {
+			return $http.post(collectionUrl, data, {params:defaultParams})
+			  .then(function (response) {
+				return new Resource(data);
+			  });
+		  };
+
+		  Resource.prototype.$save = function (data) {
+			return Resource.save(this);
+		  };
+
+		  Resource.remove = function (data) {
+			return $http['delete'](collectionUrl + '', defaultParams)
+			  .then(function (response) {
+				return new Resource(data);
+			  });
+		  };
+
+		  Resource.prototype.$remove = function (data) {
+			return Resource.remove(this);
+		  };
+
+		  //other CRUD methods go here
+
+		  //convenience methods
+		  Resource.prototype.$id = function () {
+			return getId(this);
+		  };
+
+		  return Resource;
+		};
+	  });
+
+다음은 새로 만든 리소스 팩토리를 어떻게 사용하는지 보여준다.
+
+	angular.module('customResourceDemo', ['mongolabResource'])
+	  .constant('MONGOLAB_CONFIG', {
+		DB_NAME: 'ascrum',
+		API_KEY: '4fb51e55e4b02e56a67b0b66'
+	  })
+
+	  .factory('Users', function (mongolabResource) {
+		return mongolabResource('users');
+	  })
+
+	  .factory('Projects', function (mongolabResource) {
+		return mongolabResource('projects');
+	  })
+
+	  .controller('CustomResourceCtrl', function ($scope, Users, Projects) {
+
+		Users.query().then(function(users){
+		  $scope.users = users;
+		});
+
+		Projects.query().then(function(projects){
+		  $scope.projects = projects;
+		});
+
+		$scope.addSuperhero = function () {
+		  new Users({name: 'Superhero'}).$save();
+		};
+	  });
+
+`$http` 기반의 사용자 정의 리소스 팩토리를 사용하는 가장 큰 장점은 프라미스 API를 마음대로 조작할 수 있다는 점이다.
+
+###$http 추가 기능 사용
+
+####응답 가로채기
+
+AngularJS에 내장된 `$http` 서비스를 사용하면 모든 요청에 적용할 수 있는 인터셉터를 등록할 수 있다.
+
+실패한 요청을 재시도하고 싶다면 응답의 상태 코드를 살펴보고 HTTP Servie Unavailable(503)인 경우 다시 요청을 보내는 인터셉터를 정의하면 된다.
+
+새로운 인터셉터를 등록하는 것은 쉽다. 새로운 인터셉터에 대한 참조를 `$httpProvider`가 관리하는 인터셉터 배열에 추가하기만 하면 된다.
 
 ##데이터 포맷과 출력
 
@@ -2568,7 +2793,109 @@ AngularJS는 컴파일러를 `$compile` 서비스로 제공한다. `$compile` �
 		};
 	});
 
+디렉티브에 `transclude: 'element'`라고 지정함으로써 전체 요소를 옮겨 넣고 있다. 그리고 링크 함수를 반환하는 컴파일 함수를 정의해 트랜스클루전 함수를 사용하고 있고 if 속성의 표현식을 `$watch`하고 있다.
 
+표현식이 변경됐을 때 스코프와 자식 요소가 존재하면 먼저 깔끔하게 정리한다. 이는 메모리 누수를 만들지 않는다는 면에서 중요하다. 표현식이 true로 평가되면 새로운 자식 스코프를 만들어 트랜스클루전 함수를 통해 옮겨 넣은 요소의 복사본을 만든다. 그리고 디렉티브가 사용된 요소 다음에 만들어진 요소를 집어 넣는다.
+
+#####디렉티브에서 priority 프로퍼티 사용
+
+AngularJS는 각 요소에 대해 높은 우선순위의 디렉티브부터 컴파일하기 때문에 디렉티브를 정의할 때 `priority` 프로퍼티를 사용하면 디렉티브 간의 우선순위를 정할 수 있다.
+
+> 예제 - [트랜스 클루전을 사용한 if 디렉티브](http://embed.plnkr.co/GSDbG0NpzpfUhbzS42xL/preview)
+
+###디렉티브 컨트롤러 이해
+
+AngularJS에서 컨트롤러란 DOM 요소에 추가되는 객체로서 스코프를 초기화하고 요소에 행동을 추가하는 역할을 한다.
+
+>컨트롤러는 DOM과 직접 통신하면 안 되고 오직 현재 스코프하고만 동작해야 한다.
+
+디렉티브 컨트롤러는 디렉티브에 의해 정의된 특별한 형태의 컨트롤러다. DOM 요소가 나타날 때마다 만들어지며, 디렉티브를 초기화하고 스코프보다는 디렉티브 자체에 행동을 추가하는 역할을 한다.
+
+디렉티브 컨트롤러를 정의하는 방법은 디렉티브 정의 객체에서 `controller` 프로퍼티를 사용하면 된다. `controller` 프로퍼티에는 미리 모듈에 정의해놓은 컨트롤러의 이름을 지정한다.
+
+	myModule.directive('myDirective', function(){
+		return {
+			controller: 'MyDirectiveController'
+		};
+	});
+	myModule.controller('MyDirectiveController', function($scope){
+		...
+	});
+
+혹은 컨트롤러를 만들어낼 때 사용하는 생성자 함수를 지정해도 된다.
+
+	myModule.directive('myDirective', function(){
+		return {
+			controller: function($scope, ...){...}
+		};
+	});
+
+####디렉티브 컨트롤러에 특별한 의존 관계 주입
+
+모든 컨트롤러에는 `$scope`가 주입되며 `$timeout`이나 `$rootScope` 처럼 원하는 서비스도 주입할 수 있다. 이외에도 다음과 같은 3가지의 특별한 서비스를 주입할 수 있다.
+
+- `$element` - 디렉티브의 DOM 요소에 대한 참조다. jQLite/제이쿼리를 래핑하고 있다.
+- `$attrs` - 디렉티브의 DOM 요소에 정의해놓은 속성들의 리스트다.
+- `$transclude` - 현재 스코프에 이미 연결된 트랜스클루전 함수다.
+
+####컨트롤러 기반의 페이지 번호 디렉티브 작성
+
+디렉티브 컨트롤러의 기능과 링크 함수의 기능은 겹치는 부분이 많다. 그래서 링크 함수 대신 컨트롤러를 사용하는 경우도 많다. 다음은 페이지 번호 디렉티브를 링크 함수 대신 디렉티브 컨트롤러를 사용해 구현한 코드다.
+
+	MyModule.directive('pagination', function() {
+	  return {
+		restrict: 'E',
+		scope: { numPages: '=', currentPage: '=', onSelectPage: '&' },
+		templateUrl: 'template/pagination.html',
+		replace: true,
+		controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+		  scope.$watch('numPages', function(value) {
+			scope.pages = [];
+			for(var i=1;i<=value;i++) {
+			  scope.pages.push(i);
+			}
+			if ( scope.currentPage > value ) {
+			  scope.selectPage(value);
+			}
+		  });
+		  scope.noPrevious = function() {
+			return scope.currentPage === 1;
+		  };
+		  scope.noNext = function() {
+			return scope.currentPage === scope.numPages;
+		  };
+		  scope.isActive = function(page) {
+			return scope.currentPage === page;
+		  };
+
+		  scope.selectPage = function(page) {
+			if ( ! scope.isActive(page) ) {
+			  scope.currentPage = page;
+			  scope.onSelectPage({ page: page });
+			}
+		  };
+
+		  scope.selectPrevious = function() {
+			if ( !scope.noPrevious() ) {
+			  scope.selectPage(scope.currentPage-1);
+			}
+		  };
+		  scope.selectNext = function() {
+			if ( !scope.noNext() ) {
+			  scope.selectPage(scope.currentPage+1);
+			}
+		  };
+		}]
+	  };
+	});
+
+####디렉티브 컨트롤러와 링크 함수의 차이점
+
+#####의존성 주입
+
+디렉티브 컨트롤러는 `$scope`, `$element`, `$attrs` 같은 특정 서비스를 주입하기 위해 의존성 주입 애노테이션을 사용해야 한다. 그리고 링크 함수에는 함수 정의 시 선언하는 매개변수 이름과는 상관없이 언제나 동일한 4개의 매개변수 `scope`, `element`, `attrs`, `controller`가 전달된다.
+
+#####컴파일 과정
 
 
 
