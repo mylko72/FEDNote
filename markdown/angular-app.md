@@ -2897,6 +2897,91 @@ AngularJS에서 컨트롤러란 DOM 요소에 추가되는 객체로서 스코�
 
 #####컴파일 과정
 
+디렉티브 컨트롤러와 링크 함수는 컴파일 과정에서 호출되는 방식이 서로 다르다.
+
+요소 하나가 여러 개의 디렉티브를 갖고 있으면 이 요소는 다음과 같은 순서로 동작한다.
+
+- 필요한 경우 스코프를 생성한다.
+- 각 디렉티브의 디렉티브 컨트롤러를 생성한다.
+- 각 디렉티브의 pre-link 함수를 호출한다.
+- 모든 자식 요소를 연결한다.
+- 각 디렉티브의 post-link 함수를 호출한다.
+
+이 말은 디렉티브 컨트롤러가 만들어질 당시에는 디렉티브의 요소와 자식들은 아직 완벽히 연결되지 않았다는 의미다. 하지만 링크 함수가 호출되고 나면 요소의 모든 디렉티브 컨트롤러는 생성이 완료된 상태다. 그렇기 때문에 디렉티브 컨트롤러를 링크 함수로 넘길 수 있다.
+
+>post-link 함수는 컴파일러가 컴파일을 마치고 현재 요소와 자식 요소들을 모두 연결한 다음에 호출된다. 즉, 이 단계에서 DOM을 변경하면 AngularJS 컴파일러는 알지 못한다. 그래서 이방법은 제이쿼리 플러그인 같은 외부 라이브러리를 사용할 때 유용하다.
+
+#####다른 컨트롤러에 접근
+
+링크 함수의 4번째 매개변수로는 디렉티브에서 필요하다고 정의한 다른 디렉티브의 컨트롤러가 전달된다.
+
+	myModule.directive('validateEquals', function(){
+		return {
+			require: 'ngModel',
+			link: function(scope, elm, attrs, ngModelCtrl){
+				...
+			}
+		};
+	});
+
+코드를 보면 ngModel 디렉티브 컨트롤러가 필요하다고 정의하고 있으므로 링크 함수의 ngModelCtrl로 디렉티브 컨트롤러가 전달된다.
+
+#####트랜스클루전 함수에 접근
+
+디렉티브 컨트롤러에는 현재 스코프에 이미 바운드돼 있는 `$transclusion` 함수를 주입할 수 있다. 그리고 링크함수는 오직 컴파일 함수의 클로저를 통해서만 트랜스클루전 함수에 접근할 수 있으며, 이 함수는 스코르에 미리 바인딩돼 있지는 않다.
+
+###컴파일 단계의 제어권 가져오기
+
+####field 디렉티브 작성
+
+#####디렉티브에서 terminal 프로퍼티 사용
+
+디렉티브에 `terminal:true`를 지정하면 컴파일러는 컴파일을 멈추고 해당 디렉티브보다 낮은 우선순위를 가진 디렉티브의 자식 요소나 디렉티브에 있는 어떤 다른 디렉티브도 처리하지 않는다.
+
+대부분의 템플릿에서 {{}} 괄호로 표현한 인터폴레이팅 문자열을 AngularJS가 표현식으로 처리해주지만, field 디렉티브에서는 문자열을 직접 코드로 변환해줘야 한다. 이를 위해 `$interpolate` 서비스를 사용해야 한다.
+
+####$interpolate 서비스 사용
+
+AngularJS에서 `$interpolate` 서비스는 {{}} 괄호를 포함한 문자열을 평가하는데 사용된다. `$interpolate` 서비스로 이런 문자열을 넘기면 스코프를 받아 변환된 문자열을 반환하는 인터폴레이션 함수를 반환해준다.
+
+	var getFullName = $interpolate('{{first}}{{last}}');
+	var scope = {first:'Pete', last:'Bacon Darwin'};
+	var fullName = getFullName(scope);
+
+여기서는 '{{first}} {{last}}' 문자열에 대한 getFullName 인터폴레이션 함수를 만들고, scope와 함께 호출했으니 'Pete Bacon Darwin'이라는 결과가 fullName에 할당된다.	
+
+#####유효성 검증 메시지 바인딩
+
+필드 템플릿에 유효성 검증 메시지를 보여주려면 다음과 같이 작성해야 한다.
+
+	<span class="help-inline" ng-repeat="error in $fieldErrors">
+		{{$validationMessages[error](this)}}
+	</span>
+
+`$fieldErrors`의 모든 유효성 검증 error 키에 대해 해당 error 키로 검증 인터폴레이션 함수를 호출한 결과와 바인딩한다. `$fieldErrors` 프로퍼티는 현재 유효하지 않은 검증 error 키의 리스트다.
+
+>인터폴레이션 함수에는 스코프를 넣어야만 한다. 이를 위해 템플릿에서는 현재 스코프에 대한 참조인 `this`를 넘긴다.
+
+####템플릿을 동적으로 로딩
+
+loadTemplate 함수는 지정한 템플릿을 로드하고 해당 템플릿을 DOM 요소로 래핑한 jqLite/제이쿼리로 변환한다.
+
+	function loadTemplate(template) {
+		return $http.get(template, {cache:$templateCache}).then(function(response) {
+		  return angular.element(response.data);
+		}, function(response) {
+		  throw new Error('Template not found: ' + template);
+		});
+	}
+
+
+
 
 
 ##웹애플리케이션 작성
+
+
+
+
+
+
