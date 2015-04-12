@@ -561,8 +561,206 @@ pizzaPit<span class="preprocessor">.deliverOrder</span>()<span class="comment">;
     <span class="keyword">return</span> <span class="string">"World"</span>;
 },2000);</code></pre>
 <blockquote>
-<p><code>$timeout</code> 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다.</p>
+<p><code>$timeout</code> 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다. $scope에 직접 프라미스를 노출해서 해결된 값을 자동 렌더링하는 방식은 사용하지 말아야 한다.</p>
 </blockquote>
+<h3 id="-http-api">$http와 프라미스 API</h3>
+<p><code>$http</code> 호출로 반환된 객체는 2개의 편리한 메소드(success와 error)가 있는 완전한 프라미스며 <code>then</code> 메소드를 사용해 콜백을 다시 등록할 수 있다.</p>
+<pre><code>var responsePromise = $http.<span class="keyword">get</span>(<span class="comment">'data.json');</span>
+responsePromise.<span class="keyword">then</span>(<span class="keyword">function</span>(<span class="built_in">response</span>){
+    $scope.data = <span class="built_in">response</span>.data;
+}, <span class="keyword">function</span>(<span class="built_in">response</span>){
+    throw <span class="keyword">new</span> <span class="keyword">Error</span>(<span class="comment">'Something went wrong...');</span>
+});</code></pre>
+<h3 id="restful-">RESTful 엔드포인트와 통신</h3>
+<p>AngularJS는 RESTful 엔드포인트와의 통신에 특화된 <code>$resource</code>라는 서비스를 제공한다.</p>
+<h4 id="-resource-">$resource 서비스</h4>
+<p>RESTful 엔드포인트는 보통 동일한 URL에 HTTP 메소드를 다르게 보내는 방식으로 CRUD 연산을 제공한다.</p>
+<blockquote>
+<p>$resource 서비스는 별도의 파일(angular-resource.js)에 별도의 모듈(ngResource)로 제공되며 애플리케이션 모듈에 ngResource 모듈에 대한 의존 관계를 정의해야 한다.</p>
+</blockquote>
+<p>다음 코드는 <code>$resource</code> 서비스로 RESTful 엔드포인트와 통신하는 방법을 보여준다.</p>
+<pre><code>angular.module(<span class="comment">'resource', ['ngResource'])</span>
+    .factory(<span class="comment">'Users', function($resource){</span>
+        return $resource(<span class="comment">'https://api.mongolab.com/api/1/databases/ascrum/collections/users/:id', {</span>
+            apiKey: <span class="comment">'4fb51e55e4b02e56a67b0b66',</span>
+            id: <span class="comment">'@_id.$oid'</span>
+        });
+    });</code></pre>
+<p>다음은 영구 저장소에서 모든 사용자를 받아오는 질의문이다.</p>
+<pre><code>.controller(<span class="string">'ResourceCtrl'</span>, function(<span class="variable">$scope</span>, Users){
+    <span class="variable">$scope</span>.users = Users.query();
+});</code></pre>
+<p><code>User.query()</code> 메소드를 호출하면 <code>$http</code> 요청을 준비하고 발송한다. 그리고 응답이 준비돼 JSON 문자열이 도착하면 각 요소가 Users 타입인 자바스크립트 배열로 변환된다.</p>
+<h5 id="-">생성자 기반 메소드와 인스턴스 기반 메소드</h5>
+<p><code>$resource</code> 서비스는 2개의 편리한 메소드 묶음을 자동으로 생성한다. 하나는 생성자 기반으로 만들어지며 다른 하나는 인스턴스 기반 메소드로 만들어진다.</p>
+<h6 id="-">생성자 기반 메소드</h6>
+<p><code>$resource</code>가 생성한 생성자 함수에는 HTTP 동작에 따른 여러 개의 메소드가 있다.</p>
+<ul>
+<li><strong>Users.query(params, successcb, errorcb)</strong> HTTP GET 요청을 보내고 응답으로 JSON 배열을 기대한다. 여러 개의 요소를 가져오고 싶을 때 사용한다.</li>
+<li><strong>Users.get(params, successcb, errorcb)</strong> HTTP GET 요청을 보내고 응답으로 JSOn 객체를 기대한다. 요소 하나만을 가져오고 싶을 때 사용한다.</li>
+<li><strong>Users.save(params, payloadData, successcb, errorcb)</strong> 페이로드로 만들어진 요청 body와 함께 HTTP POST 요청을 보낸다.</li>
+<li><strong>Users.delete(params, successcb, errorcb)</strong> HTTP DELETE 요청을 보낸다.</li>
+</ul>
+<h6 id="-">인스턴스 기반 메소드</h6>
+<p><code>$resource</code> 서비스는 프로토타입(인스턴스) 기반의 메소드도 생성한다. 인스턴스 기반 메소드는 단 하나의 인스턴스에서만 동작한다.</p>
+<p>다음과 같이 호출하면 사용자를 지울 수 있다.</p>
+<pre><code>Users.<span class="operator"><span class="keyword">delete</span>({}, <span class="keyword">user</span>);</span></code></pre>
+<p>혹은 해당 사용자 인스턴스에서 메소드를 호출해도 된다.</p>
+<pre><code>user.$<span class="operator"><span class="keyword">delete</span>();</span></code></pre>
+<p>다음은 새로운 사용자를 등록하는 예제이다.</p>
+<pre><code><span class="keyword">var</span> user = <span class="keyword">new</span> User({
+    name: <span class="string">'Superhero'</span>
+});
+
+user.<span class="variable">$save</span>();</code></pre>
+<p>이 코드를 클래스 기반 메소드를 사용해서 다시 작성하면 다음과 같다.</p>
+<pre><code>var <span class="keyword">user</span> = {
+    name: 'Superhero'
+};
+
+Users.save(<span class="keyword">user</span>);</code></pre>
+<blockquote>
+<p>$resource 팩토리는 클래스 기반 메소드와 인스턴스 기반 메소드를 모두 생성한다. 그리고 인스턴스 기반 메소드는 $ 문자로 시작한다.    </p>
+</blockquote>
+<h6 id="-">사용자 정의 메소드</h6>
+<p><code>$resource</code> 팩토리는 HTTP PUT 요청에 대응하는 메소드를 기본으로 생성하지 않는다. 필요하다면 대응하는 메소드를 직접 추가해줘야 한다.</p>
+<p>예를 들어 MongoLab REST API는 새로운 요소를 생성할 때 HTTP POST 메소드를 사용하지만 기존 요소를 갱신할 때는 PUT 메소드를 사용해야 한다.</p>
+<pre><code>    .factory('<span class="type">Users'</span>, function($resource){
+        return $resource('https://api.mongolab.com/api/<span class="number">1</span>/<span class="typedef">databases/ascrum/collections/users/:id', <span class="container">{
+            <span class="title">apiKey</span>: '4<span class="title">fb51e55e4b02e56a67b0b66'</span>,
+            <span class="title">id</span>: '@<span class="title">_id</span>.$<span class="title">oid'</span>
+        }</span>,<span class="container">{
+            <span class="title">update</span>: {<span class="title">method</span>: '<span class="type">PUT</span>'}</span>    </span>
+        });
+    });</code></pre>
+<p>예제처럼 <code>$resource</code> 팩토리 함수에 3번째 매개변수를 넣으면 쉽게 새로운 메소드를 정의할 수 있다. 매개변수는 다음과 같은 형태의 객체여야 한다.</p>
+<pre><code><span class="method">action:</span> {<span class="method">method:</span>?, <span class="method">params:</span>?, <span class="method">isArray:</span>?, <span class="method">headers:</span>?}</code></pre>
+<p><code>$resource</code> 서비스는 백엔드로부터 받은 데이터로 자바스크립트 배열이나 객체만 처리할 수 있다. 값은 지원하지 않는다.</p>
+<h6 id="-">리소스 객체에 기능 추가</h6>
+<p><code>$resource</code> 팩토리는 생성자 함수를 만든다. 이 생성자 함수는 다른 모든 자바스크립트에 대해 <code>new</code> 키워드를 사용해서 새로운 리소스 인스턴스를 만드는 생성자로 사용할 수 있다.
+뿐만 아니라 이 생성자의 프로토타입을 확장해서 리소스 객체에 새로운 기능을 추가할 수도 있다.</p>
+<p>다음 코드는 성과 이름을 합쳐 전체 이름을 출력하는 새로운 메소드를 추가한 예제이다.</p>
+<pre><code>    .factory('<span class="type">Users'</span>, function($resource){
+        var <span class="type">Users</span> = $resource('https://api.mongolab.com/api/<span class="number">1</span>/<span class="typedef">databases/ascrum/collections/users/:id', <span class="container">{
+            <span class="title">apiKey</span>: '4<span class="title">fb51e55e4b02e56a67b0b66'</span>,
+            <span class="title">id</span>: '@<span class="title">_id</span>.$<span class="title">oid'</span>
+        }</span>,<span class="container">{
+            <span class="title">update</span>: {<span class="title">method</span>: '<span class="type">PUT</span>'}</span>    </span>
+        });
+
+        <span class="type">Users</span>.prototype.getFullName = function(){
+            return this.firstName +<span class="string"> ' '</span> + this.lastName;
+        };
+
+
+        return <span class="type">Users</span>;
+    });</code></pre>
+<h4 id="-http-rest-">$http로 만든 사용자 정의 REST 어댑터</h4>
+<p><code>$resource</code> 팩토리를 사용하기 어려운 상황이라면 <code>$http</code> 서비스 기반으로 사용자 정의 팩토리를 만드는 것이 더 쉬운 방법이다.</p>
+<p>다음 코드는 MongoLab RESTful API를 사용하는 간단한 사용자 정의 리소스 팩토리다.</p>
+<pre><code>angular.module(<span class="string">'mongolabResource'</span>, [])
+
+  .factory(<span class="string">'mongolabResource'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$http</span>, MONGOLAB_CONFIG)</span> {</span>
+
+    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(collectionName)</span> {</span>
+
+      <span class="comment">//basic configuration</span>
+      <span class="keyword">var</span> collectionUrl =
+        <span class="string">'https://api.mongolab.com/api/1/databases/'</span> +
+          MONGOLAB_CONFIG.DB_NAME +
+          <span class="string">'/collections/'</span> + collectionName;
+
+      <span class="keyword">var</span> defaultParams = {apiKey:MONGOLAB_CONFIG.API_KEY};
+
+      <span class="comment">//utility methods</span>
+      <span class="keyword">var</span> getId = <span class="function"><span class="keyword">function</span> <span class="params">(data)</span> {</span>
+        <span class="keyword">return</span> data._id.<span class="variable">$oid</span>;
+      };
+
+      <span class="comment">//a constructor for new resources</span>
+      <span class="keyword">var</span> Resource = <span class="function"><span class="keyword">function</span> <span class="params">(data)</span> {</span>
+        angular.extend(<span class="keyword">this</span>, data);
+      };
+
+      Resource.query = <span class="function"><span class="keyword">function</span> <span class="params">(params)</span> {</span>
+        <span class="keyword">return</span> <span class="variable">$http</span>.get(collectionUrl, {
+          params:angular.extend({q:JSON.stringify({} || params)}, defaultParams)
+        }).then(<span class="function"><span class="keyword">function</span> <span class="params">(response)</span> {</span>
+            <span class="keyword">var</span> result = [];
+            angular.<span class="keyword">forEach</span>(response.data, <span class="function"><span class="keyword">function</span> <span class="params">(value, key)</span> {</span>
+              result[key] = <span class="keyword">new</span> Resource(value);
+            });
+            <span class="keyword">return</span> result;
+          });
+      };
+
+      Resource.save = <span class="function"><span class="keyword">function</span> <span class="params">(data)</span> {</span>
+        <span class="keyword">return</span> <span class="variable">$http</span>.post(collectionUrl, data, {params:defaultParams})
+          .then(<span class="function"><span class="keyword">function</span> <span class="params">(response)</span> {</span>
+            <span class="keyword">return</span> <span class="keyword">new</span> Resource(data);
+          });
+      };
+
+      Resource.prototype.<span class="variable">$save</span> = <span class="function"><span class="keyword">function</span> <span class="params">(data)</span> {</span>
+        <span class="keyword">return</span> Resource.save(<span class="keyword">this</span>);
+      };
+
+      Resource.remove = <span class="function"><span class="keyword">function</span> <span class="params">(data)</span> {</span>
+        <span class="keyword">return</span> <span class="variable">$http</span>[<span class="string">'delete'</span>](collectionUrl + <span class="string">''</span>, defaultParams)
+          .then(<span class="function"><span class="keyword">function</span> <span class="params">(response)</span> {</span>
+            <span class="keyword">return</span> <span class="keyword">new</span> Resource(data);
+          });
+      };
+
+      Resource.prototype.<span class="variable">$remove</span> = <span class="function"><span class="keyword">function</span> <span class="params">(data)</span> {</span>
+        <span class="keyword">return</span> Resource.remove(<span class="keyword">this</span>);
+      };
+
+      <span class="comment">//other CRUD methods go here</span>
+
+      <span class="comment">//convenience methods</span>
+      Resource.prototype.<span class="variable">$id</span> = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">return</span> getId(<span class="keyword">this</span>);
+      };
+
+      <span class="keyword">return</span> Resource;
+    };
+  });</code></pre>
+<p>다음은 새로 만든 리소스 팩토리를 어떻게 사용하는지 보여준다.</p>
+<pre><code><span class="transposed_variable">angular.</span>module(<span class="string">'customResourceDemo'</span>, <span class="matrix">[<span class="string">'mongolabResource'</span>]</span>)
+  .constant(<span class="string">'MONGOLAB_CONFIG'</span>, <span class="cell">{
+    DB_NAME: <span class="string">'ascrum'</span>,
+    API_KEY: <span class="string">'4fb51e55e4b02e56a67b0b66'</span>
+  }</span>)
+
+  .factory(<span class="string">'Users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(mongolabResource)</span> {</span>
+    <span class="keyword">return</span> mongolabResource(<span class="string">'users'</span>);
+  })
+
+  .factory(<span class="string">'Projects'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(mongolabResource)</span> {</span>
+    <span class="keyword">return</span> mongolabResource(<span class="string">'projects'</span>);
+  })
+
+  .controller(<span class="string">'CustomResourceCtrl'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($scope, Users, Projects)</span> {</span>
+
+    <span class="transposed_variable">Users.</span>query().then(<span class="keyword">function</span>(users)<span class="cell">{
+      $scope.users = users;
+    }</span>);
+
+    <span class="transposed_variable">Projects.</span>query().then(<span class="keyword">function</span>(projects)<span class="cell">{
+      $scope.projects = projects;
+    }</span>);
+
+    $<span class="transposed_variable">scope.</span>addSuperhero = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      new Users(<span class="cell">{name: <span class="string">'Superhero'</span>}</span>).$save();
+    };
+  });</code></pre>
+<p><code>$http</code> 기반의 사용자 정의 리소스 팩토리를 사용하는 가장 큰 장점은 프라미스 API를 마음대로 조작할 수 있다는 점이다.</p>
+<h3 id="-http-">$http 추가 기능 사용</h3>
+<h4 id="-">응답 가로채기</h4>
+<p>AngularJS에 내장된 <code>$http</code> 서비스를 사용하면 모든 요청에 적용할 수 있는 인터셉터를 등록할 수 있다.</p>
+<p>실패한 요청을 재시도하고 싶다면 응답의 상태 코드를 살펴보고 HTTP Servie Unavailable(503)인 경우 다시 요청을 보내는 인터셉터를 정의하면 된다.</p>
+<p>새로운 인터셉터를 등록하는 것은 쉽다. 새로운 인터셉터에 대한 참조를 <code>$httpProvider</code>가 관리하는 인터셉터 배열에 추가하기만 하면 된다.</p>
 <h2 id="-">데이터 포맷과 출력</h2>
 <h3 id="-">디렉티브에 대한 참조</h3>
 <p>HTML 템플릿에서 디렉티브 참조 이름에는 접두사로 x나 data를 사용할 수 있다. 
@@ -998,6 +1196,227 @@ $scope.setActivePage = <span class="function"><span class="keyword">function</sp
 <p><code>ngModelController</code>는 input 요소의 디렉티브를 통해 값이 유효한지 검증하기 위해 보통 값이 변경되기 전에 먼저 파이프라인의 변경 과정에 꺼어들어 값을 검증하는 방식을 사용한다. 그리고 <code>ngModelController</code>는 추적 결과에 따라 <code>ng-valid</code>나 <code>ng-invalid</code> CSS 클래스를 적용한다. 그래서 이 클래스를 이용하면 요소의 모양을 변경할 수 있다.</p>
 <pre><code><span class="class">.ng-valid</span><span class="class">.ng-dirty</span> <span class="rules">{<span class="rule"><span class="attribute">border</span>:<span class="value"><span class="number">3</span>px solid green;</span></span><span class="rule">}</span></span>
 <span class="class">.ng-invalid</span><span class="class">.ng-dirty</span> <span class="rules">{<span class="rule"><span class="attribute">border</span>:<span class="value"><span class="number">3</span>px solid red;</span></span><span class="rule">}</span></span></code></pre>
+<p>여기서는 사용자가 값을 변경한 input 필드만 골라내기 위해 조금 전에 살펴본 값 변경 여부와 유효 여부를 동시에 사용했다. 값이 유효하지 않은 경우 빨간색 선이 표시되고 유효한 경우 녹색 선이 표시된다.</p>
+<h3 id="angularjs-">AngularJS 폼 검증</h3>
+<h4 id="ngformcontroller">ngFormController</h4>
+<p>각 폼 디렉티브는 <code>ngFormController</code>의 인스턴스를 생성하는데, 이 객체는 폼이 유효한지 아닌지와 값 변경 여부를 관리한다. 중요한 점은 <code>ngFormController</code>가 폼의 각 <code>ngModel</code> 필드를 추적하기 위해 <code>ngModelController</code>와 함께 동작한다는 사실이다.</p>
+<p><code>ngModelController</code>가 생성되면 부모 요소에서부터 위로 탐색해 첫 번째 발견하는 <code>ngFormController</code>에 자신을 등록한다. 이 방법으로 <code>ngFormController</code>는 어떤 input 디렉티브를 추적해야 하는지 판단한다.ㅐ</p>
+<h4 id="-">사용자 정보 폼에 동적인 동작 추가</h4>
+<p>스코프의 <code>ngFormController</code>와 <code>ngModelController</code> 객체를 사용하면 프로그램상에서 폼의 상태를 변경할 수 있다.</p>
+<h5 id="-">유효 검사 오류 보여주기</h5>
+<p>다음은 폼의 입력값이 유효하지 않은 경우 에러 메시지를 보여주는 예제이며 이를 위한 템플릿이다.</p>
+<pre><code>  <span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"userInfoForm"</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"control-group"</span> <span class="attribute">ng-class</span>=<span class="value">"getCssClasses(userInfoForm.email)"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">label</span>&gt;</span>E-mail<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"email"</span> <span class="attribute">ng-model</span>=<span class="value">"user.email"</span> <span class="attribute">name</span>=<span class="value">"email"</span> <span class="attribute">required</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(userInfoForm.email, 'email')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>You must enter a valid email<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(userInfoForm.email, 'required')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>This field is required<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+      <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+      ...
+  <span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>그리고 다음은 컨트롤러다.      </p>
+<pre><code>app.controller(<span class="string">'MainCtrl'</span>, function(<span class="variable">$scope</span>) {
+    <span class="variable">$scope</span>.getCssClasses = function(ngModelContoller) {
+        <span class="keyword">return</span> {
+          <span class="keyword">error</span>: ngModelContoller.<span class="variable">$invalid</span> &amp;&amp; ngModelContoller.<span class="variable">$dirty</span>,
+          success: ngModelContoller.<span class="variable">$valid</span> &amp;&amp; ngModelContoller.<span class="variable">$dirty</span>
+        };
+    };
+
+    <span class="variable">$scope</span>.showError = function(ngModelController, <span class="keyword">error</span>) {
+        <span class="keyword">return</span> ngModelController.<span class="variable">$error</span>[<span class="keyword">error</span>];
+    };
+});</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/XwLUFZ">유효검사 오류 보여주기</a></p>
+</blockquote>
+<p><code>getCssClasses()</code> 메소드는 포함돼야 하는 CSS 클래스를 정의해놓은 객체를 반환한다. 객체의 키는 CSS 클래스의 이름이고, 값이 <code>true</code>이면 CSS 클래스가 추가된다. 예제의 <code>getCssClasses()</code> 메소드는 모델이 변경됐고, 유효하지 않은 경우 <code>error</code>를 반환하고 모델이 변경되긴 했지만 유효한 경우에는 <code>success</code>를 반환한다.</p>
+<h5 id="-">저장 버튼 비활성화</h5>
+<p>폼을 저장할 수 있는 상태가 아닐 때는 저장 버튼을 비활성화할 수 있다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"userInfoForm"</span>&gt;</span>
+    ...
+    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-disabled</span>=<span class="value">"!canSave()"</span>&gt;</span>Save<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>뷰에 <code>ngDisabled</code> 디렉티브를 사용하여 표현식이 참인 경우 버튼을 비활성화한다. 예제에서는 <code>canSave()</code> 메소드를 호출한 결과에 따라 동작한다. </p>
+<pre><code>  <span class="variable">$scope</span>.canSave = function() {
+    <span class="keyword">return</span> <span class="variable">$scope</span>.userInfoForm.<span class="variable">$dirty</span> &amp;&amp; <span class="variable">$scope</span>.userInfoForm.<span class="variable">$valid</span>;
+  };</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/123zlhw">저장버튼 비활성화</a></p>
+</blockquote>
+<h4 id="-">브라우저 자체 검증 기능 비활성화</h4>
+<p>브라우저에서 제공하는 자체 검증 기능을 사용하지 않으려면 HTML5 <code>novalidate</code> 속성을 폼 요소에 적용하면 된다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"novalidateForm"</span> <span class="attribute">novalidate</span>&gt;</span></code></pre>
+<h3 id="-">다른 폼과 중첩된 폼</h3>
+<p>AngularJS 폼은 다른 폼안에 중첩된 폼을 만들 수 있다. 중첩 폼을 구현하기 위한 <code>ngForm</code> 디렉티브를 따로 제공한다.</p>
+<blockquote>
+<p>중첩된 폼은 선언한 이름으로 부모 폼에 추가된다. 부모 폼이 없다면 스코프에 직접 추가된다.</p>
+</blockquote>
+<h4 id="-">재사용 가능한 컴포넌트로서의 서브 폼 사용</h4>
+<p>중첩된 폼은 필드에 대한 자체 검증 기능을 갖고 있어 다른 폼에도 재사용할 수 있는 서브 폼으로도 활용할 수 있다. 다음 코드는
+비밀번호를 입력하는 2개의 입력 창에 대한 예제이다.</p>
+<pre><code><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/ng-template"</span> <span class="attribute">id</span>=<span class="value">"password-form"</span>&gt;</span><span class="javascript">
+  &lt;ng-form name=<span class="string">"passwordForm"</span>&gt;
+    <span class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-show</span>=<span class="value">"user.password != user.password2"</span>&gt;</span>Passwords do not match<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">label</span>&gt;</span>Password<span class="tag">&lt;/<span class="title">label</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"user.password"</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">required</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">label</span>&gt;</span>Confirm Password<span class="tag">&lt;/<span class="title">label</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"user.password2"</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">required</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">ng-form</span>&gt;</span>
+</span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"form1"</span> <span class="attribute">novalidate</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">legend</span>&gt;</span>User Form<span class="tag">&lt;/<span class="title">legend</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">label</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">label</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"user.name"</span> <span class="attribute">required</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">ng-include</span> <span class="attribute">src</span>=<span class="value">"'password-form'"</span>&gt;</span><span class="tag">&lt;/<span class="title">ng-include</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/10QWwyu">재사용 가능한 서브 폼</a></p>
+</blockquote>
+<p>여기서는 서브 폼을 스크립트 블록을 이용해서 템플릿 조각으로 정의했지만 다른 파일로 분리해도 된다. <em>서브 폼을 사용하는 <code>form1</code>에서는
+<code>ngInclude</code> 디렉티브를 사용해 서브 폼을 집어 넣는다.</em></p>
+<p>서브 폼은 자신만의 입력 값에 대한 유효 여부와 이에 따른 CSS 클래스를 갖고 있다.</p>
+<h3 id="-">서브 폼 반복 사용</h3>
+<p>때로는 데이터에 따라 여러 번 반복해야 하는 필드가 있을 수 있다. <code>ngRepeat</code> 디렉티브를 사용해 다음과 같이 구현할 수 있다.</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">ng-controller</span>=<span class="value">"MainCtrl"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>User Info<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">label</span>&gt;</span>Websites<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-repeat</span>=<span class="value">"website in user.websites"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"url"</span> <span class="attribute">ng-model</span>=<span class="value">"website.url"</span>&gt;</span><span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">ng-click</span>=<span class="value">"remove(</span><span class="variable">$index</span><span class="xml">)"&gt;X<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-small"</span> <span class="attribute">ng-click</span>=<span class="value">"add()"</span>&gt;</span>Add Website<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span>
+
+app.controller('MainCtrl', function(</span><span class="variable">$scope</span><span class="xml">) {
+  </span><span class="variable">$scope.user</span><span class="xml"> = {
+    websites: [
+      {url: 'http://www.bloggs.com'},
+      {url: 'http://www.jo-b.com'}
+    ]
+  };
+
+  </span><span class="variable">$scope.remove</span><span class="xml"> = function(index) {
+    </span><span class="variable">$scope.user.websites.splice</span><span class="xml">(index, </span><span class="number">1</span><span class="xml">);
+  };
+
+  </span><span class="variable">$scope.add</span><span class="xml"> = function() {
+    </span><span class="variable">$scope.user.websites.push</span><span class="xml">({ url: ''});
+  };
+
+});</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/XHLEWQ">반복 사용하는 필드</a></p>
+</blockquote>
+<p>템플릿에서는 <code>ngRepeat</code> 디렉티브를 사용해 사용자 프로필의 웹사이트 정보를 출력했다. 각 input 디렉티브는 <code>user.websites</code>의 <code>website.url</code> 모델에
+바인딩돼 있다. 이어지는 2개의 함수는 배열에 항목을 추가하거나 제거하고 AngularJS 데이터 바인딩이 나머지 부분을 처리해준다.</p>
+<h4 id="-input-">반복되는 input 검증</h4>
+<p>반복적인 폼을 사용하면서 각 필드에 대한 검증이 필요한 경우 폼의 input마다 각각 다른 이름을 사용해야 하지만 AngularJS에서는 input 디렉티브에 <code>name</code> 속성을 동적으로 생성할 수 없다는 문제가 있다. </p>
+<p>이 문제는 중첩 폼을 사용하면 해결할 수 있다. 각 폼이 현재 스코프에 추가되므로 input 디렉티브를 포함하고 있는 폼을 중첩하면 필드 검증을 위해 각각의 스코프에 접근할 수 있다.</p>
+<p>다음은 템플릿 코드이다.</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">novalidate</span> <span class="attribute">ng-controller</span>=<span class="value">"MainCtrl"</span> <span class="attribute">name</span>=<span class="value">"userForm"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">label</span>&gt;</span>Websites<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-show</span>=<span class="value">"userForm.</span><span class="variable">$invalid</span><span class="xml">"&gt;The User Form is invalid.<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"control-group"</span> <span class="attribute">ng-repeat</span>=<span class="value">"website in user.websites"</span> <span class="attribute">ng-form</span>=<span class="value">"websiteForm"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"input-append"</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"url"</span> <span class="attribute">name</span>=<span class="value">"website"</span> <span class="attribute">ng-model</span>=<span class="value">"website.url"</span> <span class="attribute">required</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">ng-click</span>=<span class="value">"remove(</span><span class="variable">$index</span><span class="xml">)"&gt;X<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(websiteForm.website, 'url')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>You must enter a valid url (including http://)<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-show</span>=<span class="value">"showError(websiteForm.website, 'required')"</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span>&gt;</span>This field is required<span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-small"</span> <span class="attribute">ng-click</span>=<span class="value">"add()"</span>&gt;</span>Add Website<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></span></code></pre>
+<p>다음은 컨트롤러 코드이다.</p>
+<pre><code>app.controller(<span class="string">'MainCtrl'</span>, function(<span class="variable">$scope</span>) {
+  <span class="variable">$scope</span>.showError = function(ngModelController, error) {
+    <span class="keyword">return</span> ngModelController.<span class="variable">$error</span>[error];
+  };
+
+  <span class="variable">$scope</span>.user = {
+    websites: [{url: <span class="string">'http://www.bloggs.com'</span>}, {url: <span class="string">'http://www.jo-b.com'</span>}]
+  };
+
+  <span class="variable">$scope</span>.remove = function(<span class="keyword">index</span>) {
+    <span class="variable">$scope</span>.user.websites.<span class="keyword">splice</span>(<span class="keyword">index</span>, <span class="number">1</span>);
+  };
+
+  <span class="variable">$scope</span>.add = function() {
+    <span class="variable">$scope</span>.user.websites.<span class="keyword">push</span>({ url: <span class="string">''</span>});
+  };
+
+});</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/14i1sTp">반복되는 input 검증</a></p>
+</blockquote>
+<p>여기서는 div에 <code>ngForm</code> 디렉티브를 사용해 스코프의 websites 배열에 따라 반복되는 중첩 폼을 만들었다. 이 말은 <code>ngRepeat</code> 스코프 안에서 각 웹사이트에 대해 <code>ngModel</code>의 검증 기능을 사용할 수 있다는 의미다.</p>
+<p>오류 메시지를 보여주기 위한 <code>showError</code> 함수는 매개변수로 넘긴 <code>ngModelController</code>의 <code>$error</code> 필드에 해당 항목이 있는지 검사한다. 이 함수에 websiteForm.website를 넘긴 이유는 이것이 해당 웹사이트 입력 창의
+<code>ngModelController</code> 객체에 대한 참조이기 때문이다.</p>
+<p><code>ngForm</code> 밖에서는 websiteForm 객체나 websiteForm.website 객체를 참조할 수 없다. 스코프에 있지 않기 때문이다. 하지만 userForm 객체는 참조할 수 있다.</p>
+<h3 id="-html-">기존 HTML 폼 제출</h3>
+<h4 id="-">서버로 바로 폼 제출</h4>
+<p>AngularJS 애플리케이션의 폼에 <code>action</code> 속성을 추가하면 기존 방식처럼 정의한 URL로 폼을 제출할 수 있다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">method</span>=<span class="value">"get"</span> <span class="attribute">action</span>=<span class="value">"http://www.google.com/search"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">name</span>=<span class="value">"q"</span>&gt;</span> Press enter in the input to submit
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<h4 id="-">제출 이벤트 다루기</h4>
+<p><code>action</code> 속성을 사용하지 않으면 AngularJS는 클라이언트 측에서 스코프의 함수를 통해 폼 제출을 다룬다고 생각한다. 그래서 AngularJS는 서버로 바로 폼을 제출하는 동작을 막는다.</p>
+<p>클라이언트 측 함수는 button의 <code>ngClick</code> 디렉티브나 form의 <code>ngSubmit</code> 디렉티브를 사용해 호출할 수 있다.</p>
+<blockquote>
+<p><code>ngSubmit</code>과 <code>ngClick</code> 디렉티브를 같은 form에서 사용하지 않는다. 제출이 2번 이뤄지기 때문이다.</p>
+</blockquote>
+<h5 id="ngsubmit-">ngSubmit으로 폼 제출</h5>
+<p>폼에서 <code>ngSubmit</code>을 사용하려면 폼 제출 시 평가될 표현식을 작성한다. 폼 제출은 사용자가 입력 창에서 엔터를 누르거나 버튼 중 하나를 클릭하면 된다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">ng-submit</span>=<span class="value">"showAlert(q)"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"q"</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/ZQBLYj">ngSubmit으로 폼 제출</a></p>
+</blockquote>
+<h5 id="ngclick-">ngClick으로 폼 제출</h5>
+<p>button이나 input[type=submit]에 <code>ngClick</code>을 사용하려면 버튼을 클릭했을 때 평가되는 표현식을 작성해야 한다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"q"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"showAlert(q)"</span>&gt;</span>Search<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/153OvLS">ngClick으로 폼 제출</a></p>
+</blockquote>
+<h3 id="-">사용자 정보 폼 초기화</h3>
+<p>사용자 정보 폼에 사용자가 입력한 값을 지우고 디폴트 값으로 돌아가고 싶을 때가 있다. 이를 위해서 기존 모델을 복사해두고 필요할 때마다 사용자가 입력한 변경 사항을 덮어써버리면 된다.</p>
+<p>다음은 템플릿 코드다.</p>
+<pre><code><span class="tag">&lt;<span class="title">form</span> <span class="attribute">name</span>=<span class="value">"userInfoForm"</span>&gt;</span>
+    ...
+    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"revert()"</span> <span class="attribute">ng-disabled</span>=<span class="value">"!canRevert()"</span>&gt;</span>Revert Changes<span class="tag">&lt;/<span class="title">button</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>그리고 컨트롤러 코드다.</p>
+<pre><code>app.controller(<span class="string">'MainCtrl'</span>, <span class="keyword">function</span>($scope) {
+    <span class="keyword">...</span>
+    $scope.user = {
+        <span class="keyword">...</span>
+    };
+
+    $scope.passwordRepeat = $scope.user.password;
+
+    // Make a copy of the user
+    var original = angular.copy($scope.user);
+
+    // Revert the user info back to the original
+    $scope.revert = <span class="keyword">function</span>() {
+        $scope.user = angular.copy(original);
+        $scope.passwordRepeat = $scope.user.password;
+        $scope.userInfoForm.$setPristine();
+    };
+
+    $scope.canRevert = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> !angular.equals($scope.user, original);
+    };
+
+    $scope.canSave = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> $scope.userInfoForm.$valid &amp;&amp; !angular.equals($scope.user, original);
+    };
+});</code></pre>
+<blockquote>
+<p>예제  - <a href="http://bit.ly/17vHLWX">사용자 정보 폼 초기화</a></p>
+</blockquote>
+<p>컨트롤러에서 <em><code>angular.copy()</code>를 사용해 모델을 지역 변수로 복사했다.</em> 그리고 <code>revert() 메소드는 복사한 내용을 user 모델로 다시 복사한 후 폼을 변경하지 않았다고 설정해서 CSS 클래스가</code>ng-dirty`로 설정되지 않게 만든다.</p>
 <h2 id="-">내비게이션 구성</h2>
 <p>AngularJS는 다음과 같은 것들을 지원한다.</p>
 <ul>
@@ -1729,6 +2148,148 @@ directiveElement.html(<span class="string">''</span>);
         }
     };
 });</code></pre>
+<p>디렉티브에 <code>transclude: &#39;element&#39;</code>라고 지정함으로써 전체 요소를 옮겨 넣고 있다. 그리고 링크 함수를 반환하는 컴파일 함수를 정의해 트랜스클루전 함수를 사용하고 있고 if 속성의 표현식을 <code>$watch</code>하고 있다.</p>
+<p>표현식이 변경됐을 때 스코프와 자식 요소가 존재하면 먼저 깔끔하게 정리한다. 이는 메모리 누수를 만들지 않는다는 면에서 중요하다. 표현식이 true로 평가되면 새로운 자식 스코프를 만들어 트랜스클루전 함수를 통해 옮겨 넣은 요소의 복사본을 만든다. 그리고 디렉티브가 사용된 요소 다음에 만들어진 요소를 집어 넣는다.</p>
+<h5 id="-priority-">디렉티브에서 priority 프로퍼티 사용</h5>
+<p>AngularJS는 각 요소에 대해 높은 우선순위의 디렉티브부터 컴파일하기 때문에 디렉티브를 정의할 때 <code>priority</code> 프로퍼티를 사용하면 디렉티브 간의 우선순위를 정할 수 있다.</p>
+<blockquote>
+<p>예제 - <a href="http://embed.plnkr.co/GSDbG0NpzpfUhbzS42xL/preview">트랜스 클루전을 사용한 if 디렉티브</a></p>
+</blockquote>
+<h3 id="-">디렉티브 컨트롤러 이해</h3>
+<p>AngularJS에서 컨트롤러란 DOM 요소에 추가되는 객체로서 스코프를 초기화하고 요소에 행동을 추가하는 역할을 한다.</p>
+<blockquote>
+<p>컨트롤러는 DOM과 직접 통신하면 안 되고 오직 현재 스코프하고만 동작해야 한다.</p>
+</blockquote>
+<p>디렉티브 컨트롤러는 디렉티브에 의해 정의된 특별한 형태의 컨트롤러다. DOM 요소가 나타날 때마다 만들어지며, 디렉티브를 초기화하고 스코프보다는 디렉티브 자체에 행동을 추가하는 역할을 한다.</p>
+<p>디렉티브 컨트롤러를 정의하는 방법은 디렉티브 정의 객체에서 <code>controller</code> 프로퍼티를 사용하면 된다. <code>controller</code> 프로퍼티에는 미리 모듈에 정의해놓은 컨트롤러의 이름을 지정한다.</p>
+<pre><code>myModule.directive(<span class="string">'myDirective'</span>, <span class="keyword">function</span>(){
+    <span class="keyword">return</span> {
+        controller: <span class="string">'MyDirectiveController'</span>
+    };
+});
+myModule.controller(<span class="string">'MyDirectiveController'</span>, <span class="keyword">function</span>($scope){
+    <span class="keyword">...</span>
+});</code></pre>
+<p>혹은 컨트롤러를 만들어낼 때 사용하는 생성자 함수를 지정해도 된다.</p>
+<pre><code>myModule.directive(<span class="string">'myDirective'</span>, <span class="keyword">function</span>(){
+    <span class="keyword">return</span> {
+        controller: <span class="keyword">function</span>($scope, <span class="keyword">...</span>){<span class="keyword">...</span>}
+    };
+});</code></pre>
+<h4 id="-">디렉티브 컨트롤러에 특별한 의존 관계 주입</h4>
+<p>모든 컨트롤러에는 <code>$scope</code>가 주입되며 <code>$timeout</code>이나 <code>$rootScope</code> 처럼 원하는 서비스도 주입할 수 있다. 이외에도 다음과 같은 3가지의 특별한 서비스를 주입할 수 있다.</p>
+<ul>
+<li><code>$element</code> - 디렉티브의 DOM 요소에 대한 참조다. jQLite/제이쿼리를 래핑하고 있다.</li>
+<li><code>$attrs</code> - 디렉티브의 DOM 요소에 정의해놓은 속성들의 리스트다.</li>
+<li><code>$transclude</code> - 현재 스코프에 이미 연결된 트랜스클루전 함수다.</li>
+</ul>
+<h4 id="-">컨트롤러 기반의 페이지 번호 디렉티브 작성</h4>
+<p>디렉티브 컨트롤러의 기능과 링크 함수의 기능은 겹치는 부분이 많다. 그래서 링크 함수 대신 컨트롤러를 사용하는 경우도 많다. 다음은 페이지 번호 디렉티브를 링크 함수 대신 디렉티브 컨트롤러를 사용해 구현한 코드다.</p>
+<pre><code><span class="transposed_variable">MyModule.</span>directive(<span class="string">'pagination'</span>, <span class="keyword">function</span>() <span class="cell">{
+  return {
+    restrict: <span class="string">'E'</span>,
+    scope: { numPages: <span class="string">'='</span>, currentPage: <span class="string">'='</span>, onSelectPage: <span class="string">'&amp;'</span> }</span>,
+    templateUrl: <span class="string">'template/pagination.html'</span>,
+    replace: true,
+    controller: <span class="matrix">[<span class="string">'$scope'</span>, <span class="string">'$element'</span>, <span class="string">'$attrs'</span>, function($scope, $element, $attrs) {
+      scope.$watch(<span class="string">'numPages'</span>, function(value) {
+        scope.pages = []</span>;
+        <span class="keyword">for</span>(var <span class="built_in">i</span>=<span class="number">1</span>;<span class="built_in">i</span>&lt;=value;<span class="built_in">i</span>++) <span class="cell">{
+          scope.pages.push(i);
+        }</span>
+        <span class="keyword">if</span> ( <span class="transposed_variable">scope.</span>currentPage &gt; value ) <span class="cell">{
+          scope.selectPage(value);
+        }</span>
+      });
+      <span class="transposed_variable">scope.</span>noPrevious = <span class="keyword">function</span>() <span class="cell">{
+        return scope.currentPage === <span class="number">1</span>;
+      }</span>;
+      <span class="transposed_variable">scope.</span>noNext = <span class="keyword">function</span>() <span class="cell">{
+        return scope.currentPage === scope.numPages;
+      }</span>;
+      <span class="transposed_variable">scope.</span>isActive = <span class="keyword">function</span>(page) <span class="cell">{
+        return scope.currentPage === page;
+      }</span>;
+
+      <span class="transposed_variable">scope.</span>selectPage = <span class="keyword">function</span>(page) <span class="cell">{
+        if ( ! scope.isActive(page) ) {
+          scope.currentPage = page;
+          scope.onSelectPage({ page: page }</span>);
+        }
+      };
+
+      <span class="transposed_variable">scope.</span>selectPrevious = <span class="keyword">function</span>() <span class="cell">{
+        if ( !scope.noPrevious() ) {
+          scope.selectPage(scope.currentPage-<span class="number">1</span>);
+        }</span>
+      };
+      <span class="transposed_variable">scope.</span>selectNext = <span class="keyword">function</span>() <span class="cell">{
+        if ( !scope.noNext() ) {
+          scope.selectPage(scope.currentPage+<span class="number">1</span>);
+        }</span>
+      };
+    }]
+  };
+});</code></pre>
+<h4 id="-">디렉티브 컨트롤러와 링크 함수의 차이점</h4>
+<h5 id="-">의존성 주입</h5>
+<p>디렉티브 컨트롤러는 <code>$scope</code>, <code>$element</code>, <code>$attrs</code> 같은 특정 서비스를 주입하기 위해 의존성 주입 애노테이션을 사용해야 한다. 그리고 링크 함수에는 함수 정의 시 선언하는 매개변수 이름과는 상관없이 언제나 동일한 4개의 매개변수 <code>scope</code>, <code>element</code>, <code>attrs</code>, <code>controller</code>가 전달된다.</p>
+<h5 id="-">컴파일 과정</h5>
+<p>디렉티브 컨트롤러와 링크 함수는 컴파일 과정에서 호출되는 방식이 서로 다르다.</p>
+<p>요소 하나가 여러 개의 디렉티브를 갖고 있으면 이 요소는 다음과 같은 순서로 동작한다.</p>
+<ul>
+<li>필요한 경우 스코프를 생성한다.</li>
+<li>각 디렉티브의 디렉티브 컨트롤러를 생성한다.</li>
+<li>각 디렉티브의 pre-link 함수를 호출한다.</li>
+<li>모든 자식 요소를 연결한다.</li>
+<li>각 디렉티브의 post-link 함수를 호출한다.</li>
+</ul>
+<p>이 말은 디렉티브 컨트롤러가 만들어질 당시에는 디렉티브의 요소와 자식들은 아직 완벽히 연결되지 않았다는 의미다. 하지만 링크 함수가 호출되고 나면 요소의 모든 디렉티브 컨트롤러는 생성이 완료된 상태다. 그렇기 때문에 디렉티브 컨트롤러를 링크 함수로 넘길 수 있다.</p>
+<blockquote>
+<p>post-link 함수는 컴파일러가 컴파일을 마치고 현재 요소와 자식 요소들을 모두 연결한 다음에 호출된다. 즉, 이 단계에서 DOM을 변경하면 AngularJS 컴파일러는 알지 못한다. 그래서 이방법은 제이쿼리 플러그인 같은 외부 라이브러리를 사용할 때 유용하다.</p>
+</blockquote>
+<h5 id="-">다른 컨트롤러에 접근</h5>
+<p>링크 함수의 4번째 매개변수로는 디렉티브에서 필요하다고 정의한 다른 디렉티브의 컨트롤러가 전달된다.</p>
+<pre><code>myModule.directive(<span class="string">'validateEquals'</span>, <span class="keyword">function</span>(){
+    <span class="keyword">return</span> {
+        <span class="keyword">require</span>: <span class="string">'ngModel'</span>,
+        link: <span class="keyword">function</span>(scope, elm, attrs, ngModelCtrl){
+            <span class="keyword">...</span>
+        }
+    };
+});</code></pre>
+<p>코드를 보면 ngModel 디렉티브 컨트롤러가 필요하다고 정의하고 있으므로 링크 함수의 ngModelCtrl로 디렉티브 컨트롤러가 전달된다.</p>
+<h5 id="-">트랜스클루전 함수에 접근</h5>
+<p>디렉티브 컨트롤러에는 현재 스코프에 이미 바운드돼 있는 <code>$transclusion</code> 함수를 주입할 수 있다. 그리고 링크함수는 오직 컴파일 함수의 클로저를 통해서만 트랜스클루전 함수에 접근할 수 있으며, 이 함수는 스코르에 미리 바인딩돼 있지는 않다.</p>
+<h3 id="-">컴파일 단계의 제어권 가져오기</h3>
+<h4 id="field-">field 디렉티브 작성</h4>
+<h5 id="-terminal-">디렉티브에서 terminal 프로퍼티 사용</h5>
+<p>디렉티브에 <code>terminal:true</code>를 지정하면 컴파일러는 컴파일을 멈추고 해당 디렉티브보다 낮은 우선순위를 가진 디렉티브의 자식 요소나 디렉티브에 있는 어떤 다른 디렉티브도 처리하지 않는다.</p>
+<p>대부분의 템플릿에서 {{}} 괄호로 표현한 인터폴레이팅 문자열을 AngularJS가 표현식으로 처리해주지만, field 디렉티브에서는 문자열을 직접 코드로 변환해줘야 한다. 이를 위해 <code>$interpolate</code> 서비스를 사용해야 한다.</p>
+<h4 id="-interpolate-">$interpolate 서비스 사용</h4>
+<p>AngularJS에서 <code>$interpolate</code> 서비스는 {{}} 괄호를 포함한 문자열을 평가하는데 사용된다. <code>$interpolate</code> 서비스로 이런 문자열을 넘기면 스코프를 받아 변환된 문자열을 반환하는 인터폴레이션 함수를 반환해준다.</p>
+<pre><code><span class="keyword">var</span> getFullName = <span class="variable">$interpolate</span>(<span class="string">'{{first}}{{last}}'</span>);
+<span class="keyword">var</span> scope = {first:<span class="string">'Pete'</span>, last:<span class="string">'Bacon Darwin'</span>};
+<span class="keyword">var</span> fullName = getFullName(scope);</code></pre>
+<p>여기서는 &#39;{{first}} {{last}}&#39; 문자열에 대한 getFullName 인터폴레이션 함수를 만들고, scope와 함께 호출했으니 &#39;Pete Bacon Darwin&#39;이라는 결과가 fullName에 할당된다.    </p>
+<h5 id="-">유효성 검증 메시지 바인딩</h5>
+<p>필드 템플릿에 유효성 검증 메시지를 보여주려면 다음과 같이 작성해야 한다.</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"help-inline"</span> <span class="attribute">ng-repeat</span>=<span class="value">"error in </span><span class="variable">$fieldErrors</span><span class="xml">"&gt;
+    {{</span><span class="variable">$validationMessages</span><span class="xml">[error](this)}}
+<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span></code></pre>
+<p><code>$fieldErrors</code>의 모든 유효성 검증 error 키에 대해 해당 error 키로 검증 인터폴레이션 함수를 호출한 결과와 바인딩한다. <code>$fieldErrors</code> 프로퍼티는 현재 유효하지 않은 검증 error 키의 리스트다.</p>
+<blockquote>
+<p>인터폴레이션 함수에는 스코프를 넣어야만 한다. 이를 위해 템플릿에서는 현재 스코프에 대한 참조인 <code>this</code>를 넘긴다.</p>
+</blockquote>
+<h4 id="-">템플릿을 동적으로 로딩</h4>
+<p>loadTemplate 함수는 지정한 템플릿을 로드하고 해당 템플릿을 DOM 요소로 래핑한 jqLite/제이쿼리로 변환한다.</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">loadTemplate</span><span class="params">(template)</span> {</span>
+    <span class="keyword">return</span> $http.<span class="keyword">get</span>(template, {cache:$templateCache}).then(<span class="keyword">function</span>(response) {
+      <span class="keyword">return</span> angular.element(response.data);
+    }, <span class="keyword">function</span>(response) {
+      <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Template not found: '</span> + template);
+    });
+}</code></pre>
 <h2 id="-">웹애플리케이션 작성</h2>
 
 		  <!-- //end -->

@@ -632,11 +632,251 @@ AngularJS는 `$q` 서비스라는 아주 간결한 프라미스 API 구현체를
 		return "World";
 	},2000);
 
-> `$timeout` 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다.
+> `$timeout` 서비스는 콜백이 반환한 값으로 해결되는 프라미스를 반환한다. $scope에 직접 프라미스를 노출해서 해결된 값을 자동 렌더링하는 방식은 사용하지 말아야 한다.
+
+###$http와 프라미스 API
+
+`$http` 호출로 반환된 객체는 2개의 편리한 메소드(success와 error)가 있는 완전한 프라미스며 `then` 메소드를 사용해 콜백을 다시 등록할 수 있다.
+
+	var responsePromise = $http.get('data.json');
+	responsePromise.then(function(response){
+		$scope.data = response.data;
+	}, function(response){
+		throw new Error('Something went wrong...');
+	});
+
+###RESTful 엔드포인트와 통신
+
+AngularJS는 RESTful 엔드포인트와의 통신에 특화된 `$resource`라는 서비스를 제공한다.
+
+####$resource 서비스
+
+RESTful 엔드포인트는 보통 동일한 URL에 HTTP 메소드를 다르게 보내는 방식으로 CRUD 연산을 제공한다.
+
+>$resource 서비스는 별도의 파일(angular-resource.js)에 별도의 모듈(ngResource)로 제공되며 애플리케이션 모듈에 ngResource 모듈에 대한 의존 관계를 정의해야 한다.
+
+다음 코드는 `$resource` 서비스로 RESTful 엔드포인트와 통신하는 방법을 보여준다.
+
+	angular.module('resource', ['ngResource'])
+		.factory('Users', function($resource){
+			return $resource('https://api.mongolab.com/api/1/databases/ascrum/collections/users/:id', {
+				apiKey: '4fb51e55e4b02e56a67b0b66',
+				id: '@_id.$oid'
+			});
+		});
+
+다음은 영구 저장소에서 모든 사용자를 받아오는 질의문이다.
+
+	.controller('ResourceCtrl', function($scope, Users){
+		$scope.users = Users.query();
+	});
+
+`User.query()` 메소드를 호출하면 `$http` 요청을 준비하고 발송한다. 그리고 응답이 준비돼 JSON 문자열이 도착하면 각 요소가 Users 타입인 자바스크립트 배열로 변환된다.
+
+#####생성자 기반 메소드와 인스턴스 기반 메소드
+
+`$resource` 서비스는 2개의 편리한 메소드 묶음을 자동으로 생성한다. 하나는 생성자 기반으로 만들어지며 다른 하나는 인스턴스 기반 메소드로 만들어진다.
+
+######생성자 기반 메소드
+
+`$resource`가 생성한 생성자 함수에는 HTTP 동작에 따른 여러 개의 메소드가 있다.
+
+- **Users.query(params, successcb, errorcb)** HTTP GET 요청을 보내고 응답으로 JSON 배열을 기대한다. 여러 개의 요소를 가져오고 싶을 때 사용한다.
+- **Users.get(params, successcb, errorcb)** HTTP GET 요청을 보내고 응답으로 JSOn 객체를 기대한다. 요소 하나만을 가져오고 싶을 때 사용한다.
+- **Users.save(params, payloadData, successcb, errorcb)** 페이로드로 만들어진 요청 body와 함께 HTTP POST 요청을 보낸다.
+- **Users.delete(params, successcb, errorcb)** HTTP DELETE 요청을 보낸다.
+
+######인스턴스 기반 메소드
+
+`$resource` 서비스는 프로토타입(인스턴스) 기반의 메소드도 생성한다. 인스턴스 기반 메소드는 단 하나의 인스턴스에서만 동작한다.
+
+다음과 같이 호출하면 사용자를 지울 수 있다.
+
+	Users.delete({}, user);
+
+혹은 해당 사용자 인스턴스에서 메소드를 호출해도 된다.
+
+	user.$delete();
+
+다음은 새로운 사용자를 등록하는 예제이다.
+
+	var user = new User({
+		name: 'Superhero'
+	});
+
+	user.$save();
+
+이 코드를 클래스 기반 메소드를 사용해서 다시 작성하면 다음과 같다.
+
+	var user = {
+		name: 'Superhero'
+	};
+	
+	Users.save(user);
+
+>$resource 팩토리는 클래스 기반 메소드와 인스턴스 기반 메소드를 모두 생성한다. 그리고 인스턴스 기반 메소드는 $ 문자로 시작한다.	
+
+######사용자 정의 메소드
+
+`$resource` 팩토리는 HTTP PUT 요청에 대응하는 메소드를 기본으로 생성하지 않는다. 필요하다면 대응하는 메소드를 직접 추가해줘야 한다.
+
+예를 들어 MongoLab REST API는 새로운 요소를 생성할 때 HTTP POST 메소드를 사용하지만 기존 요소를 갱신할 때는 PUT 메소드를 사용해야 한다.
+
+		.factory('Users', function($resource){
+			return $resource('https://api.mongolab.com/api/1/databases/ascrum/collections/users/:id', {
+				apiKey: '4fb51e55e4b02e56a67b0b66',
+				id: '@_id.$oid'
+			},{
+				update: {method: 'PUT'}	
+			});
+		});
+
+예제처럼 `$resource` 팩토리 함수에 3번째 매개변수를 넣으면 쉽게 새로운 메소드를 정의할 수 있다. 매개변수는 다음과 같은 형태의 객체여야 한다.
+
+	action: {method:?, params:?, isArray:?, headers:?}
+
+`$resource` 서비스는 백엔드로부터 받은 데이터로 자바스크립트 배열이나 객체만 처리할 수 있다. 값은 지원하지 않는다.
+
+######리소스 객체에 기능 추가
+
+`$resource` 팩토리는 생성자 함수를 만든다. 이 생성자 함수는 다른 모든 자바스크립트에 대해 `new` 키워드를 사용해서 새로운 리소스 인스턴스를 만드는 생성자로 사용할 수 있다.
+뿐만 아니라 이 생성자의 프로토타입을 확장해서 리소스 객체에 새로운 기능을 추가할 수도 있다.
+
+다음 코드는 성과 이름을 합쳐 전체 이름을 출력하는 새로운 메소드를 추가한 예제이다.
+
+		.factory('Users', function($resource){
+			var Users = $resource('https://api.mongolab.com/api/1/databases/ascrum/collections/users/:id', {
+				apiKey: '4fb51e55e4b02e56a67b0b66',
+				id: '@_id.$oid'
+			},{
+				update: {method: 'PUT'}	
+			});
+
+			Users.prototype.getFullName = function(){
+				return this.firstName + ' ' + this.lastName;
+			};
 
 
+			return Users;
+		});
 
+####$http로 만든 사용자 정의 REST 어댑터
 
+`$resource` 팩토리를 사용하기 어려운 상황이라면 `$http` 서비스 기반으로 사용자 정의 팩토리를 만드는 것이 더 쉬운 방법이다.
+
+다음 코드는 MongoLab RESTful API를 사용하는 간단한 사용자 정의 리소스 팩토리다.
+
+	angular.module('mongolabResource', [])
+
+	  .factory('mongolabResource', function ($http, MONGOLAB_CONFIG) {
+
+		return function (collectionName) {
+
+		  //basic configuration
+		  var collectionUrl =
+			'https://api.mongolab.com/api/1/databases/' +
+			  MONGOLAB_CONFIG.DB_NAME +
+			  '/collections/' + collectionName;
+
+		  var defaultParams = {apiKey:MONGOLAB_CONFIG.API_KEY};
+
+		  //utility methods
+		  var getId = function (data) {
+			return data._id.$oid;
+		  };
+
+		  //a constructor for new resources
+		  var Resource = function (data) {
+			angular.extend(this, data);
+		  };
+
+		  Resource.query = function (params) {
+			return $http.get(collectionUrl, {
+			  params:angular.extend({q:JSON.stringify({} || params)}, defaultParams)
+			}).then(function (response) {
+				var result = [];
+				angular.forEach(response.data, function (value, key) {
+				  result[key] = new Resource(value);
+				});
+				return result;
+			  });
+		  };
+
+		  Resource.save = function (data) {
+			return $http.post(collectionUrl, data, {params:defaultParams})
+			  .then(function (response) {
+				return new Resource(data);
+			  });
+		  };
+
+		  Resource.prototype.$save = function (data) {
+			return Resource.save(this);
+		  };
+
+		  Resource.remove = function (data) {
+			return $http['delete'](collectionUrl + '', defaultParams)
+			  .then(function (response) {
+				return new Resource(data);
+			  });
+		  };
+
+		  Resource.prototype.$remove = function (data) {
+			return Resource.remove(this);
+		  };
+
+		  //other CRUD methods go here
+
+		  //convenience methods
+		  Resource.prototype.$id = function () {
+			return getId(this);
+		  };
+
+		  return Resource;
+		};
+	  });
+
+다음은 새로 만든 리소스 팩토리를 어떻게 사용하는지 보여준다.
+
+	angular.module('customResourceDemo', ['mongolabResource'])
+	  .constant('MONGOLAB_CONFIG', {
+		DB_NAME: 'ascrum',
+		API_KEY: '4fb51e55e4b02e56a67b0b66'
+	  })
+
+	  .factory('Users', function (mongolabResource) {
+		return mongolabResource('users');
+	  })
+
+	  .factory('Projects', function (mongolabResource) {
+		return mongolabResource('projects');
+	  })
+
+	  .controller('CustomResourceCtrl', function ($scope, Users, Projects) {
+
+		Users.query().then(function(users){
+		  $scope.users = users;
+		});
+
+		Projects.query().then(function(projects){
+		  $scope.projects = projects;
+		});
+
+		$scope.addSuperhero = function () {
+		  new Users({name: 'Superhero'}).$save();
+		};
+	  });
+
+`$http` 기반의 사용자 정의 리소스 팩토리를 사용하는 가장 큰 장점은 프라미스 API를 마음대로 조작할 수 있다는 점이다.
+
+###$http 추가 기능 사용
+
+####응답 가로채기
+
+AngularJS에 내장된 `$http` 서비스를 사용하면 모든 요청에 적용할 수 있는 인터셉터를 등록할 수 있다.
+
+실패한 요청을 재시도하고 싶다면 응답의 상태 코드를 살펴보고 HTTP Servie Unavailable(503)인 경우 다시 요청을 보내는 인터셉터를 정의하면 된다.
+
+새로운 인터셉터를 등록하는 것은 쉽다. 새로운 인터셉터에 대한 참조를 `$httpProvider`가 관리하는 인터셉터 배열에 추가하기만 하면 된다.
 
 ##데이터 포맷과 출력
 
@@ -1326,6 +1566,280 @@ HTML을 생성하기 위해 서버 측 템플릿 엔진을 사용하는 경우 �
 
 	.ng-valid.ng-dirty {border:3px solid green;}
 	.ng-invalid.ng-dirty {border:3px solid red;}
+
+여기서는 사용자가 값을 변경한 input 필드만 골라내기 위해 조금 전에 살펴본 값 변경 여부와 유효 여부를 동시에 사용했다. 값이 유효하지 않은 경우 빨간색 선이 표시되고 유효한 경우 녹색 선이 표시된다.
+
+###AngularJS 폼 검증
+
+####ngFormController
+
+각 폼 디렉티브는 `ngFormController`의 인스턴스를 생성하는데, 이 객체는 폼이 유효한지 아닌지와 값 변경 여부를 관리한다. 중요한 점은 `ngFormController`가 폼의 각 `ngModel` 필드를 추적하기 위해 `ngModelController`와 함께 동작한다는 사실이다.
+
+`ngModelController`가 생성되면 부모 요소에서부터 위로 탐색해 첫 번째 발견하는 `ngFormController`에 자신을 등록한다. 이 방법으로 `ngFormController`는 어떤 input 디렉티브를 추적해야 하는지 판단한다.ㅐ
+
+####사용자 정보 폼에 동적인 동작 추가
+
+스코프의 `ngFormController`와 `ngModelController` 객체를 사용하면 프로그램상에서 폼의 상태를 변경할 수 있다.
+
+#####유효 검사 오류 보여주기
+
+다음은 폼의 입력값이 유효하지 않은 경우 에러 메시지를 보여주는 예제이며 이를 위한 템플릿이다.
+
+	  <form name="userInfoForm">
+		  <div class="control-group" ng-class="getCssClasses(userInfoForm.email)">
+			<label>E-mail</label>
+			<input type="email" ng-model="user.email" name="email" required>
+			<span ng-show="showError(userInfoForm.email, 'email')" class="help-inline">You must enter a valid email</span>
+			<span ng-show="showError(userInfoForm.email, 'required')" class="help-inline">This field is required</span>
+		  </div>
+		  ...
+	  </form>
+
+그리고 다음은 컨트롤러다.	  
+
+	app.controller('MainCtrl', function($scope) {
+		$scope.getCssClasses = function(ngModelContoller) {
+			return {
+			  error: ngModelContoller.$invalid && ngModelContoller.$dirty,
+			  success: ngModelContoller.$valid && ngModelContoller.$dirty
+			};
+		};
+	  
+		$scope.showError = function(ngModelController, error) {
+			return ngModelController.$error[error];
+		};
+	});
+
+> 예제  - [유효검사 오류 보여주기](http://bit.ly/XwLUFZ)
+
+`getCssClasses()` 메소드는 포함돼야 하는 CSS 클래스를 정의해놓은 객체를 반환한다. 객체의 키는 CSS 클래스의 이름이고, 값이 `true`이면 CSS 클래스가 추가된다. 예제의 `getCssClasses()` 메소드는 모델이 변경됐고, 유효하지 않은 경우 `error`를 반환하고 모델이 변경되긴 했지만 유효한 경우에는 `success`를 반환한다.
+
+#####저장 버튼 비활성화
+
+폼을 저장할 수 있는 상태가 아닐 때는 저장 버튼을 비활성화할 수 있다.
+
+	<form name="userInfoForm">
+		...
+		<button ng-disabled="!canSave()">Save</button>
+	</form>
+
+뷰에 `ngDisabled` 디렉티브를 사용하여 표현식이 참인 경우 버튼을 비활성화한다. 예제에서는 `canSave()` 메소드를 호출한 결과에 따라 동작한다. 
+
+	  $scope.canSave = function() {
+		return $scope.userInfoForm.$dirty && $scope.userInfoForm.$valid;
+	  };
+
+> 예제  - [저장버튼 비활성화](http://bit.ly/123zlhw)
+
+####브라우저 자체 검증 기능 비활성화
+
+브라우저에서 제공하는 자체 검증 기능을 사용하지 않으려면 HTML5 `novalidate` 속성을 폼 요소에 적용하면 된다.
+
+	<form name="novalidateForm" novalidate>
+
+###다른 폼과 중첩된 폼
+
+AngularJS 폼은 다른 폼안에 중첩된 폼을 만들 수 있다. 중첩 폼을 구현하기 위한 `ngForm` 디렉티브를 따로 제공한다.
+
+> 중첩된 폼은 선언한 이름으로 부모 폼에 추가된다. 부모 폼이 없다면 스코프에 직접 추가된다.
+
+####재사용 가능한 컴포넌트로서의 서브 폼 사용
+
+중첩된 폼은 필드에 대한 자체 검증 기능을 갖고 있어 다른 폼에도 재사용할 수 있는 서브 폼으로도 활용할 수 있다. 다음 코드는
+비밀번호를 입력하는 2개의 입력 창에 대한 예제이다.
+
+	<script type="text/ng-template" id="password-form">
+	  <ng-form name="passwordForm">
+		<div ng-show="user.password != user.password2">Passwords do not match</div>
+		<label>Password</label><input ng-model="user.password" type="password" required>
+		<label>Confirm Password</label><input ng-model="user.password2" type="password" required>
+	  </ng-form>
+	</script>
+
+	<form name="form1" novalidate>
+	  <legend>User Form</legend>
+	  <label>Name</label><input ng-model="user.name" required>
+	  <ng-include src="'password-form'"></ng-include>
+	</form>
+
+> 예제  - [재사용 가능한 서브 폼](http://bit.ly/10QWwyu)
+
+여기서는 서브 폼을 스크립트 블록을 이용해서 템플릿 조각으로 정의했지만 다른 파일로 분리해도 된다. *서브 폼을 사용하는 `form1`에서는
+`ngInclude` 디렉티브를 사용해 서브 폼을 집어 넣는다.*
+
+서브 폼은 자신만의 입력 값에 대한 유효 여부와 이에 따른 CSS 클래스를 갖고 있다.
+
+###서브 폼 반복 사용
+
+때로는 데이터에 따라 여러 번 반복해야 하는 필드가 있을 수 있다. `ngRepeat` 디렉티브를 사용해 다음과 같이 구현할 수 있다.
+
+	<form ng-controller="MainCtrl">
+	  <h1>User Info</h1>
+	  <label>Websites</label>
+	  <div ng-repeat="website in user.websites">
+		<input type="url" ng-model="website.url"><button class="btn" ng-click="remove($index)">X</button>
+	  </div>
+	  <button class="btn btn-small" ng-click="add()">Add Website</button>
+	</form>
+
+	app.controller('MainCtrl', function($scope) {
+	  $scope.user = {
+		websites: [
+		  {url: 'http://www.bloggs.com'},
+		  {url: 'http://www.jo-b.com'}
+		]
+	  };
+	  
+	  $scope.remove = function(index) {
+		$scope.user.websites.splice(index, 1);
+	  };
+	  
+	  $scope.add = function() {
+		$scope.user.websites.push({ url: ''});
+	  };
+	  
+	});
+
+> 예제  - [반복 사용하는 필드](http://bit.ly/XHLEWQ)
+
+템플릿에서는 `ngRepeat` 디렉티브를 사용해 사용자 프로필의 웹사이트 정보를 출력했다. 각 input 디렉티브는 `user.websites`의 `website.url` 모델에
+바인딩돼 있다. 이어지는 2개의 함수는 배열에 항목을 추가하거나 제거하고 AngularJS 데이터 바인딩이 나머지 부분을 처리해준다.
+
+####반복되는 input 검증
+
+반복적인 폼을 사용하면서 각 필드에 대한 검증이 필요한 경우 폼의 input마다 각각 다른 이름을 사용해야 하지만 AngularJS에서는 input 디렉티브에 `name` 속성을 동적으로 생성할 수 없다는 문제가 있다. 
+
+이 문제는 중첩 폼을 사용하면 해결할 수 있다. 각 폼이 현재 스코프에 추가되므로 input 디렉티브를 포함하고 있는 폼을 중첩하면 필드 검증을 위해 각각의 스코프에 접근할 수 있다.
+
+다음은 템플릿 코드이다.
+
+	<form novalidate ng-controller="MainCtrl" name="userForm">
+	  <label>Websites</label>
+	  <div ng-show="userForm.$invalid">The User Form is invalid.</div>
+	  <div class="control-group" ng-repeat="website in user.websites" ng-form="websiteForm">
+		<span class="input-append">
+		  <input type="url" name="website" ng-model="website.url" required>
+		  <button class="btn" ng-click="remove($index)">X</button>
+		</span>
+		<span ng-show="showError(websiteForm.website, 'url')" class="help-inline">You must enter a valid url (including http://)</span>
+		<span ng-show="showError(websiteForm.website, 'required')" class="help-inline">This field is required</span>
+	  </div>
+	  <button class="btn btn-small" ng-click="add()">Add Website</button>
+	</form>
+
+다음은 컨트롤러 코드이다.
+
+	app.controller('MainCtrl', function($scope) {
+	  $scope.showError = function(ngModelController, error) {
+		return ngModelController.$error[error];
+	  };
+
+	  $scope.user = {
+		websites: [{url: 'http://www.bloggs.com'}, {url: 'http://www.jo-b.com'}]
+	  };
+	  
+	  $scope.remove = function(index) {
+		$scope.user.websites.splice(index, 1);
+	  };
+	  
+	  $scope.add = function() {
+		$scope.user.websites.push({ url: ''});
+	  };
+	  
+	});
+
+> 예제  - [반복되는 input 검증](http://bit.ly/14i1sTp)
+
+여기서는 div에 `ngForm` 디렉티브를 사용해 스코프의 websites 배열에 따라 반복되는 중첩 폼을 만들었다. 이 말은 `ngRepeat` 스코프 안에서 각 웹사이트에 대해 `ngModel`의 검증 기능을 사용할 수 있다는 의미다.
+
+오류 메시지를 보여주기 위한 `showError` 함수는 매개변수로 넘긴 `ngModelController`의 `$error` 필드에 해당 항목이 있는지 검사한다. 이 함수에 websiteForm.website를 넘긴 이유는 이것이 해당 웹사이트 입력 창의
+`ngModelController` 객체에 대한 참조이기 때문이다.
+
+`ngForm` 밖에서는 websiteForm 객체나 websiteForm.website 객체를 참조할 수 없다. 스코프에 있지 않기 때문이다. 하지만 userForm 객체는 참조할 수 있다.
+
+###기존 HTML 폼 제출
+
+####서버로 바로 폼 제출
+
+AngularJS 애플리케이션의 폼에 `action` 속성을 추가하면 기존 방식처럼 정의한 URL로 폼을 제출할 수 있다.
+
+	<form method="get" action="http://www.google.com/search">
+		<input name="q"> Press enter in the input to submit
+	</form>
+
+####제출 이벤트 다루기
+
+`action` 속성을 사용하지 않으면 AngularJS는 클라이언트 측에서 스코프의 함수를 통해 폼 제출을 다룬다고 생각한다. 그래서 AngularJS는 서버로 바로 폼을 제출하는 동작을 막는다.
+
+클라이언트 측 함수는 button의 `ngClick` 디렉티브나 form의 `ngSubmit` 디렉티브를 사용해 호출할 수 있다.
+
+> `ngSubmit`과 `ngClick` 디렉티브를 같은 form에서 사용하지 않는다. 제출이 2번 이뤄지기 때문이다.
+
+#####ngSubmit으로 폼 제출
+
+폼에서 `ngSubmit`을 사용하려면 폼 제출 시 평가될 표현식을 작성한다. 폼 제출은 사용자가 입력 창에서 엔터를 누르거나 버튼 중 하나를 클릭하면 된다.
+
+	<form ng-submit="showAlert(q)">
+		<input ng-model="q">
+	</form>
+
+> 예제  - [ngSubmit으로 폼 제출](http://bit.ly/ZQBLYj)
+
+#####ngClick으로 폼 제출
+
+button이나 input[type=submit]에 `ngClick`을 사용하려면 버튼을 클릭했을 때 평가되는 표현식을 작성해야 한다.
+
+	<form>
+		<input ng-model="q">
+		<button ng-click="showAlert(q)">Search</button>
+  	</form>
+
+> 예제  - [ngClick으로 폼 제출](http://bit.ly/153OvLS)
+
+###사용자 정보 폼 초기화
+
+사용자 정보 폼에 사용자가 입력한 값을 지우고 디폴트 값으로 돌아가고 싶을 때가 있다. 이를 위해서 기존 모델을 복사해두고 필요할 때마다 사용자가 입력한 변경 사항을 덮어써버리면 된다.
+
+다음은 템플릿 코드다.
+
+	<form name="userInfoForm">
+		...
+		<button ng-click="revert()" ng-disabled="!canRevert()">Revert Changes</button>
+	</form>
+
+그리고 컨트롤러 코드다.
+
+	app.controller('MainCtrl', function($scope) {
+		...
+		$scope.user = {
+			...
+		};
+
+		$scope.passwordRepeat = $scope.user.password;
+
+		// Make a copy of the user
+		var original = angular.copy($scope.user);
+		  
+		// Revert the user info back to the original
+		$scope.revert = function() {
+			$scope.user = angular.copy(original);
+			$scope.passwordRepeat = $scope.user.password;
+			$scope.userInfoForm.$setPristine();
+		};
+		  
+		$scope.canRevert = function() {
+			return !angular.equals($scope.user, original);
+		};
+
+		$scope.canSave = function() {
+			return $scope.userInfoForm.$valid && !angular.equals($scope.user, original);
+		};
+	});
+
+> 예제  - [사용자 정보 폼 초기화](http://bit.ly/17vHLWX)
+
+컨트롤러에서 *`angular.copy()`를 사용해 모델을 지역 변수로 복사했다.* 그리고 `revert() 메소드는 복사한 내용을 user 모델로 다시 복사한 후 폼을 변경하지 않았다고 설정해서 CSS 클래스가 `ng-dirty`로 설정되지 않게 만든다.
+
 
 
 
@@ -2279,8 +2793,195 @@ AngularJS는 컴파일러를 `$compile` 서비스로 제공한다. `$compile` �
 		};
 	});
 
+디렉티브에 `transclude: 'element'`라고 지정함으로써 전체 요소를 옮겨 넣고 있다. 그리고 링크 함수를 반환하는 컴파일 함수를 정의해 트랜스클루전 함수를 사용하고 있고 if 속성의 표현식을 `$watch`하고 있다.
+
+표현식이 변경됐을 때 스코프와 자식 요소가 존재하면 먼저 깔끔하게 정리한다. 이는 메모리 누수를 만들지 않는다는 면에서 중요하다. 표현식이 true로 평가되면 새로운 자식 스코프를 만들어 트랜스클루전 함수를 통해 옮겨 넣은 요소의 복사본을 만든다. 그리고 디렉티브가 사용된 요소 다음에 만들어진 요소를 집어 넣는다.
+
+#####디렉티브에서 priority 프로퍼티 사용
+
+AngularJS는 각 요소에 대해 높은 우선순위의 디렉티브부터 컴파일하기 때문에 디렉티브를 정의할 때 `priority` 프로퍼티를 사용하면 디렉티브 간의 우선순위를 정할 수 있다.
+
+> 예제 - [트랜스 클루전을 사용한 if 디렉티브](http://embed.plnkr.co/GSDbG0NpzpfUhbzS42xL/preview)
+
+###디렉티브 컨트롤러 이해
+
+AngularJS에서 컨트롤러란 DOM 요소에 추가되는 객체로서 스코프를 초기화하고 요소에 행동을 추가하는 역할을 한다.
+
+>컨트롤러는 DOM과 직접 통신하면 안 되고 오직 현재 스코프하고만 동작해야 한다.
+
+디렉티브 컨트롤러는 디렉티브에 의해 정의된 특별한 형태의 컨트롤러다. DOM 요소가 나타날 때마다 만들어지며, 디렉티브를 초기화하고 스코프보다는 디렉티브 자체에 행동을 추가하는 역할을 한다.
+
+디렉티브 컨트롤러를 정의하는 방법은 디렉티브 정의 객체에서 `controller` 프로퍼티를 사용하면 된다. `controller` 프로퍼티에는 미리 모듈에 정의해놓은 컨트롤러의 이름을 지정한다.
+
+	myModule.directive('myDirective', function(){
+		return {
+			controller: 'MyDirectiveController'
+		};
+	});
+	myModule.controller('MyDirectiveController', function($scope){
+		...
+	});
+
+혹은 컨트롤러를 만들어낼 때 사용하는 생성자 함수를 지정해도 된다.
+
+	myModule.directive('myDirective', function(){
+		return {
+			controller: function($scope, ...){...}
+		};
+	});
+
+####디렉티브 컨트롤러에 특별한 의존 관계 주입
+
+모든 컨트롤러에는 `$scope`가 주입되며 `$timeout`이나 `$rootScope` 처럼 원하는 서비스도 주입할 수 있다. 이외에도 다음과 같은 3가지의 특별한 서비스를 주입할 수 있다.
+
+- `$element` - 디렉티브의 DOM 요소에 대한 참조다. jQLite/제이쿼리를 래핑하고 있다.
+- `$attrs` - 디렉티브의 DOM 요소에 정의해놓은 속성들의 리스트다.
+- `$transclude` - 현재 스코프에 이미 연결된 트랜스클루전 함수다.
+
+####컨트롤러 기반의 페이지 번호 디렉티브 작성
+
+디렉티브 컨트롤러의 기능과 링크 함수의 기능은 겹치는 부분이 많다. 그래서 링크 함수 대신 컨트롤러를 사용하는 경우도 많다. 다음은 페이지 번호 디렉티브를 링크 함수 대신 디렉티브 컨트롤러를 사용해 구현한 코드다.
+
+	MyModule.directive('pagination', function() {
+	  return {
+		restrict: 'E',
+		scope: { numPages: '=', currentPage: '=', onSelectPage: '&' },
+		templateUrl: 'template/pagination.html',
+		replace: true,
+		controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+		  scope.$watch('numPages', function(value) {
+			scope.pages = [];
+			for(var i=1;i<=value;i++) {
+			  scope.pages.push(i);
+			}
+			if ( scope.currentPage > value ) {
+			  scope.selectPage(value);
+			}
+		  });
+		  scope.noPrevious = function() {
+			return scope.currentPage === 1;
+		  };
+		  scope.noNext = function() {
+			return scope.currentPage === scope.numPages;
+		  };
+		  scope.isActive = function(page) {
+			return scope.currentPage === page;
+		  };
+
+		  scope.selectPage = function(page) {
+			if ( ! scope.isActive(page) ) {
+			  scope.currentPage = page;
+			  scope.onSelectPage({ page: page });
+			}
+		  };
+
+		  scope.selectPrevious = function() {
+			if ( !scope.noPrevious() ) {
+			  scope.selectPage(scope.currentPage-1);
+			}
+		  };
+		  scope.selectNext = function() {
+			if ( !scope.noNext() ) {
+			  scope.selectPage(scope.currentPage+1);
+			}
+		  };
+		}]
+	  };
+	});
+
+####디렉티브 컨트롤러와 링크 함수의 차이점
+
+#####의존성 주입
+
+디렉티브 컨트롤러는 `$scope`, `$element`, `$attrs` 같은 특정 서비스를 주입하기 위해 의존성 주입 애노테이션을 사용해야 한다. 그리고 링크 함수에는 함수 정의 시 선언하는 매개변수 이름과는 상관없이 언제나 동일한 4개의 매개변수 `scope`, `element`, `attrs`, `controller`가 전달된다.
+
+#####컴파일 과정
+
+디렉티브 컨트롤러와 링크 함수는 컴파일 과정에서 호출되는 방식이 서로 다르다.
+
+요소 하나가 여러 개의 디렉티브를 갖고 있으면 이 요소는 다음과 같은 순서로 동작한다.
+
+- 필요한 경우 스코프를 생성한다.
+- 각 디렉티브의 디렉티브 컨트롤러를 생성한다.
+- 각 디렉티브의 pre-link 함수를 호출한다.
+- 모든 자식 요소를 연결한다.
+- 각 디렉티브의 post-link 함수를 호출한다.
+
+이 말은 디렉티브 컨트롤러가 만들어질 당시에는 디렉티브의 요소와 자식들은 아직 완벽히 연결되지 않았다는 의미다. 하지만 링크 함수가 호출되고 나면 요소의 모든 디렉티브 컨트롤러는 생성이 완료된 상태다. 그렇기 때문에 디렉티브 컨트롤러를 링크 함수로 넘길 수 있다.
+
+>post-link 함수는 컴파일러가 컴파일을 마치고 현재 요소와 자식 요소들을 모두 연결한 다음에 호출된다. 즉, 이 단계에서 DOM을 변경하면 AngularJS 컴파일러는 알지 못한다. 그래서 이방법은 제이쿼리 플러그인 같은 외부 라이브러리를 사용할 때 유용하다.
+
+#####다른 컨트롤러에 접근
+
+링크 함수의 4번째 매개변수로는 디렉티브에서 필요하다고 정의한 다른 디렉티브의 컨트롤러가 전달된다.
+
+	myModule.directive('validateEquals', function(){
+		return {
+			require: 'ngModel',
+			link: function(scope, elm, attrs, ngModelCtrl){
+				...
+			}
+		};
+	});
+
+코드를 보면 ngModel 디렉티브 컨트롤러가 필요하다고 정의하고 있으므로 링크 함수의 ngModelCtrl로 디렉티브 컨트롤러가 전달된다.
+
+#####트랜스클루전 함수에 접근
+
+디렉티브 컨트롤러에는 현재 스코프에 이미 바운드돼 있는 `$transclusion` 함수를 주입할 수 있다. 그리고 링크함수는 오직 컴파일 함수의 클로저를 통해서만 트랜스클루전 함수에 접근할 수 있으며, 이 함수는 스코르에 미리 바인딩돼 있지는 않다.
+
+###컴파일 단계의 제어권 가져오기
+
+####field 디렉티브 작성
+
+#####디렉티브에서 terminal 프로퍼티 사용
+
+디렉티브에 `terminal:true`를 지정하면 컴파일러는 컴파일을 멈추고 해당 디렉티브보다 낮은 우선순위를 가진 디렉티브의 자식 요소나 디렉티브에 있는 어떤 다른 디렉티브도 처리하지 않는다.
+
+대부분의 템플릿에서 {{}} 괄호로 표현한 인터폴레이팅 문자열을 AngularJS가 표현식으로 처리해주지만, field 디렉티브에서는 문자열을 직접 코드로 변환해줘야 한다. 이를 위해 `$interpolate` 서비스를 사용해야 한다.
+
+####$interpolate 서비스 사용
+
+AngularJS에서 `$interpolate` 서비스는 {{}} 괄호를 포함한 문자열을 평가하는데 사용된다. `$interpolate` 서비스로 이런 문자열을 넘기면 스코프를 받아 변환된 문자열을 반환하는 인터폴레이션 함수를 반환해준다.
+
+	var getFullName = $interpolate('{{first}}{{last}}');
+	var scope = {first:'Pete', last:'Bacon Darwin'};
+	var fullName = getFullName(scope);
+
+여기서는 '{{first}} {{last}}' 문자열에 대한 getFullName 인터폴레이션 함수를 만들고, scope와 함께 호출했으니 'Pete Bacon Darwin'이라는 결과가 fullName에 할당된다.	
+
+#####유효성 검증 메시지 바인딩
+
+필드 템플릿에 유효성 검증 메시지를 보여주려면 다음과 같이 작성해야 한다.
+
+	<span class="help-inline" ng-repeat="error in $fieldErrors">
+		{{$validationMessages[error](this)}}
+	</span>
+
+`$fieldErrors`의 모든 유효성 검증 error 키에 대해 해당 error 키로 검증 인터폴레이션 함수를 호출한 결과와 바인딩한다. `$fieldErrors` 프로퍼티는 현재 유효하지 않은 검증 error 키의 리스트다.
+
+>인터폴레이션 함수에는 스코프를 넣어야만 한다. 이를 위해 템플릿에서는 현재 스코프에 대한 참조인 `this`를 넘긴다.
+
+####템플릿을 동적으로 로딩
+
+loadTemplate 함수는 지정한 템플릿을 로드하고 해당 템플릿을 DOM 요소로 래핑한 jqLite/제이쿼리로 변환한다.
+
+	function loadTemplate(template) {
+		return $http.get(template, {cache:$templateCache}).then(function(response) {
+		  return angular.element(response.data);
+		}, function(response) {
+		  throw new Error('Template not found: ' + template);
+		});
+	}
+
 
 
 
 
 ##웹애플리케이션 작성
+
+
+
+
+
+
