@@ -912,6 +912,20 @@
 		"explain" :""
 	},
 	{
+		"singer" : "박상민",
+		"title" : "하나의 사랑",
+		"album" : {
+			"name" : "5집 Road",
+			"cover" : "http://image.music.naver.net/album/204/000/000/25.jpg",
+			"Lyrics" : "조은희",
+			"Composed" : "김지환",
+			"Release" : "1998.04",
+			"Label" : ""
+		},
+ 		"videoid" : "F9i5Q0LfJ_M",
+		"explain" :""
+	},
+	{
 		"singer" : "이은미",
 		"title" : "기억속으로",
 		"album" : {
@@ -1024,6 +1038,20 @@
 		"explain" :""
 	},
 	{
+		"singer" : "성시경",
+		"title" : "처음처럼",
+		"album" : {
+			"name" : "1집 처음처럼",
+			"cover" : "http://image.music.naver.net/album/204/000/000/764.jpg",
+			"Lyrics" : "양재선",
+			"Composed" : "김형석",
+			"Release" : "2001.04",
+			"Label" : "CJ E&M"
+		},
+ 		"videoid" : "Syzi0G0bB6A",
+		"explain" :""
+	},
+	{
 		"singer" : "장혜진",
 		"title" : "아름다운 날들",
 		"album" : {
@@ -1066,6 +1094,118 @@
 		"explain" :""
 	},
 	{
+		"singer" : "성시경",
+		"title" : "내게 오는 길",
+		"album" : {
+			"name" : "1집 처음처럼",
+			"cover" : "http://image.music.naver.net/album/204/000/000/764.jpg",
+			"Lyrics" : "양재선",
+			"Composed" : "김형석",
+			"Release" : "2001.04",
+			"Label" : "CJ E&M"
+		},
+ 		"videoid" : "5hINYNZslP0",
+		"explain" :""
+	},
+	{
+		"singer" : "김범수",
+		"title" : "보고싶다",
+		"album" : {
+			"name" : "3집 보고 싶다",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1041.jpg",
+			"Lyrics" : "윤사라",
+			"Composed" : "윤일상",
+			"Release" : "2002.12",
+			"Label" : "Universal"
+		},
+ 		"videoid" : "Z1rP3RztCP4",
+		"explain" :""
+	},
+	{
+		"singer" : "이승환",
+		"title" : "가족",
+		"album" : {
+			"name" : "5집 Cycle",
+			"cover" : "http://image.music.naver.net/album/204/000/000/388.jpg",
+			"Lyrics" : "",
+			"Composed" : "",
+			"Release" : "1997",
+			"Label" : "로엔 엔터테인먼트"
+		},
+		"videoid" : "QLky8xLV830",
+		"explain" :""
+	},
+	{
+		"singer" : "조규찬",
+		"title" : "무지개",
+		"album" : {
+			"name" : "Jo Kyu Chan Best-무지개",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1025.jpg",
+			"Lyrics" : "조규찬",
+			"Composed" : "조규찬",
+			"Release" : "2002.11",
+			"Label" : ""
+		},
+		"videoid" : "lIiYJvnREqo",
+		"explain" :""
+	},
+	{
+		"singer" : "푸른하늘",
+		"title" : "눈물 나는 날에는",
+		"album" : {
+			"name" : "2집 푸른하늘",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2129.jpg",
+			"Lyrics" : "유영석",
+			"Composed" : "유영석",
+			"Release" : "1989.07",
+			"Label" : "다날 엔터테인먼트"
+		},
+		"videoid" : "m9Wc39NWqf8",
+		"explain" :""
+	},
+	{
+		"singer" : "이승환",
+		"title" : "너를 향한 마음",
+		"album" : {
+			"name" : "2집 Always",
+			"cover" : "http://image.music.naver.net/album/204/000/000/394.jpg",
+			"Lyrics" : "어수은",
+			"Composed" : "어수은",
+			"Release" : "1991.07",
+			"Label" : "로엔 엔터테인먼트"
+		},
+ 		"videoid" : "DnwjVxfO-70",
+		"explain" :""
+	},
+	{
+		"singer" : "조성모",
+		"title" : "가시나무",
+		"album" : {
+			"name" : "2.5집 Classic",
+			"cover" : "http://image.music.naver.net/album/204/000/000/422.jpg",
+			"Lyrics" : "하덕규",
+			"Composed" : "하덕규",
+			"Release" : "2000.01",
+			"Label" : "CJ E&M"
+		},
+ 		"videoid" : "POu_1kHWNC8",
+		"explain" :""
+	},
+	{
+		"singer" : "자전거 탄 풍경",
+		"title" : "너에게 난 나에게 넌",
+		"album" : {
+			"name" : "1집 자전거 탄 풍경",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2631.jpg",
+			"Lyrics" : "풍경",
+			"Composed" : "풍경",
+			"Release" : "2001.04",
+			"Label" : "네오위즈인터넷"
+		},
+ 		"videoid" : "5ysdHjaeGGU",
+		"explain" :""
+	},
+	{
 		"singer" : "김현철",
 		"title" : "춘천가는 기차",
 		"album" : {
@@ -1094,48 +1234,6 @@
 		"explain" :""
 	},
 	{
-		"singer" : "조하문",
-		"title" : "이 밤을 다시 한번",
-		"album" : {
-			"name" : "1집 조하문 1",
-			"cover" : "http://image.music.naver.net/album/204/000/063/63273.jpg",
-			"Lyrics" : "조하문",
-			"Composed" : "조하문",
-			"Release" : "1987.08",
-			"Label" : "한국음원제작자협회"
-		},
- 		"videoid" : "U-DheM3Xs8U",
-		"explain" :""
-	},
-	{
-		"singer" : "푸른하늘",
-		"title" : "눈물 나는 날에는",
-		"album" : {
-			"name" : "2집 푸른하늘",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2129.jpg",
-			"Lyrics" : "유영석",
-			"Composed" : "유영석",
-			"Release" : "1989.07",
-			"Label" : "다날 엔터테인먼트"
-		},
-		"videoid" : "m9Wc39NWqf8",
-		"explain" :""
-	},
-	{
-		"singer" : "김성호",
-		"title" : "회상",
-		"album" : {
-			"name" : "1집 김성호의 회상",
-			"cover" : "http://image.music.naver.net/album/204/000/026/26774.jpg",
-			"Lyrics" : "김성호",
-			"Composed" : "김성호",
-			"Release" : "1989",
-			"Label" : "디패션"
-		},
- 		"videoid" : "ICiPvH6r4oY",
-		"explain" :""
-	},
-	{
 		"singer" : "델리 스파이스",
 		"title" : "고백",
 		"album" : {
@@ -1161,6 +1259,146 @@
 			"Label" : "네오위즈인터넷"
 		},
  		"videoid" : "9V0O1kiqjfY",
+		"explain" :""
+	},
+	{
+		"singer" : "장혜진",
+		"title" : "내게로",
+		"album" : {
+			"name" : "6집 It`s My Life",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1534.jpg",
+			"Lyrics" : "조규만",
+			"Composed" : "황세준",
+			"Release" : "2001.05",
+			"Label" : ""
+		},
+ 		"videoid" : "6oEU10mIvdg",
+		"explain" :""
+	},
+	{
+		"singer" : "김경호",
+		"title" : "금지된 사랑",
+		"album" : {
+			"name" : "2집 Kim:Kyungho 1997",
+			"cover" : "http://image.music.naver.net/album/204/000/000/94.jpg",
+			"Lyrics" : "강은경",
+			"Composed" : "유승범",
+			"Release" : "1997.06",
+			"Label" : "다이렉트미디어"
+		},
+ 		"videoid" : "9xn5bfdT7Ec",
+		"explain" :""
+	},
+	{
+		"singer" : "윤도현",
+		"title" : "가을 우체국 앞에서",
+		"album" : {
+			"name" : "1집 가을 우체국 앞에서",
+			"cover" : "http://image.music.naver.net/album/204/000/000/177.jpg",
+			"Lyrics" : "김현성",
+			"Composed" : "김현성",
+			"Release" : "1994.12",
+			"Label" : "Universal"
+		},
+ 		"videoid" : "U3LmLV4aXI4",
+		"explain" :""
+	},
+	{
+		"singer" : "푸른하늘",
+		"title" : "겨울바다",
+		"album" : {
+			"name" : "1집 겨울바다/하얀사랑",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2114.jpg",
+			"Lyrics" : "유영석",
+			"Composed" : "유영석",
+			"Release" : "1988.03",
+			"Label" : "다날 엔터테인먼트"
+		},
+ 		"videoid" : "dSzwdgTWdW0",
+		"explain" :""
+	},
+	{
+		"singer" : "린",
+		"title" : "My Destiny",
+		"album" : {
+			"name" : "별에서 온 그대 OST Part 1",
+			"cover" : "http://image.music.naver.net/album/204/000/409/409718.jpg",
+			"Lyrics" : "전창엽",
+			"Composed" : "진명용",
+			"Release" : "2013.12",
+			"Label" : "로엔 엔터테인먼트"
+		},
+ 		"videoid" : "sLofU7P5QR0",
+		"explain" :""
+	},
+	{
+		"singer" : "더더",
+		"title" : "내게 다시",
+		"album" : {
+			"name" : "1집 The More The Better",
+			"cover" : "http://image.music.naver.net/album/204/000/002/2225.jpg",
+			"Lyrics" : "신강우, 김영준",
+			"Composed" : "신강우, 김영준",
+			"Release" : "1998.01",
+			"Label" : "(주) 이엔이 미디어"
+		},
+ 		"videoid" : "SUJc0s9AsQg",
+		"explain" :""
+	},
+	{
+		"singer" : "김동률",
+		"title" : "아이처럼",
+		"album" : {
+			"name" : "5집 Monologue",
+			"cover" : "http://image.music.naver.net/album/204/000/135/135518.jpg",
+			"Lyrics" : "김동률",
+			"Composed" : "김동률",
+			"Release" : "2008.01",
+			"Label" : "로엔엔터테인먼트"
+		},
+ 		"videoid" : "a8OH2vN0O1A",
+		"explain" :""
+	},
+	{
+		"singer" : "태연",
+		"title" : "들리나요",
+		"album" : {
+			"name" : "베토벤 바이러스 OST",
+			"cover" : "http://image.music.naver.net/album/204/000/147/147090.jpg",
+			"Lyrics" : "임보경",
+			"Composed" : "이상준",
+			"Release" : "2008.09",
+			"Label" : "CJ E&M"
+		},
+ 		"videoid" : "-VP7fUqTWYY",
+		"explain" :""
+	},
+	{
+		"singer" : "태연",
+		"title" : "만약에",
+		"album" : {
+			"name" : "쾌도홍길동 OST ",
+			"cover" : "http://image.music.naver.net/album/204/000/135/135598.jpg",
+			"Lyrics" : "송재원",
+			"Composed" : "김준범,이창희",
+			"Release" : "2008.01",
+			"Label" : "오감 엔터테인먼트"
+		},
+ 		"videoid" : "g72-wPkw-To",
+		"explain" :""
+	},
+	{
+		"singer" : "거미",
+		"title" : "친구라도 될 걸 그랬어 ",
+		"album" : {
+			"name" : "1집 Like Them",
+			"cover" : "http://image.music.naver.net/album/204/000/001/1706.jpg",
+			"Lyrics" : "황성진",
+			"Composed" : "김도훈",
+			"Release" : "2003.02",
+			"Label" : "(주)KMP홀딩스"
+		},
+ 		"videoid" : "jLfRAh5hLY4",
 		"explain" :""
 	},
 	{
@@ -1206,20 +1444,6 @@
 		"explain" : "공일오비를 조금 안다 하는 사람이라면 그들이 원래 각자의 다른 직업을 가진 채 동호회 형태의 밴드를 생각했다는 점, 그런 만큼 1집이 아마추어리즘으로 가득했다는 점, 그리고 「텅 빈 거리에서」가 구색용으로 가장 마지막에 녹음한 곡이었다는 점 등을 알고 있을 것이다. 하지만 이런 사실들과 상관없이 「텅 빈 거리에서」는 여전히 90년대를 여는 대표적인 발라드로 남아 있다. ‘동전 두 개’가 이제는 몇 개인지 모를 정도로 세월이 흐른 만큼 윤종신의 목소리도 지금과는 많이 다른데, 그의 이 시절 미성을 더 접해보고 싶다면 「H에게」와 「처음 만날 때처럼」을 추천한다. 참고로 윤종신은 나와의 인터뷰에서 이 곡의 레퍼런스가 ‘시카고’ 였다고 밝혔다. [출처] Ballad Best 100 : 1~10위 (음악취향 Y) |작성자 마이너 "
 	},
 	{
-		"singer" : "이승환",
-		"title" : "가족",
-		"album" : {
-			"name" : "5집 Cycle",
-			"cover" : "http://image.music.naver.net/album/204/000/000/388.jpg",
-			"Lyrics" : "",
-			"Composed" : "",
-			"Release" : "1997",
-			"Label" : "로엔 엔터테인먼트"
-		},
-		"videoid" : "QLky8xLV830",
-		"explain" :""
-	},
-	{
 		"singer" : "일기예보",
 		"title" : "인형의 꿈",
 		"album" : {
@@ -1231,20 +1455,6 @@
 			"Label" : "한국음원제작자협회"
 		},
  		"videoid" : "c1gPf16NjsY",
-		"explain" :""
-	},
-	{
-		"singer" : "이승환",
-		"title" : "너를 향한 마음",
-		"album" : {
-			"name" : "2집 Always",
-			"cover" : "http://image.music.naver.net/album/204/000/000/394.jpg",
-			"Lyrics" : "어수은",
-			"Composed" : "어수은",
-			"Release" : "1991.07",
-			"Label" : "로엔 엔터테인먼트"
-		},
- 		"videoid" : "DnwjVxfO-70",
 		"explain" :""
 	},
 	{
@@ -1262,34 +1472,6 @@
 		"explain" :""
 	},
 	{
-		"singer" : "조성모",
-		"title" : "가시나무",
-		"album" : {
-			"name" : "2.5집 Classic",
-			"cover" : "http://image.music.naver.net/album/204/000/000/422.jpg",
-			"Lyrics" : "하덕규",
-			"Composed" : "하덕규",
-			"Release" : "2000.01",
-			"Label" : "CJ E&M"
-		},
- 		"videoid" : "POu_1kHWNC8",
-		"explain" :""
-	},
-	{
-		"singer" : "자전거 탄 풍경",
-		"title" : "너에게 난 나에게 넌",
-		"album" : {
-			"name" : "1집 자전거 탄 풍경",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2631.jpg",
-			"Lyrics" : "풍경",
-			"Composed" : "풍경",
-			"Release" : "2001.04",
-			"Label" : "네오위즈인터넷"
-		},
- 		"videoid" : "5ysdHjaeGGU",
-		"explain" :""
-	},
-	{
 		"singer" : "장혜진",
 		"title" : "1994년 어느 늦은 밤",
 		"album" : {
@@ -1301,34 +1483,6 @@
 			"Label" : "오감 엔터테인먼트"
 		},
  		"videoid" : "mKUg4XTknqA",
-		"explain" :""
-	},
-	{
-		"singer" : "성시경",
-		"title" : "내게 오는 길",
-		"album" : {
-			"name" : "1집 처음처럼",
-			"cover" : "http://image.music.naver.net/album/204/000/000/764.jpg",
-			"Lyrics" : "양재선",
-			"Composed" : "김형석",
-			"Release" : "2001.04",
-			"Label" : "CJ E&M"
-		},
- 		"videoid" : "5hINYNZslP0",
-		"explain" :""
-	},
-	{
-		"singer" : "김범수",
-		"title" : "보고싶다",
-		"album" : {
-			"name" : "3집 보고 싶다",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1041.jpg",
-			"Lyrics" : "윤사라",
-			"Composed" : "윤일상",
-			"Release" : "2002.12",
-			"Label" : "Universal"
-		},
- 		"videoid" : "Z1rP3RztCP4",
 		"explain" :""
 	},
 	{
@@ -1346,59 +1500,31 @@
 		"explain" :""
 	},
 	{
-		"singer" : "푸른하늘",
-		"title" : "겨울바다",
+		"singer" : "조하문",
+		"title" : "이 밤을 다시 한번",
 		"album" : {
-			"name" : "1집 겨울바다/하얀사랑",
-			"cover" : "http://image.music.naver.net/album/204/000/002/2114.jpg",
-			"Lyrics" : "유영석",
-			"Composed" : "유영석",
-			"Release" : "1988.03",
-			"Label" : "다날 엔터테인먼트"
+			"name" : "1집 조하문 1",
+			"cover" : "http://image.music.naver.net/album/204/000/063/63273.jpg",
+			"Lyrics" : "조하문",
+			"Composed" : "조하문",
+			"Release" : "1987.08",
+			"Label" : "한국음원제작자협회"
 		},
- 		"videoid" : "dSzwdgTWdW0",
+ 		"videoid" : "U-DheM3Xs8U",
 		"explain" :""
 	},
 	{
-		"singer" : "박상민",
-		"title" : "하나의 사랑",
+		"singer" : "김성호",
+		"title" : "회상",
 		"album" : {
-			"name" : "5집 Road",
-			"cover" : "http://image.music.naver.net/album/204/000/000/25.jpg",
-			"Lyrics" : "조은희",
-			"Composed" : "김지환",
-			"Release" : "1998.04",
-			"Label" : ""
+			"name" : "1집 김성호의 회상",
+			"cover" : "http://image.music.naver.net/album/204/000/026/26774.jpg",
+			"Lyrics" : "김성호",
+			"Composed" : "김성호",
+			"Release" : "1989",
+			"Label" : "디패션"
 		},
- 		"videoid" : "F9i5Q0LfJ_M",
-		"explain" :""
-	},
-	{
-		"singer" : "장혜진",
-		"title" : "내게로",
-		"album" : {
-			"name" : "6집 It`s My Life",
-			"cover" : "http://image.music.naver.net/album/204/000/001/1534.jpg",
-			"Lyrics" : "조규만",
-			"Composed" : "황세준",
-			"Release" : "2001.05",
-			"Label" : ""
-		},
- 		"videoid" : "6oEU10mIvdg",
-		"explain" :""
-	},
-	{
-		"singer" : "김동률",
-		"title" : "아이처럼",
-		"album" : {
-			"name" : "5집 Monologue",
-			"cover" : "http://image.music.naver.net/album/204/000/135/135518.jpg",
-			"Lyrics" : "김동률",
-			"Composed" : "김동률",
-			"Release" : "2008.01",
-			"Label" : "로엔엔터테인먼트"
-		},
- 		"videoid" : "a8OH2vN0O1A",
+ 		"videoid" : "ICiPvH6r4oY",
 		"explain" :""
 	}
 ]

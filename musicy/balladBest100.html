@@ -4,24 +4,26 @@
 	<meta charset="utf-8">
 	<title>Ballad Best 100</title>
 	<!--<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">-->
-	<link rel="stylesheet" href="http://bootstrapk.com/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://bootstrapk.com/examples/carousel/carousel.css">
 	<!--<link rel="stylesheet" href="css/common.css">-->
 	<style type="text/css">
 		.bs-main-container {margin:0 auto;}
 		.carousel {height:350px;}
-		.carousel .item {height:350px;}
+		.carousel .item {height:350px; background-color:#6b7d7c;}
 		.col-md-9 {position:relative; padding-left:65px;}
+		.list-group {margin-top:30px; border-top:1px solid #eee;}
+		.list-group-item {padding:30px 15px; margin-bottom:0; border:0; border-bottom:1px solid #eee;}
 		.badge {position:absolute; left:14px; top:24px; font-size:20px;}
 		.btn-default {position:absolute; right:20px; bottom:0px; font-size:20px;}
 		.album {font-size:22px;}
 		.release {font-size:18px;}
 		.compose {font-size:16px;}
+		.bg-gray {background-color:#f5f6f7;}
+		.bg-white {background-color:#fff;}
 
 		@media (min-width: 1200px) {
-			.container {
-				width:1024px
-			}
+			.container {width:1024px}
 		}
 
 		.playLayer {position:absolute; z-index:10; width:860px; height:500px; margin-left:-320px; padding:20px; border:1px solid #ccc; border-radius:5px; background:#fff;
@@ -37,6 +39,39 @@
 	</style>
 </head>
 <body ng-controller="AlbumListCtrl">
+	<div class="navbar-wrapper">
+		<div class="container">
+			<nav class="navbar navbar-inverse navbar-static-top">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">LeeKwanOh</a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li><a href="http://mylko72.maru.net/home/html/index.html?hn=1">Main</a></li>
+							<li><a href="http://mylko72.maru.net/home/html/work.html?hn=2">Work</a></li>
+							<li><a href="http://mylko72.maru.net/home/html/profile.html?hn=3">Profile</a></li>
+							<li><a href="http://mylko72.maru.net/home/html/vim.html?hn=4">Vim</a></li>
+							<li><a href="http://mylko72.maru.net/home/html/bookmark.html?hn=5">Bookmark</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Study <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="http://mylko72.gitbooks.io/git/" target="_blank">Git</a></li>
+									<li><a href="http://mylko72.github.io/FEDNote/html/markdown/angular-app.html" target="_blank">AngularJS</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</div>
 
 	<div class="carousel">
 		<div class="carousel-inner">
@@ -64,52 +99,24 @@
 			</div>
 		</form>
 
-		<hr class="featurette-divider">
-
 		<div class="contents">
 			<ul class="list-group">
-			<li class="list-group-item feature clearfix" ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize">
-				<div class="col-md-9">
-					<span class="badge">{{($index+1)+(currentPage*pageSize)}}</span>
-					<h2><a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}}</a> | {{song.singer}}</h2>
-					<p class="album">{{song.album.name}}</p>
-					<p class="release">발매 {{song.album.Release}}</p>
-					<p class="compose">작사 : {{song.album.Lyrics}} / 작곡 : {{song.album.Composed}}</p>
-					<!--<a class="btn btn-default" href="#" ng-click="playYouTube(song, YT_event.PLAY)" role="button">Youtube Play</a>-->
-				</div>
-				<div class="col-md-3">
-					<a href="#"><img class="cover" ng-src="{{song.album.cover}}" width="auto" height="auto"></a>
-				</div>
-			</li>
+				<li class="list-group-item feature clearfix" ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize" ng-class="{'bg-white' : !$index%2, 'bg-gray' : $index%2}">
+					<div class="clearfix">
+					<div class="col-md-9">
+						<span class="badge">{{($index+1)+(currentPage*pageSize)}}</span>
+						<h2><a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}}</a> | {{song.singer}}</h2>
+						<p class="album">{{song.album.name}}</p>
+						<p class="release">발매 {{song.album.Release}}</p>
+						<p class="compose">작사 : {{song.album.Lyrics}} / 작곡 : {{song.album.Composed}}</p>
+						<!--<a class="btn btn-default" href="#" ng-click="playYouTube(song, YT_event.PLAY)" role="button">Youtube Play</a>-->
+					</div>
+					<div class="col-md-3">
+						<a href="#"><img class="cover" ng-src="{{song.album.cover}}" width="auto" height="auto"></a>
+					</div>
+					</div>
+				</li>
 			</ul>
-			<!--<table class="table table-bordered table-striped">
-				<colgroup>
-					<col width="9%">
-					<col width="*">
-					<col width="15%">
-					<col width="25%">
-					<col width="15%">
-				</colgroup>
-				<thead>
-					<tr>
-						<th ng-click="sort('no')">순위 <i ng-class="{'icon-chevron-up':isSortUp('no'), 'icon-chevron-down':isSortDown('no')}"></i></th>
-						<th ng-click="sort('title')">곡명 <i ng-class="{'icon-chevron-up':isSortUp('title'), 'icon-chevron-down':isSortDown('title')}"></i></th>
-						<th ng-click="sort('singer')">가수 <i ng-class="{'icon-chevron-up':isSortUp('singer'), 'icon-chevron-down':isSortDown('singer')}"></i></th>
-						<th ng-click="sort('album.name')">앨범명 <i ng-class="{'icon-chevron-up':isSortUp('album.name'), 'icon-chevron-down':isSortDown('album.name')}"></i></th>
-						<th>작사/작곡</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize">
-						<td>{{($index+1)+(currentPage*pageSize)}}</td>
-						<td><img class="cover" ng-src="{{song.album.cover}}" width="80" height="auto"> <a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}}</a><br />
-						</td>
-						<td>{{song.singer}}</td>
-						<td>{{song.album.name}}<br />발매 {{song.album.Release}}</td>
-						<td>{{song.album.Lyrics}}/{{song.album.Composed}}</td>
-					</tr>
-				</tbody>
-			</table>-->
 		  	<pagination num-pages="numPages" current-page="currentPage+1" on-select-page="setActivePage(page-1)"></pagination>
 		</div>
 
@@ -139,6 +146,7 @@
 	<!-- inject-vendor:js -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<script src="/musicy/js/directives/pagination.js"></script>
 	<script src="/musicy/js/directives/youtube.js"></script>
 	<script src="/musicy/js/services/mouseclick.js"></script>
