@@ -8,13 +8,18 @@ angular.module('mouseClickServices', [])
 		//event 객체에 접근
 		evt = event || window.event;
 		var loc = {'x': 0, 'y': 0};
+		var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth;
 
+
+		//console.log('width :' + width);
 
 		//event 객체가 pageX 속성을 포함하고 있다면
 		//pageX와 pageY를 사용해서 위치를 구함
 		if(evt.pageX){
-			loc.x = evt.pageX + addXy.x;
+			(width>992) ? loc.x = evt.pageX + addXy.x : loc.x = 0;
 			loc.y = evt.pageY + addXy.y;
+
+			console.log('x : '+loc.x);
 
 			//event 객체가 clientX 속성을 포함하고 있다면
 		}else if(evt.clientX){
@@ -30,7 +35,7 @@ angular.module('mouseClickServices', [])
 				offsetY = document.body.scrollTop;
 			}
 
-			loc.x = evt.clientX + offsetX + addXy.x;
+			(width>992) ? loc.x = evt.clientX + offsetX + addXy.x : loc.x = 0;
 			loc.y = evt.clientY + offsetY + addXy.y;
 		}
 		return loc; 

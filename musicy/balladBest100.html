@@ -4,39 +4,11 @@
 	<meta charset="utf-8">
 	<title>Ballad Best 100</title>
 	<!--<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">-->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://bootstrapk.com/examples/carousel/carousel.css">
 	<!--<link rel="stylesheet" href="css/common.css">-->
-	<style type="text/css">
-		.bs-main-container {margin:0 auto;}
-		.carousel {height:350px;}
-		.carousel .item {height:350px; background-color:#6b7d7c;}
-		.col-md-9 {position:relative; padding-left:65px;}
-		.list-group {margin-top:30px; border-top:1px solid #eee;}
-		.list-group-item {padding:30px 15px; margin-bottom:0; border:0; border-bottom:1px solid #eee;}
-		.badge {position:absolute; left:14px; top:24px; font-size:20px;}
-		.btn-default {position:absolute; right:20px; bottom:0px; font-size:20px;}
-		.album {font-size:22px;}
-		.release {font-size:18px;}
-		.compose {font-size:16px;}
-		.bg-gray {background-color:#f5f6f7;}
-		.bg-white {background-color:#fff;}
-
-		@media (min-width: 1200px) {
-			.container {width:1024px}
-		}
-
-		.playLayer {position:absolute; z-index:10; width:860px; height:500px; margin-left:-320px; padding:20px; border:1px solid #ccc; border-radius:5px; background:#fff;
-			-moz-box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
-			-webkit-box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
-			box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
-		}
-		.playLayer .close {margin-top:-20px; margin-bottom:5px; font-size:32px;}
-		.playLayer .song-info {width:204px;}
-		.playLayer .song-info .cover {border:1px solid #eee;}
-		.playLayer .song-info .artist {padding-left:5px; font-size:16px; font-weight:bold;}
-		.playLayer .song-info .song {padding-left:5px; margin-top:-10px; font-size:24px; color:#428bca;}
-	</style>
+	<link rel="stylesheet" href="css/music.css">
 </head>
 <body ng-controller="AlbumListCtrl">
 	<div class="navbar-wrapper">
@@ -89,12 +61,12 @@
 
 		<form role="form">
 			<div class="well row">
-				<div class="col-md-6">
-					<label class="sr-only" for="search">검색어</label>
+				<div class="col-md-10">
+					<label class="search" for="search"><i class="fa fa-search"></i></label>
 					<input type="text" class="form-control" id="search" placeholder="검색어를 입력하세요." ng-model="searchKey" />
 				</div>
-				<div class="col-md-6 text-right">
-					Total : {{filteredSongs.length}}
+				<div class="col-md-2 text-right">
+					<span class="total">Total : {{filteredSongs.length}}</span>
 				</div>
 			</div>
 		</form>
@@ -103,16 +75,16 @@
 			<ul class="list-group">
 				<li class="list-group-item feature clearfix" ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize" ng-class="{'bg-white' : !$index%2, 'bg-gray' : $index%2}">
 					<div class="clearfix">
-					<div class="col-md-9">
+					<div class="col-sm-9">
 						<span class="badge">{{($index+1)+(currentPage*pageSize)}}</span>
-						<h2><a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}}</a> | {{song.singer}}</h2>
+						<h2 class="title"><a ng-click="playYouTube(song, YT_event.PLAY)">{{song.title | trim:8}} <i class="fa fa-youtube-play"></i></a> | {{song.singer}}</h2>
 						<p class="album">{{song.album.name}}</p>
 						<p class="release">발매 {{song.album.Release}}</p>
 						<p class="compose">작사 : {{song.album.Lyrics}} / 작곡 : {{song.album.Composed}}</p>
 						<!--<a class="btn btn-default" href="#" ng-click="playYouTube(song, YT_event.PLAY)" role="button">Youtube Play</a>-->
 					</div>
-					<div class="col-md-3">
-						<a href="#"><img class="cover" ng-src="{{song.album.cover}}" width="auto" height="auto"></a>
+					<div class="col-sm-3">
+						<a href="#"><img class="cover img-responsive" ng-src="{{song.album.cover}}" width="auto" height="auto"></a>
 					</div>
 					</div>
 				</li>
@@ -127,7 +99,7 @@
 			<button type="button" class="close" ng-click="closeYouTube(YT_event.STOP)" aria-hidden="true">x</button>
 			<div class="clearfix"></div>
 				<div class="song-info pull-left">
-					<p><img class="cover" ng-src="{{songInfo.albumImg}}" width="204" height="auto"></p>
+					<p><img class="cover img-responsive" ng-src="{{songInfo.albumImg}}" width="204" height="auto"></p>
 					<p class="artist">{{songInfo.singer}}</p>
 					<p class="song">{{songInfo.title}}</p>
 					<ul>
@@ -137,8 +109,8 @@
 						<li>작곡: {{songInfo.composed}}</li>
 					</ul>
 				</div>
-				<div class="pull-right">
-					<youtube width="600" height="440" videoid="{{songInfo.videoId}}"></youtube>
+				<div class="play-zone pull-right">
+					<youtube width="100%" height="100%" videoid="{{songInfo.videoId}}"></youtube>
 				</div>
 		</div>
 	</div>

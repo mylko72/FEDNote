@@ -1,0 +1,55 @@
+.bs-main-container {margin:0 auto;}
+.carousel {height:350px;}
+.carousel .item {height:350px; background-color:#6b7d7c;}
+.search {position:absolute; left:30px; top:7px; z-index:50; font-size:18px;}
+.search+.form-control {padding:18px 40px; font-size:18px;}
+.total {display:inline-block; padding-top:5px; font-size:20px; font-weight:normal;}
+.list-group {margin-top:30px; border-top:1px solid #eee;}
+.list-group-item {padding:30px 15px 30px 0; margin-bottom:0; border:0; border-bottom:1px solid #eee;}
+.list-group-item .col-md-9 {position:relative; padding-left:65px;}
+.list-group-item .title {font-size:24px;}
+.list-group-item .badge {position:absolute; left:14px; top:-35px; width:47px; font-size:20px;}
+.list-group-item .btn-default {position:absolute; right:20px; bottom:0px; font-size:20px;}
+.list-group-item .album {font-size:20px; margin-bottom:5px;}
+.list-group-item .release {font-size:16px; margin-bottom:5px;}
+.list-group-item .compose {font-size:16px; margin-bottom:5px;}
+.list-group-item .img-responsive {margin:20px auto 0;}
+.bg-gray {background-color:#f5f6f7;}
+.bg-white {background-color:#fff;}
+
+.playLayer {display:none;position:absolute; z-index:10; width:100%; height:500px; margin-left:0px; padding:20px; border:1px solid #ccc; border-radius:5px; background:#fff;
+	-moz-box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+	box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+}
+.playLayer .close {margin-top:-20px; margin-bottom:5px; font-size:32px;}
+.playLayer .song-info {display:none;}
+.playLayer .song-info ul {padding:20px;}
+.playLayer .song-info .cover {border:1px solid #eee;}
+.playLayer .song-info .artist {padding-left:5px; font-size:16px; font-weight:bold;}
+.playLayer .song-info .song {padding-left:5px; margin-top:-10px; font-size:24px; color:#428bca;}
+.playLayer .play-zone {width:100%;height:440px;}
+
+@media (min-width: 768px){
+	.list-group-item .col-sm-9 {width:75%; padding-left:70px;}
+	.list-group-item .title {margin-top:5px;font-size:24px; letter-spacing:-1px;}
+	.list-group-item .badge {top:7px; width:42px; font-size:16px;}
+	.list-group-item .img-responsive {margin:0;}
+	.playLayer {height:475px;}
+	.playLayer .song-info {display:block;width:27%;}
+	.playLayer .song-info ul {padding-top:0;}
+	.playLayer .play-zone {width:73%;height:400px;}
+}
+@media (min-width: 992px) {
+	.list-group-item .title {font-size:30px; letter-spacing:0px;}
+	.list-group-item .album {font-size:22px; margin-bottom:10px;}
+	.list-group-item .release {font-size:18px; margin-bottom:10px;}
+	.list-group-item .compose {font-size:16px; margin-bottom:10px;}
+	.list-group-item .badge {top:10px; font-size:20px;}
+	.playLayer {width:860px; height:500px;/*margin-left:-320px;*/}
+	.playLayer .song-info {width:204px;}
+	.playLayer .play-zone {width:600px;height:440px;}
+}
+@media (min-width: 1200px) {
+	.container {width:1024px}
+}
