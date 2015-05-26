@@ -2980,8 +2980,162 @@ loadTemplate 함수는 지정한 템플릿을 로드하고 해당 템플릿을 D
 
 ##웹애플리케이션 작성
 
+###AngularJS 내부 동작 이해
+
+####문자열 기반의 템플릿 엔진이 아니다
+
+    <input simple-model='name'>
+    <span simple-bind="name"></span>
+
+위 코드는 사용자의 입력에 따라 자동으로 갱신되기 시작한다. 어떻게 DOM의 변경 사항을 모델에 전파하고, 모델이 DOM을 어떻게 다시 그리게 만드는지 알아보자.
+
+#####DOM 이벤트의 응답으로 모델 갱신
+
+AngularJS는 여러 디렉티브에 등록된 DOM 이벤트 리스너를 통해 DOM 트리의 변경 사항을 모델로 전파한다. 그리고 이벤트 리스너의 코드는 `$scope`로 접근할 수 있는 변수를 갱신함으로써 모델을 변경한다.
+
+다음은 `ng-model` 디렉티브와 동일한 기능을 하는 simple-model 이라는 디렉티브이다.
 
 
+	.directive('simpleModel', function ($parse) {
+		return function (scope, element, attrs) {
 
+		  var modelGetter = $parse(attrs.simpleModel);
+		  var modelSetter = modelGetter.assign;
 
+		  //Model -> DOM updates
+		  scope.$watch(modelGetter, function(newVal, oldVal){
+			element.val(newVal);
+		  });
 
+		  //DOM -> Model updates
+		  element.bind('input', function () {
+			scope.$apply(function () {
+			  modelSetter(scope, element.val());
+			});
+		  });
+		};
+	})
+
+실제 모델값을 설정하기 위해 `$parse` 서비스를 사용하는데, *`$parse` 서비스는 AngularJS 표현식을 스코프에 대해 평가하고 스코프를 모델의 값으로 갱신해준다.* *표현식을 인자로 넣고 `$parse` 서비스를 호출하면 Getter 함수를 반환하는데, 이렇게 반환된 Getter 함수는 AngularJS 표현식이 할당 가능한 형태이면 `assign` 프로퍼티(Setter 함수)를 제공한다.*
+
+simple-model 디렉티브의 핵심은 *`input` 요소의 변경을 감지하고 사용자가 입력한 값으로 모델을 갱신하는 input DOM 이벤트 핸들러다.*
+
+#####DOM과 모델 동기화
+
+*모델의 변경 사항을 주시하고 모델 변경 시 특정 함수를 실행하려면 `$watch` 메소드를 사용해야 한다.*
+
+	scope.$watch(watchExpression, modelChangeCallback)
+
+스코프의 `$watch` 메커니즘에 익숙해지고 나면 simple-model 디렉티브가 모델을 주시하고 모델 값이 변경되는 대로 input 필드의 값을 갱신하는 과정을 이해할 수 있다.
+
+	  //Model -> DOM updates
+	  scope.$watch(modelGetter, function(newVal, oldVal){
+		element.val(newVal);
+	  });
+
+#####Scope.$apply
+
+AngularJS가 모델 변경 사항을 추적하는 메커니즘은 결국 모델이 변경되는 한정된 상황을 주시하는 것이다. 이 상황은 다음과 같다.
+
+- DOM 이벤트
+- XHR 응답으로 인한 콜백
+- 브라우저의 주소 변경
+- 타이머로 인한 콜백
+
+*AngularJS는 명백히 주시가 필요한 상황일 때만 모델을 주시하는 동작을 시작한다. 이 정교한 메커니즘은 스코프 객체의 `$apply` 메소드를 실행함으로써 이뤄진다.*
+
+다음 코드와 같이 input 값이 변경될 때마다(즉, 매번 키를 입력할 때마다) 모델을 주시하는 동작을 추가할 수 있다.
+
+	element.bind('input', function () {
+		scope.$apply(function () {
+	  		modelSetter(scope, element.val());
+		});
+	});
+
+혹은 사용자가 input 필드에 포커스를 잃었을 때만 모델 변경 사항을 전파할 수도 있다.
+
+	element.bind('blur', function () {
+		scope.$apply(function () {
+	  		modelSetter(scope, element.val());
+		});
+	});
+
+여기서 중요한 것은 모델의 변경 사항을 추적하는 과정을 명시적으로 시작하기 위해 `$apply` 메소드를 사용한 것이다. 이게 바로 일반적인 디렉티브와 서비스에서 모델 변경 사항의 추적을 시작하는 방법이다.
+
+>AngularJS는 스코프의 `$apply` 메소드를 호출함으로써 모델 변경 사항의 추적을 시작한다. 일반적인 서비스와 디렉티브 안에서는 네트워크 통신, DOM 이벤트, 자바스크립트 타이머, 브라우저 주소 변경 등이 발생하면 이 메소드가 호출된다.
+
+#####모델 변경 사항을 DOM으로 전파
+
+`$parse` 서비스를 사용하면 모델 값을 DOM 텍스트 노드로 렌더링 하는 `ng-bind` 디렉티브의 간소화된 버전도 만들 수 있다.
+
+	.directive('simpleBind', function ($parse) {
+		return function (scope, element, attrs) {
+
+		  var modelGetter = $parse(attrs.simpleBind);
+		  scope.$watch(modelGetter, function(newVal, oldVal){
+			element.text(newVal);
+		  });
+		};
+	});
+
+이 simple-bind 디렉티브는 표현식(DOM 속성으로 지정)을 받아 `$scope`에 대해 평가한 후 해당 DOM 요소의 텍스트를 갱신한다.
+
+#####$digest 루프 내부
+
+모델 변경 사항을 감지하는 과정을 $digest 루프라고 부른다. `$digest` 메소드는 `$apply` 호출의 일부분으로 실행되며, 모드 스코프에 등록된 모든 watch를 평가한다.
+
+AngularJS에서 `$digest` 루프가 존재하는 이유는 다음 2가지 문제와 관련이 있다.
+
+- 모델의 어느 부분이 변경됐는지 판단하고 그 결과로 어떤 DOM 프로퍼티가 갱신돼야 하는지를 결정한다. 단지 모델 프로퍼티를 변경하면 AngularJS 디렉티브가 알아서 변경된 부분을 파악하고 다시 그려준다.
+- 성능 저하를 일으키고 불필요한 다시 그리기 동작을 제거해서 UI가 깜빡이는 현상을 해결한다. AngularJS는 모델이 안정화되는 가장 마지막 시점까지 DOM을 다시 그리는 동작을 지연시킴으로써 이 문제를 해결한다.
+
+#####$watch 내부
+
+	$scope.$watch(watchExpression, modelChangeCallback)
+
+스코프에 새로운 `$watch`가 추가되면 AngularJS는 watchExpression을 평가하고 내부적으로 평가 결과를 저장해놓는다. `$digest` 루프로 들어간 다음에 watchExpression은 다시 한 번 실행되며, 새로운 값과 저장해둔 값을 비교한다. 그리고 새로운 값이 이전 값과 다르면 modelChangeCallback이 실행된다. 여기서 새로운 값은 나중의 비교를 위해 역시 저장되며, 이 과정은 계속 반복된다.	
+
+#####모델 안전성
+
+AngularJS는 변경사항을 감지하는 `watch`가 하나도 없으면 모델이 안정적(UI 렌더링 단계로 넘어갈 수 있는)이라고 판단한다. 즉, 변경 사항을 감지한 `watch`가 단 하나라도 있으면 전체 `$digest` 루프의 상태를 'dirty'로 변경하고 AngularJS는 루프를 한번 더 돌린다. AngularJS는 더 이상 변경 사항이 발견되지 않을 때까지 `$digest` 루프를 계속 돌면서 전체 스코프의 모든 `watch`를 재평가한다.
+
+다음 코드는 Start와 End라는 2개의 date 필드로 구성된 간단한 폼이다. 당연히 종료 날짜는 시작 날짜보다 미래의 시점이어야 한다.
+
+	<div>
+		<form>
+			Start date : <input ng-model="startDate">
+			End date : <input ng-model="endDate">
+		</form>
+	</div>
+
+모델의 endDate가 항상 startDate 보다 미래의 시점을 가리키기 위해서는 `watch`를 다음과 같이 등록할 수 있다.
+
+	function oneDayAhead(dateToIncrement){
+		return dateToIncrement.setDate(dateToIncrement.getDate()+1);
+	};
+
+	$scope.$watch('startDate', function(newValue){
+		if(newValue <= $scope.startDate){
+			$scope.endDate = oneDayAhead($scope.startDate);
+		}
+	});
+
+컨트롤러에 watch를 등록해서 2개의 모델 값이 서로 의존하게 만든다. 즉, 하나의 모델 값이 변경되면 다른 모델 값이 바뀌는 방식이다. 여기서 모델이 변경될 때 호출되는 콜백은 이미 '안정적'이라고 판단한 값을 다시 변경하는 부수 효과를 갖고 있다.
+
+>모든 `$digest` 루프는 최소한 한 번, 보통 2번 실행된다. 즉, watch 표현식은 한 번의 `$digest` 루프마다 2번씩 평가된다는 의미다.
+
+#####안정적이지 않은 모델
+
+	<span>Random value : {{random()}}</span>
+
+random() 함수는 스코프에 다음과 같이 정의된다.
+
+	$scope.random = Math.random;
+
+위 코드는 `$digest` 루프를 돌 때마다 `Math.random()`을 매번 다른 값으로 평가할 것이다. 즉, 'dirty'라고 설정해서 다음 루프가 또 필요하다고 매번 판단한다. 이 상황은 루프를 계속 돌게 만들고 결국 AngularJS는 모델이 불안정해서 `$digest` 루프를 멈추게 된다.
+
+>AngularJS는 기본적으로 `$digest` 루프를 10번 수행하고도 모델이 불안정하면 루프를 빠져나온다.
+
+#####$digest 루프와 스코프 계층 구조
+
+`$digest` 루프는 매번 루프를 돌 때마다 `$rootScope` 부터 시작해서 모든 스코프의 모든 watch 표현식을 처리한다. 자식 스코프 중 하나에서 변경이 발생하면 부모 스코프의 변수에 영향을 미칠 수 있기 때문이다. AngularJS가 변경이 시작된 스코프의 watch에 대해서만 평가한다면 모델 값과 실제화면에 표시되는 것과의 불일치가 발생할 가능성이 있다.

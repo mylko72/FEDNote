@@ -73,7 +73,7 @@
 
 		<div class="contents">
 			<ul class="list-group">
-				<li class="list-group-item feature clearfix" ng-repeat="song in filteredSongs = (songs | filter:searchKey | orderBy:sortField:reverse) | pagination:currentPage:pageSize" ng-class="{'bg-white' : !$index%2, 'bg-gray' : $index%2}">
+				<li class="list-group-item feature clearfix" ng-repeat="song in filteredSongs = (songs | filter:searchKey) | pagination:currentPage:pageSize" ng-class="{'bg-white' : !$index%2, 'bg-gray' : $index%2}">
 					<div class="clearfix">
 					<div class="col-sm-9">
 						<span class="badge">{{($index+1)+(currentPage*pageSize)}}</span>
