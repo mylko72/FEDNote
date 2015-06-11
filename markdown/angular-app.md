@@ -3139,3 +3139,126 @@ random() 함수는 스코프에 다음과 같이 정의된다.
 #####$digest 루프와 스코프 계층 구조
 
 `$digest` 루프는 매번 루프를 돌 때마다 `$rootScope` 부터 시작해서 모든 스코프의 모든 watch 표현식을 처리한다. 자식 스코프 중 하나에서 변경이 발생하면 부모 스코프의 변수에 영향을 미칠 수 있기 때문이다. AngularJS가 변경이 시작된 스코프의 watch에 대해서만 평가한다면 모델 값과 실제화면에 표시되는 것과의 불일치가 발생할 가능성이 있다.
+
+###AngularJS 애플리케이션 성능 개선
+
+####CPU 사용률 최적화
+
+#####$digest 루프를 빠르게
+
+`$digest` 루프의 실행 시간이 50ms(0.05초)보다 빨라야 사람의 눈으로 실행 시간을 인지할 수 없다. `$digest` 사이클이 50ms 안에 수행되게 만들려면 다음과 같은 두가지 중요한 사항을 따라야 한다.
+
+- 각 watch를 빠르게 만들기
+- 각 `$digest` 사이클의 일부분으로 평가되는 watch의 수를 제한하기
+
+#####watch를 가볍고 빠르게 만들기
+
+	$scope.$watch(watchExpression, modelChangeCallback)
+
+지정한 watchExpression은 `$digest` 루프마다 최소한 한번(보통은 2번) 실행된다. 그래서 watch 표현식을 실행하는 데 오랜 시간이 걸리면 전체 AngularJS 애플리케이션의 속도가 느려질 가능성이 있으므로 무거운 연산은 사용하지 말아야 한다.
+
+다음은 watch 표현식을 빠르게 만들기 위해 피해야 하는 몇가지 패턴이다.
+
+- *표현식에서 함수를 호출할 때 함수안에 포함된 로그를 찍는 문장은 심각하게 느려지는 결과를 초래한다.*
+
+		<span>{{getNameLog()}}</span>
+
+		$scope.getNameLog = function(){
+			console.log('getting name');
+			return $scope.name;
+		};
+
+- 필터를 사용하는 코드도 의도치 않게 무거운 연산이 스며들기 좋은 장소다.
+
+		{{myModel | myComplexFilter}}
+
+ 필터는 함수를 호출하는 것과 별반 다르지 않다. 따라서 watch 표현식의 일부분으로 포함되며, `$digest` 루프마다 최소한 한 번씩 실행된다. 그래서 필터에서 사용하는 로직이 무거운 경우 전체 `$digest` 루프가 느려진다.
+
+#####watch 표현식에서 DOM 접근 회피
+
+watchExpression에서 DOM 프로퍼티를 읽는 것은 전체 `$digest` 루프를 심각하게 느리게 만들 정도로 무겁다. 프로퍼티를 읽어갈 때 DOM 프로퍼티는 실시간으로, 그리고 동기적으로 계산된다는 것이 문제다.
+
+> AngularJS 애플리케이션에서 외부 자바스크립트 컴포넌트를 사용하려는 경우 특히 DOM 프로퍼티의 변경 사항을 감시하게 되는 경우며 `$digest` 루프의 성능에 심각한 영향을 미칠 수 있다.
+
+#####평가될 watch의 수 제한
+
+######필요 없는 watch 제거
+
+AngularJS의 양방향 데이터 바인딩은 매우 강력하지만 자칫하면 고정 값으로 충분한 경우에도 양방향 데이터 바인딩을 남용하기 쉽다. AngularJS 표현식을 적용하면 `$digest` 루프를 한 번 돌 때마다 수많은 연산이 추가로 수행돼야 한다. 그러므로 템플릿에 새로운 인터폴레이션 표현식을 추가할 때는 양방향 데이터 바인딩이 정말로 필요한지 다시 한번 생각해야 한다.
+
+######안 보이는 요소에는 watch 사용하지 않기
+
+AngularJS는 특정 조건에 따라 DOM 일부분을 보여주거나 숨기는 데 사용하기 좋은 `ng-show`와 `ng-hide`라는 2개의 디렉티브를 제공한다. 이 디렉티브는 DOM에서 요소를 실제로 제거하지는 않는다. 다만 적절한 스타일(display:none)을 적용해 숨겨놓기만 한다. '숨겨진' 요소는 DOM 트리에 여전히 존재하기 때문에 이 요소에 등록해 놓은 watch는 매 `$digest` 루프마다 평가될 것이다.
+
+> 화면에 보이지 않는 부분이 애플리케이션을 느리게 만든다면 `ng-show` 디렉티브를 고려해보자. 이 디렉티브는 보이지 않는 DOM 요소를 DOM 트리에서 물리적으로 제거해준다.
+
+######영향을 받는 스코프를 알고 있을 때 Scope.$apply 대신 Scope.$digest 호출
+
+AngularJS가 `$digest` 루프를 실행할 때는 전체 애플리케이션의 모든 스코프를 순회한다. 이는 한 스코프에 의해 시작된 변경이 부모 스코프 중 하나의 모델을 변경할 수 있기 때문이다.
+
+하지만 모델이 변경됨으로써 정확히 어떤 스코프에 영향을 미치는지 알고 있는 경우라면 영향을 받는 가장 상위 스코프에 `scope.$apply` 대신 `scope.$digest` 메소드를 호출할 수 있다. 그러면 `scope.$digest` 메소드는 스코프의 특정 부분집합에 대해서만 `$digest` 루프를 돌린다. 그리고 메소드가 호출된 해당 스코프와 그 자식 스코프에 선언된 watch만이 모델 변경에 대한 영향을 받는다. 이 방법은 평가되는 watch 표현식의 수를 획기적으로 줄일 수 있어 `$digest` 루프의 실행 속도를 높일 수 있다.
+
+#####$digest 루프 빈도 줄이기
+
+`scope.$apply()` 메소드를 호출하게 되는 AngularJS 디렉티브와 서비스는 다음과 같이 네 가지 종류의 이벤트로 분류할 수 있다.
+
+- 내비게이션 이벤트 : 사용자가 링크를 클릭하거나 뒤로 가기, 앞으로 가기 버튼을 누르는 경우
+- 네트워크 이벤트 : 응답이 준비되면 `$digest` 루프를 시작하는 모든 `$http` 서비스 호출
+- DOM 이벤트 : 이벤트 핸들러가 호출되면 `$digest` 루프를 시작하는 DOM 이벤트에 해당하는 모든 AngularJS 디렉티브
+- 자바스크립트 타이머 : 타이머가 끝나면 $digest 루프를 시작하는 자바스크립트의 `setTimeout` 함수를 래핑한 `$timeout` 서비스
+
+`$digest` 루프는 수많은 DOM 이벤트 핸들러에 의해 시작된다. 많은 것을 제어할 수 있는 상황이 아니기는 하지만 AngularJS가 `$digest` 루프에 들어가는 빈도를 줄일 수 있는 방법은 있다.
+
+기본적으로 `$timeout` 서비스는 타이머가 끝날 때마다 `$scope.apply`를 호출하므로 충분히 주의를 기울여야 한다. 다음은 현재시간을 보여주는 간단한 clock 디렉티브이다.
+
+	.directive('click', function($timeout, dateFilter){
+		return {
+			restrict: 'E',
+			link: function(scope, element, attrs){
+				function update(){
+					//현재 시간을 읽어와서 포맷을 지정한 다음 DOM을 갱신
+					element.text(dateFilter(new Date(), 'hh:mm:ss'));
+					//1초마다 반복
+					$timeout(update, 1000);		
+
+				}
+				update();
+			}
+		};
+	});
+
+이 디렉티브를 사용하는 `<clock></clock>` 마크업은 매초 `$digest` 루프를 시작하게 된다. 그래서 `$timeout` 서비스는 `scope.$apply`의 호출 여부를 지정할 수 있게 3번째 매개변수를 제공한다.
+
+	function update(){
+		element.text(dateFilter(new Date(), 'hh:mm:ss'));
+		$timeout(update, 1000, false);		
+	}
+
+타이머를 등록할 때 3번째 매개변수로 false를 넘기면 `$timeout` 서비스로 인해 `$digest` 루프가 시작되는 것을 막을 수 있다.
+
+마지막으로 마우스 이동과 관련된 이벤트 핸들러를 등록함으로써 엄청나게 많은 수의 `$digest` 루프가 실행되는 경우를 살펴보자.
+
+	<div ng-class='{active: isActive}' ng-mouseenter='isActive=true' ng-mouseleave='isActive=false'>Some content</div>
+
+위 코드는 마우스의 포인터가 요소 위에 위치하면 요소의 클래스를 변경한다. 이때 마우스 포인터가 해당 DOM 요소를 지나갈 때마다 `$digest` 루프가 실행된다. 이 코드가 아주 많은 요소에 반복적으로 사용된다면
+애플리케이션의 성능은 확 떨어진다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
