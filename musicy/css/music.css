@@ -33,7 +33,7 @@
 @media (min-width: 768px){
 	.list-group-item .col-sm-9 {width:75%; padding-left:70px;}
 	.list-group-item .title {margin-top:5px;font-size:24px; letter-spacing:-1px;}
-	.list-group-item .badge {top:7px; width:42px; font-size:16px;}
+	.list-group-item .badge {top:7px; font-size:16px;}
 	.list-group-item .img-responsive {margin:0;}
 	.playLayer {height:475px;}
 	.playLayer .song-info {display:block;width:27%;}
