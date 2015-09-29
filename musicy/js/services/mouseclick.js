@@ -19,7 +19,7 @@ angular.module('mouseClickServices', [])
 			(width>992) ? loc.x = evt.pageX + addXy.x : loc.x = 0;
 			loc.y = evt.pageY + addXy.y;
 
-			console.log('x : '+loc.x);
+			//console.log('x : '+loc.x);
 
 			//event 객체가 clientX 속성을 포함하고 있다면
 		}else if(evt.clientX){

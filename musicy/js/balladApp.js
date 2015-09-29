@@ -127,7 +127,7 @@
 			$scope.pageSize = 20;
 			$scope.currentPage = 0;
 			$scope.$watch('filteredSongs.length', function(filteredSize){
-			  console.log(filteredSize);
+			  //console.log(filteredSize);
 			  $scope.numPages = Math.ceil(filteredSize / $scope.pageSize);
 			  for (var i=0; i<$scope.numPages; i++) {
 				$scope.pages.push(i);

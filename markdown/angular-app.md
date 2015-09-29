@@ -313,6 +313,23 @@ AngularJS가 전 모듈에 있는 모든 서비스를 하나로 합치기 때문
 
 >*AngularJS에서 하나의 이름을 갖는 서비스는 단 하나다. 즉, 모듈 계층 구조에서 루트에 가까운 모듈에 정의된 서비스일수록 자식 모듈에 정의된 서비스를 오버라이드한다.*
 
+###AngularJS 수명 주기 개요
+
+AngularJS 애플리케이션의 수명 주기는 웹페이지가 브라우저에 로딩될 때마다 발생한다.
+
+####부트스트랩 단계
+
+AngularJS 수명 주기의 첫번째 단계는 부트스트랩 단계다. AngularJS 자바스크립트 라이브러리가 브라우저에 로딩될 때 발생한다. AngularJS는 자신만의 컴포넌트들을 초기화하고 난 이후에, `ng-app` 지시자와 관련된 다른 모듈을 초기화한다. 모듈이 로딩되면, 의존성이 사용하고자 하는 모듈로 주입되고, 모듈 내에서는 코드 동작이 가능하다.
+
+####컴파일 단계
+
+AngularJS 수명 주기의 두번째 단계는 HTML 컴파일 단계다. 웹페이지가 로딩됐을 때 DOM의 정적 폼이 브라우저에 로딩된다. 컴파일 단계에서 정적 DOM은 AngularJS 뷰를 나타내는 동적 DOM으로 교체된다.
+
+이 단계는 두 부분으로 구성된다. 정적 DOM을 순회하고 모든 지시자를 수집하는 부분과 AngularJS 빌트인 라이브러리 또는 커스텀 지시자 코드의 적합한 자바스크립트 기능으로 링크하는 부분이 그것읻. 지시자들은 동적 또는 라이브 뷰를 생성하기 위해서 Scope를 가지고 결합된다.
+
+####런타임 데이터 바인딩 단계
+
+AngularJS 애플리케이션의 마지막 단계는 런타임 단계며, 이는 사용자가 웹페이지를 다시 로드하거나, 탐색할 때까지 지속된다. 이때, Scope의 변화가 발생하면 뷰에 반영되고, 뷰의 변경은 Scope에 직접 업데이트된다. Scope는 뷰를 위한 데이터의 단일 소스가 된다.
 
 ##백엔드 서버와 통신
 
@@ -915,7 +932,7 @@ myModule.config(function($interpolateProvider){
 
 ####ngBind로 모델 값 렌더링
 
-인터폴레이션 디렉티브는 `ng-bind`라는 디렉티브와 동일하다.
+*인터폴레이션 디렉티브는 `ng-bind`라는 디렉티브와 동일하다.*
 
 ```
 <span ng-bind="expression"></span>
@@ -943,7 +960,7 @@ $scope.msg = 'Hello, <b>World</b>!';
 
 이렇게 처리하는 이유는 HTML 주입 공격을 방지하기 위해서다.
 
-모델에 담긴 HTML 마크업을 평가해서 렌더링할 특별한 이유가 있다면 HTML 태그 방지 기능을 꺼주는 `ng-bind-html-unsafe` 디렉티브를 사용하면 된다.
+모델에 담긴 HTML 마크업을 평가해서 렌더링할 특별한 이유가 있다면 *HTML 태그 방지 기능을 꺼주는 `ng-bind-html-unsafe` 디렉티브를 사용*하면 된다.
 
 ```
 <p ng-bind-html-unsafe="msg"></p>
@@ -970,12 +987,12 @@ angular.module('expressEscaping', ['ngSanitize'])
 
 AngularJS는 4가지의 디렉티브를 제공한다.(ng-show/ng-hide, ng-switch-*, ng-if, ng-include).
 
-`ng-show/ng-hide`와 `ng-switch`의 가장 큰 차이점은 DOM 요소가 처리되는 방식이다. `ng-switch` 디렉티브는 DOM 트리에서 DOM 요소를 실제로 추가/삭제하는 반면
-`ng-show/ng-hide` 디렉티브는 요소를 숨기기 위해 단순히 style="display:none;"만 적용한다. 그리고 `ng-switch` 디렉티브는 새로운 스코프를 생성한다.
+`ng-show/ng-hide`와 `ng-switch`의 가장 큰 차이점은 DOM 요소가 처리되는 방식이다. *`ng-switch` 디렉티브는 DOM 트리에서 DOM 요소를 실제로 추가/삭제하는 반면
+`ng-show/ng-hide` 디렉티브는 요소를 숨기기 위해 단순히 style="display:none;"만 적용한다.* 그리고 `ng-switch` 디렉티브는 새로운 스코프를 생성한다.
 
 ####조건별로 특정 블럭 추가(ng-include)
 
-`ng-include` 디렉티브는 AngularJS 기반의 마크업을 동적으로 특정 조건에 따라 보여줄 수 있다. 그래서 이 디렉티브를 사용하면 표현식 결과에 따라
+*`ng-include` 디렉티브는 AngularJS 기반의 마크업을 동적으로 특정 조건에 따라 보여줄 수 있다.* 그래서 이 디렉티브를 사용하면 표현식 결과에 따라
 화면을 다르게 보여줄 수 있다. 즉, 동적인 페이지를 쉽게 만들 수 있다.
 
 다음은 관리자 권한을 가진 사용자에게만 다른 화면을 보여주는 코드이다.
@@ -996,8 +1013,8 @@ AngularJS는 4가지의 디렉티브를 제공한다.(ng-show/ng-hide, ng-switch
 
 AngularJS 반복자는 요소마다 생성된 스코프에 특별한 변수를 선언한다.
 
-- $index 컬렉션에서 요소의 인덱스를 가리킨다(0부터 시작).
-- $first, $middle, $last  이 변수들은 요소의 위치에 따라 불리언 값을 가진다.
+- *$index 컬렉션에서 요소의 인덱스를 가리킨다(0부터 시작)*.
+- *$first, $middle, $last  이 변수들은 요소의 위치에 따라 불리언 값을 가진다.*
 
 다음은 `$last` 변수를 사용해 breadscrumb 요소에 대한 링크를 적절히 보여준다. 마지막 경로는 링크를 붙이지 않아도 되지만,
 다른 경로들은 `<a>` 요소를 붙인다.
@@ -1067,11 +1084,11 @@ AngularJS 새 버전(1.2.x)부터는 ngRepeat 디렉티브의 기본 문법을 �
 
 > 관련내용
 > - [반복적인 데이터 표현을 위한 템플릿](http://mylko72.maru.net/jquerylab/angularJS/angularjs.html?hn=1&sn=7#h3_5)
-> 예제 - [ngRepeat 패턴을 이용한 list와 view](/angularjs/ngrepeat/index.html)
+> - 예제) [ngRepeat 패턴을 이용한 list와 view](/angularjs/ngrepeat/index.html)
 
 ###DOM 이벤트 핸들러
 
-DOM 이벤트 핸들러에는 실제 DOM 이벤트를 가리키는 `$event` 라는 특별한 인자를 표현식에서 사용할 수 있다. `$event`를 통해 이벤트의 내부 프로퍼티에 접근할 수 있어 기본 동작을 변경하거나
+DOM 이벤트 핸들러에는 *실제 DOM 이벤트를 가리키는 `$event` 라는 특별한 인자를 표현식에서 사용*할 수 있다. `$event`를 통해 이벤트의 내부 프로퍼티에 접근할 수 있어 기본 동작을 변경하거나
 이벤트가 전파되는 것을 막는 등의 추가 작업을 할 수 있다. 예를 들어 선택한 요소의 현재 위치를 어떻게 읽어오는지 보자.
 
 ```
@@ -1127,7 +1144,7 @@ limitTo | Filter | orderBy
 
 #####'filter' 필터 적용
 
-`filter` 필터는 배열의 부분 집합을 가져올 때 사용하는 일반적인 목적의 필터링 함수다.
+*`filter` 필터는 배열의 부분 집합을 가져올 때 사용하는 일반적인 목적의 필터링 함수다.*
 
 ```
 Search for : <input type="text" ng-model="criteria">
@@ -1141,7 +1158,7 @@ Search for : <input type="text" ng-model="criteria">
 
 입력창의 값을 필터의 인자로 연결하여 모든 항목에 대해 입력된 문자열을 포함하는 항목만 표시한다.
 
-하지만 좀 더 정교하게 비교하고 싶다면 필터의 인자로 객체를 사용하면 된다.
+하지만 좀 더 정교하게 비교하고 싶다면 *필터의 인자로 객체*를 사용하면 된다.
 
 이제 프로퍼티 중에 이름이 일치하고 아직 완료되지 않은 항목만 추리고 싶다고 해 보자.
 
@@ -1157,7 +1174,7 @@ Search for : <input type="text" ng-model="criteria">
 <tr ng-repeat="item in backlog | filter:{$: criteria, done: false}">
 ```
 
-함수를 필터의 인자로 사용할 수 있다. 컬렉션의 항목마다 이 함수가 호출되며, 함수 호출 결과가 true인 항목만 결과 배열로 취함한다.
+*함수를 필터의 인자로 사용*할 수 있다. 컬렉션의 항목마다 이 함수가 호출되며, 함수 호출 결과가 true인 항목만 결과 배열로 취함한다.
 
 ```javascript
 $scope.doneAndBigEffort = function(backlogItem){
@@ -1573,9 +1590,9 @@ HTML을 생성하기 위해 서버 측 템플릿 엔진을 사용하는 경우 �
 
 ####ngFormController
 
-각 폼 디렉티브는 `ngFormController`의 인스턴스를 생성하는데, 이 객체는 폼이 유효한지 아닌지와 값 변경 여부를 관리한다. 중요한 점은 `ngFormController`가 폼의 각 `ngModel` 필드를 추적하기 위해 `ngModelController`와 함께 동작한다는 사실이다.
+각 폼 디렉티브는 `ngFormController`의 인스턴스를 생성하는데, 이 객체는 *폼이 유효한지 아닌지와 값 변경 여부를 관리*한다. 중요한 점은 *`ngFormController`가 폼의 각 `ngModel` 필드를 추적하기 위해 `ngModelController`와 함께 동작*한다는 사실이다.
 
-`ngModelController`가 생성되면 부모 요소에서부터 위로 탐색해 첫 번째 발견하는 `ngFormController`에 자신을 등록한다. 이 방법으로 `ngFormController`는 어떤 input 디렉티브를 추적해야 하는지 판단한다.ㅐ
+`ngModelController`가 생성되면 부모 요소에서부터 위로 탐색해 첫 번째 발견하는 `ngFormController`에 자신을 등록한다. 이 방법으로 `ngFormController`는 어떤 input 디렉티브를 추적해야 하는지 판단한다.
 
 ####사용자 정보 폼에 동적인 동작 추가
 
@@ -1639,7 +1656,7 @@ HTML을 생성하기 위해 서버 측 템플릿 엔진을 사용하는 경우 �
 
 ###다른 폼과 중첩된 폼
 
-AngularJS 폼은 다른 폼안에 중첩된 폼을 만들 수 있다. 중첩 폼을 구현하기 위한 `ngForm` 디렉티브를 따로 제공한다.
+AngularJS 폼은 다른 폼안에 중첩된 폼을 만들 수 있다. *중첩 폼을 구현하기 위한 `ngForm` 디렉티브를 따로 제공한다.*
 
 > 중첩된 폼은 선언한 이름으로 부모 폼에 추가된다. 부모 폼이 없다면 스코프에 직접 추가된다.
 
@@ -1752,7 +1769,7 @@ AngularJS 폼은 다른 폼안에 중첩된 폼을 만들 수 있다. 중첩 폼
 
 여기서는 div에 `ngForm` 디렉티브를 사용해 스코프의 websites 배열에 따라 반복되는 중첩 폼을 만들었다. 이 말은 `ngRepeat` 스코프 안에서 각 웹사이트에 대해 `ngModel`의 검증 기능을 사용할 수 있다는 의미다.
 
-오류 메시지를 보여주기 위한 `showError` 함수는 매개변수로 넘긴 `ngModelController`의 `$error` 필드에 해당 항목이 있는지 검사한다. 이 함수에 websiteForm.website를 넘긴 이유는 이것이 해당 웹사이트 입력 창의
+오류 메시지를 보여주기 위한 *`showError` 함수는 매개변수로 넘긴 `ngModelController`의 `$error` 필드에 해당 항목이 있는지 검사*한다. 이 함수에 websiteForm.website를 넘긴 이유는 이것이 해당 웹사이트 입력 창의
 `ngModelController` 객체에 대한 참조이기 때문이다.
 
 `ngForm` 밖에서는 websiteForm 객체나 websiteForm.website 객체를 참조할 수 없다. 스코프에 있지 않기 때문이다. 하지만 userForm 객체는 참조할 수 있다.
@@ -1838,7 +1855,7 @@ button이나 input[type=submit]에 `ngClick`을 사용하려면 버튼을 클릭
 
 > 예제  - [사용자 정보 폼 초기화](http://bit.ly/17vHLWX)
 
-컨트롤러에서 *`angular.copy()`를 사용해 모델을 지역 변수로 복사했다.* 그리고 `revert() 메소드는 복사한 내용을 user 모델로 다시 복사한 후 폼을 변경하지 않았다고 설정해서 CSS 클래스가 `ng-dirty`로 설정되지 않게 만든다.
+컨트롤러에서 *`angular.copy()`를 사용해 모델을 지역 변수로 복사했다.* 그리고 `revert()` 메소드는 복사한 내용을 user 모델로 다시 복사한 후 폼을 변경하지 않았다고 설정해서 CSS 클래스가 `ng-dirty`로 설정되지 않게 만든다.
 
 
 
@@ -1934,7 +1951,7 @@ angular.module('myModule', [])
 
 ###AngularJS 내장 경로 서비스 사용
 
-AngularJS 프레임워크는 단일 페이지 웹 애플리케이션에서 경로를 설정하기 위해 `$route`라는 서비스를 기본으로 제공한다.
+AngularJS 프레임워크는 *단일 페이지 웹 애플리케이션에서 경로를 설정하기 위해 `$route`라는 서비스를 기본으로 제공*한다.
 
 ####기본적인 경로 정의
 
@@ -1951,11 +1968,11 @@ angular.module('routing_basics', [])
   })
 ```
 
-`$routeProvider` 서비스는 새로운 경로를 정의하는 메소드(when)와 기본 경로를 정의하는 메소드(otherwise)를 체이닝할 수 있는 유연한 API를 제공한다.
+*`$routeProvider` 서비스는 새로운 경로를 정의하는 메소드(when)와 기본 경로를 정의하는 메소드(otherwise)를 체이닝할 수 있는 유연한 API를 제공*한다.
 
 #####- 일치하는 경로의 내용 보여주기
 
-URL이 경로 중 하나와 일치하면 경로의 내용(templateUrl)을 `ng-view` 디렉티브로 보여줄 수 있다.
+*URL이 경로 중 하나와 일치하면 경로의 내용(templateUrl)을 `ng-view` 디렉티브로 보여줄 수 있다.*
 
 ```
 <div class="container-fluid" ng-view>
@@ -1984,7 +2001,7 @@ AngularJS는 콜론(:)으로 구분한 문자열을 사용해 아주 쉽게 이 
 
 #####- 경로의 매개변수 값 사용
 
-특정 URL이 경로와 일치할 때 `$routeParams` 서비스를 사용하면 이 매개변수의 값에 쉽게 접근할 수 있다. 사실 `$routeParams` 서비스는 경로의 매개변수 이름을 키로 하고 일치하는 URL의 해당 문자열을 값으로 하는 간단한 자바스크립트 객체(해시)다.
+특정 URL이 경로와 일치할 때 `$routeParams` 서비스를 사용하면 이 매개변수의 값에 쉽게 접근할 수 있다. 사실 *`$routeParams` 서비스는 경로의 매개변수 이름을 키로 하고 일치하는 URL의 해당 문자열을 값으로 하는 간단한 자바스크립트 객체(해시)다.*
 
 `$routeParams`는 일반적인 서비스이므로 AngularJS 의존성 주입 시스템이 관리하는 어떤 객체에든 주입할 수 있다. 사용자 정보를 수정(/admin/users/:userid)하는데 사용하는 컨트롤러에서 다음과 같이 정의할 수 있다.
 
@@ -2014,7 +2031,7 @@ AngularJS 경로 시스템은 경로를 정의할 때 컨트롤러도 같이 정
 - 새로운 마크업을 가능한 한 빨리 보여주고(데이터가 아직 준비되지 않았더라도) 백엔드로부터 데이터가 도착하면 UI를 다시 그리는 방법
 - 백엔드에서 모든 요청이 처리되고 데이터가 준비된 후 새로운 경로에 대한 마크업을 보여주는 방법
 
-첫번째 방법이 기본으로 사용되는 바법이다. 하지만 사용자는 의도치 않은 깜빡거림 현상을 접하게 된다. UI가 깜빡거리는 현상은 같은 템플릿이 짧은 시간에 데이터 없이 한 번 그려지고 데이터가 준비되면 또다시 그려지기 때문에 발생하는 현상이다. 
+첫번째 방법이 기본으로 사용되는 방법이다. 하지만 사용자는 의도치 않은 깜빡거림 현상을 접하게 된다. UI가 깜빡거리는 현상은 같은 템플릿이 짧은 시간에 데이터 없이 한 번 그려지고 데이터가 준비되면 또다시 그려지기 때문에 발생하는 현상이다. 
 
 AngularJS 경로 시스템은 두 번째 방법을 구현하기 위해 템플릿과 필요한 데이터가 준비될 때까지 경로 변경(UI를 다시 그리는)을 미루는 멋진 기능을 제공한다. ***경로를 정의하는 객체에서 `resolve` 프로퍼티를 사용하면 경로의 컨트롤러에 대한 비동기적인 의존성을 정의할 수 있다.*** AngularJS는 경로가 변경되기 전에(컨트롤러를 초기화하기 전에) 이 의존성을 모두 처리해 준다.
 
@@ -2140,7 +2157,7 @@ $scope.listUsers = function(){
 };
 ```
 
-다른 하나는 AngularJS의 `ng-href`를 사용하면 동적인 URL을 쉽게 만들 수 있다.
+다른 하나는 *AngularJS의 `ng-href`를 사용하면 동적인 URL을 쉽게 만들 수 있다.*
 
 ```
 <a ng-href="/admin/users/{{user.$id()}}">Edit users</a>
@@ -2152,7 +2169,7 @@ $scope.listUsers = function(){
 
 애플리케이션에서 특정 경로는 해당하는 모듈 안에서 정의한다. 
 
-AngularJS 모듈 시스템에는 모듈마다 `config` 함수가 있으므로 `$routeProvider` 서비스를 주입해서 경로를 정의할 수 있다.
+*AngularJS 모듈 시스템에는 모듈마다 `config` 함수가 있으므로 `$routeProvider` 서비스를 주입해서 경로를 정의할 수 있다.*
 
 예를 들어 사용자를 관리하는 모듈과 프로젝트를 관리하는 모듈이 있다면 각 모듈에서 다음과 같이 경로를 정의한다.
 
@@ -2291,7 +2308,7 @@ AngularJS 컴파일러가 버튼 요소를 발견할 때마다 이 디렉티브�
 
 ###AngularJS 위젯 디렉티브 이해
 
-디렉티브의 가장 강력한 장점 중 하나는 도메인 특화된 태그를 직접 만들 수 있다는 점이다. 다른 말로 하면 요소와 속성을 직접 만들어 애플리케이션의 도메인에 특화된 의미를 부여하고, 새로운 동작을 추가할 수 있다는 의미다.
+*디렉티브의 가장 강력한 장점 중 하나는 도메인 특화된 태그를 직접 만들 수 있다는 점*이다. 다른 말로 하면 요소와 속성을 직접 만들어 애플리케이션의 도메인에 특화된 의미를 부여하고, 새로운 동작을 추가할 수 있다는 의미다.
 
 ####페이지 번호 디렉티브 작성
 
@@ -2320,7 +2337,7 @@ AngularJS 컴파일러가 버튼 요소를 발견할 때마다 이 디렉티브�
 </div>
 ```
 
-템플릿이 동작하려면 스코프를 사용해야 하지만 위젯을 사용한 곳의 스코프에 접근해서는 안된다. 즉, 컴파일러에게 템플릿만을 위한 새로운 isolate 스코프가 필요하다고 알려줘야 한다.
+템플릿이 동작하려면 스코프를 사용해야 하지만 위젯을 사용한 곳의 스코프에 접근해서는 안된다. 즉, *컴파일러에게 템플릿만을 위한 새로운 isolate 스코프가 필요하다고 알려줘야 한다.*
 
 ####부모 스코프에 독립적인 디렉티브
 
@@ -2341,7 +2358,7 @@ AngularJS 컴파일러가 버튼 요소를 발견할 때마다 이 디렉티브�
 
 속성에 정의한 표현식은 템플릿 스코프의 프로퍼티를 감시함으로써 동기를 맞출 수 있는데, 감시하는 코드를 직접 작성해도 되지만 AngularJS에 맡기는 방법도 있다. 즉, *요소의 속성과 isolate 스코프 사이의 인터페이스를 인터폴레이트(@), 데이터 바인딩(=), 표현식(&)이라는 세 가지 형태로 정의할 수 있다.* 이 인터페이스는 디렉티브를 정의할 때 키와 값 형태로 스코프에 같이 정의하면 된다.
 
-키는 isolate 스코프의 필드 이름이다. 그리고 값은 @, =, & 중 하나로 시작하고, 뒤에 요소의 속성 이름이 붙는 형태다.
+*키는 isolate 스코프의 필드 이름이다. 그리고 값은 @, =, & 중 하나로 시작하고, 뒤에 요소의 속성 이름이 붙는 형태다.*
 
 ```javascript
 scope: {
@@ -2368,13 +2385,13 @@ isolate 스코프에 총 세개의 필드를 선언했으므로 AngularJS는 디
 
 #####- =로 속성 데이터 바인딩
 
-= 기호를 사용하면 AngularJS는 명시된 속성의 표현식을 유지하고 있다가 isolate 스코프의 값과 서로 동기를 맞춰준다. 즉, 위젯의 외부와 내부 사이에서 객체와 값을 직접 연결하는 양방향 데이터 바인딩이다. 
+*= 기호를 사용하면 AngularJS는 명시된 속성의 표현식을 유지하고 있다가 isolate 스코프의 값과 서로 동기를 맞춰준다. 즉, 위젯의 외부와 내부 사이에서 객체와 값을 직접 연결하는 양방향 데이터 바인딩이다.*
 
 > 인터페이스가 양방향 데이터 바인딩을 지원하므로 속성으로 정의한 표현식은 할당 가능한 형태여야 한다(즉, 스코프나 객체의 필드를 가리켜야 한다). 임의로 계산된 표현식은 사용할 수 없다.
 
 #####- &로 속성에 콜백 표현식 추가
 
-& 기호를 사용하면 요소의 속성에 정의한 표현식을 스코프에서 함수로 사용할 수 있다. 즉, 함수를 호출하면 해당 표현식이 실행된다. *위젯에 콜백을 추가하기에 아주 좋은 방법이다.*
+*& 기호를 사용하면 요소의 속성에 정의한 표현식을 스코프에서 함수로 사용할 수 있다.* 즉, 함수를 호출하면 해당 표현식이 실행된다. *위젯에 콜백을 추가하기에 아주 좋은 방법이다.*
 
 > 관련내용
 
@@ -2676,7 +2693,7 @@ alert 요소를 보면 type="'info'"라는 속성이 있는데, 템플릿 스코
 
 ###트랜스클루전 함수 생성과 사용
 
-AngularJS의 트랜스클루전은 트랜스클루전 함수를 사용할 수 있게 한다. 이 함수는 `$compile` 서비스를 호춣해서 생성하는 단순한 링크 함수다.
+AngularJS의 트랜스클루전은 트랜스클루전 함수를 사용할 수 있게 한다. 이 *함수는 `$compile` 서비스를 호출해서 생성하는 단순한 링크 함수*다.
 
 디렉티브가 트랜스클루전을 요청하면 AngularJS는 옮겨 넣을 요소를 DOM에서 골라낸 후 컴파일한다. `transclude: true`로 지정했을 때 다음 코드를 보자.
 
@@ -2688,11 +2705,11 @@ AngularJS의 트랜스클루전은 트랜스클루전 함수를 사용할 수 �
 
 ####$compile 서비스로 트랜스클루전 함수 작성
 
-AngularJS는 컴파일러를 `$compile` 서비스로 제공한다. `$compile` 서비스를 사용하려면 단순히 DOM 노드의 목록(혹은 DOM 노드의 목록으로 해석될 수 있는 문자열)과 함께 호출하면 된다.
+*AngularJS는 컴파일러를 `$compile` 서비스로 제공한다.* `$compile` 서비스를 사용하려면 단순히 DOM 노드의 목록(혹은 DOM 노드의 목록으로 해석될 수 있는 문자열)과 함께 호출하면 된다.
 
 	var linkingFn = $compile('<div som-directive>some {{"interpola-ted"}} values</div>');
 
-이렇게 `$compile` 서비스를 호출하면 링크 함수를 반환한다. 그리고 스코프와 함께 이 링크 함수를 호출하면 해당 스코프에 연결되고 컴파일된 DOM 요소를 포함하는 DOM 요소를 얻을 수 있다.
+이렇게 *`$compile` 서비스를 호출하면 링크 함수를 반환한다. 그리고 스코프와 함께 이 링크 함수를 호출하면 해당 스코프에 연결되고 컴파일된 DOM 요소를 포함하는 DOM 요소를 얻을 수 있다.*
 
 	var compiledElement = linkingFn(someScope);
 
@@ -2718,7 +2735,7 @@ AngularJS는 컴파일러를 `$compile` 서비스로 제공한다. `$compile` �
 		};
 	});
 
-컴파일 함수에서는 `transcludeFn` 매개변수를 사용해서 트랜스클루전 함수에 접근할 수 있으며, 디렉티브 컨트롤러에서는 `$transclude` 매개변수로 트랜스클루전 함수에 접근할 수있다.
+*컴파일 함수에서는 `transcludeFn` 매개변수를 사용해서 트랜스클루전 함수에 접근할 수 있으며, 디렉티브 컨트롤러에서는 `$transclude` 매개변수로 트랜스클루전 함수에 접근할 수있다.*
 
 #####transcludeFn으로 컴파일 함수에서 transclusion 함수 사용
 
@@ -2735,7 +2752,7 @@ AngularJS는 컴파일러를 `$compile` 서비스로 제공한다. `$compile` �
 
 코드를 보면 디렉티브의 요소 다음에 첫번째로 발견되는 `<p>` 요소에 옮겨 넣은 요소를 추가하고 있다. 그리고 트랜스클루전 함수를 호출하면 옯겨 넣은 요소를 스코프에 연결한다. 이 경우 스코프와 같은 급의 새로운 스코프를 만든다. 즉, 디렉티브 스코프의 `$parent`에 대한 자식 스코프를 만든다.
 
-이렇게 새로운 스코프를 만드는 것은 디렉티브가 isolate 스코르를 갖는 경우 꼭 필요한 일이다. 링크함수로 넘기는 스코프는 isolate 스코프라서 옮겨 넣은 요소가 필요로 하는 부모 스코프의 어떤 프러퍼티든 상속받지 않기 때문이다.
+이렇게 새로운 스코프를 만드는 것은 디렉티브가 isolate 스코프를 갖는 경우 꼭 필요한 일이다. 링크함수로 넘기는 스코프는 isolate 스코프라서 옮겨 넣은 요소가 필요로 하는 부모 스코프의 어떤 프러퍼티든 상속받지 않기 때문이다.
 
 #####transclude로 디렉티브 컨트롤러에서 transclusion 함수 사용
 
@@ -2811,7 +2828,7 @@ AngularJS에서 컨트롤러란 DOM 요소에 추가되는 객체로서 스코�
 
 디렉티브 컨트롤러는 디렉티브에 의해 정의된 특별한 형태의 컨트롤러다. DOM 요소가 나타날 때마다 만들어지며, 디렉티브를 초기화하고 스코프보다는 디렉티브 자체에 행동을 추가하는 역할을 한다.
 
-디렉티브 컨트롤러를 정의하는 방법은 디렉티브 정의 객체에서 `controller` 프로퍼티를 사용하면 된다. `controller` 프로퍼티에는 미리 모듈에 정의해놓은 컨트롤러의 이름을 지정한다.
+디렉티브 컨트롤러를 정의하는 방법은 디렉티브 정의 객체에서 `controller` 프로퍼티를 사용하면 된다. *`controller` 프로퍼티에는 미리 모듈에 정의해놓은 컨트롤러의 이름을 지정한다.*
 
 	myModule.directive('myDirective', function(){
 		return {
@@ -2822,7 +2839,7 @@ AngularJS에서 컨트롤러란 DOM 요소에 추가되는 객체로서 스코�
 		...
 	});
 
-혹은 컨트롤러를 만들어낼 때 사용하는 생성자 함수를 지정해도 된다.
+혹은 컨트롤러를 만들어낼 때 사용하는 *생성자 함수를 지정해도 된다.*
 
 	myModule.directive('myDirective', function(){
 		return {
@@ -2981,6 +2998,283 @@ loadTemplate 함수는 지정한 템플릿을 로드하고 해당 템플릿을 D
 ##웹애플리케이션 작성
 
 ###AngularJS 내부 동작 이해
+
+####문자열 기반의 템플릿 엔진이 아니다
+
+    <input simple-model='name'>
+    <span simple-bind="name"></span>
+
+위 코드는 사용자의 입력에 따라 자동으로 갱신되기 시작한다. 어떻게 DOM의 변경 사항을 모델에 전파하고, 모델이 DOM을 어떻게 다시 그리게 만드는지 알아보자.
+
+#####DOM 이벤트의 응답으로 모델 갱신
+
+AngularJS는 여러 *디렉티브에 등록된 DOM 이벤트 리스너를 통해 DOM 트리의 변경 사항을 모델로 전파*한다. 그리고 *이벤트 리스너의 코드는 `$scope`로 접근할 수 있는 변수를 갱신함으로써 모델을 변경*한다.
+
+다음은 `ng-model` 디렉티브와 동일한 기능을 하는 simple-model 이라는 디렉티브이다.
+
+
+	.directive('simpleModel', function ($parse) {
+		return function (scope, element, attrs) {
+
+		  var modelGetter = $parse(attrs.simpleModel);
+		  var modelSetter = modelGetter.assign;
+
+		  //Model -> DOM updates
+		  scope.$watch(modelGetter, function(newVal, oldVal){
+			element.val(newVal);
+		  });
+
+		  //DOM -> Model updates
+		  element.bind('input', function () {
+			scope.$apply(function () {
+			  modelSetter(scope, element.val());
+			});
+		  });
+		};
+	})
+
+실제 모델값을 설정하기 위해 `$parse` 서비스를 사용하는데, *`$parse` 서비스는 AngularJS 표현식을 스코프에 대해 평가하고 스코프를 모델의 값으로 갱신해준다.* *표현식을 인자로 넣고 `$parse` 서비스를 호출하면 Getter 함수를 반환하는데, 이렇게 반환된 Getter 함수는 AngularJS 표현식이 할당 가능한 형태이면 `assign` 프로퍼티(Setter 함수)를 제공한다.*
+
+simple-model 디렉티브의 핵심은 *`input` 요소의 변경을 감지하고 사용자가 입력한 값으로 모델을 갱신하는 input DOM 이벤트 핸들러다.*
+
+#####DOM과 모델 동기화
+
+*모델의 변경 사항을 주시하고 모델 변경 시 특정 함수를 실행하려면 `$watch` 메소드를 사용해야 한다.*
+
+	scope.$watch(watchExpression, modelChangeCallback)
+
+스코프의 `$watch` 메커니즘에 익숙해지고 나면 simple-model 디렉티브가 모델을 주시하고 모델 값이 변경되는 대로 input 필드의 값을 갱신하는 과정을 이해할 수 있다.
+
+	  //Model -> DOM updates
+	  scope.$watch(modelGetter, function(newVal, oldVal){
+		element.val(newVal);
+	  });
+
+#####Scope.$apply
+
+AngularJS가 모델 변경 사항을 추적하는 메커니즘은 결국 모델이 변경되는 한정된 상황을 주시하는 것이다. 이 상황은 다음과 같다.
+
+- DOM 이벤트
+- XHR 응답으로 인한 콜백
+- 브라우저의 주소 변경
+- 타이머로 인한 콜백
+
+*AngularJS는 명백히 주시가 필요한 상황일 때만 모델을 주시하는 동작을 시작한다. 이 정교한 메커니즘은 스코프 객체의 `$apply` 메소드를 실행함으로써 이뤄진다.*
+
+다음 코드와 같이 input 값이 변경될 때마다(즉, 매번 키를 입력할 때마다) 모델을 주시하는 동작을 추가할 수 있다.
+
+	element.bind('input', function () {
+		scope.$apply(function () {
+	  		modelSetter(scope, element.val());
+		});
+	});
+
+혹은 사용자가 input 필드에 포커스를 잃었을 때만 모델 변경 사항을 전파할 수도 있다.
+
+	element.bind('blur', function () {
+		scope.$apply(function () {
+	  		modelSetter(scope, element.val());
+		});
+	});
+
+여기서 중요한 것은 모델의 변경 사항을 추적하는 과정을 명시적으로 시작하기 위해 `$apply` 메소드를 사용한 것이다. 이게 바로 일반적인 디렉티브와 서비스에서 모델 변경 사항의 추적을 시작하는 방법이다.
+
+>AngularJS는 *스코프의 `$apply` 메소드를 호출함으로써 모델 변경 사항의 추적을 시작한다. 일반적인 서비스와 디렉티브 안에서는 네트워크 통신, DOM 이벤트, 자바스크립트 타이머, 브라우저 주소 변경 등이 발생하면 이 메소드가 호출*된다.
+
+#####모델 변경 사항을 DOM으로 전파
+
+*`$parse` 서비스를 사용하면 모델 값을 DOM 텍스트 노드로 렌더링* 하는 `ng-bind` 디렉티브의 간소화된 버전도 만들 수 있다.
+
+	.directive('simpleBind', function ($parse) {
+		return function (scope, element, attrs) {
+
+		  var modelGetter = $parse(attrs.simpleBind);
+		  scope.$watch(modelGetter, function(newVal, oldVal){
+			element.text(newVal);
+		  });
+		};
+	});
+
+이 simple-bind 디렉티브는 표현식(DOM 속성으로 지정)을 받아 `$scope`에 대해 평가한 후 해당 DOM 요소의 텍스트를 갱신한다.
+
+#####$digest 루프 내부
+
+*모델 변경 사항을 감지하는 과정을 $digest 루프*라고 부른다. *`$digest` 메소드는 `$apply` 호출의 일부분으로 실행되며, 모드 스코프에 등록된 모든 watch를 평가*한다.
+
+AngularJS에서 `$digest` 루프가 존재하는 이유는 다음 2가지 문제와 관련이 있다.
+
+- 모델의 어느 부분이 변경됐는지 판단하고 그 결과로 어떤 DOM 프로퍼티가 갱신돼야 하는지를 결정한다. 단지 모델 프로퍼티를 변경하면 AngularJS 디렉티브가 알아서 변경된 부분을 파악하고 다시 그려준다.
+- 성능 저하를 일으키고 불필요한 다시 그리기 동작을 제거해서 UI가 깜빡이는 현상을 해결한다. AngularJS는 모델이 안정화되는 가장 마지막 시점까지 DOM을 다시 그리는 동작을 지연시킴으로써 이 문제를 해결한다.
+
+#####$watch 내부
+
+	$scope.$watch(watchExpression, modelChangeCallback)
+
+스코프에 새로운 `$watch`가 추가되면 AngularJS는 watchExpression을 평가하고 내부적으로 평가 결과를 저장해놓는다. `$digest` 루프로 들어간 다음에 watchExpression은 다시 한 번 실행되며, 새로운 값과 저장해둔 값을 비교한다. 그리고 새로운 값이 이전 값과 다르면 modelChangeCallback이 실행된다. 여기서 새로운 값은 나중의 비교를 위해 역시 저장되며, 이 과정은 계속 반복된다.	
+
+#####모델 안전성
+
+AngularJS는 변경사항을 감지하는 `watch`가 하나도 없으면 모델이 안정적(UI 렌더링 단계로 넘어갈 수 있는)이라고 판단한다. 즉, 변경 사항을 감지한 `watch`가 단 하나라도 있으면 전체 `$digest` 루프의 상태를 'dirty'로 변경하고 AngularJS는 루프를 한번 더 돌린다. AngularJS는 더 이상 변경 사항이 발견되지 않을 때까지 `$digest` 루프를 계속 돌면서 전체 스코프의 모든 `watch`를 재평가한다.
+
+다음 코드는 Start와 End라는 2개의 date 필드로 구성된 간단한 폼이다. 당연히 종료 날짜는 시작 날짜보다 미래의 시점이어야 한다.
+
+	<div>
+		<form>
+			Start date : <input ng-model="startDate">
+			End date : <input ng-model="endDate">
+		</form>
+	</div>
+
+모델의 endDate가 항상 startDate 보다 미래의 시점을 가리키기 위해서는 `watch`를 다음과 같이 등록할 수 있다.
+
+	function oneDayAhead(dateToIncrement){
+		return dateToIncrement.setDate(dateToIncrement.getDate()+1);
+	};
+
+	$scope.$watch('startDate', function(newValue){
+		if(newValue <= $scope.startDate){
+			$scope.endDate = oneDayAhead($scope.startDate);
+		}
+	});
+
+컨트롤러에 watch를 등록해서 2개의 모델 값이 서로 의존하게 만든다. 즉, 하나의 모델 값이 변경되면 다른 모델 값이 바뀌는 방식이다. 여기서 모델이 변경될 때 호출되는 콜백은 이미 '안정적'이라고 판단한 값을 다시 변경하는 부수 효과를 갖고 있다.
+
+>모든 `$digest` 루프는 최소한 한 번, 보통 2번 실행된다. 즉, watch 표현식은 한 번의 `$digest` 루프마다 2번씩 평가된다는 의미다.
+
+#####안정적이지 않은 모델
+
+	<span>Random value : {{random()}}</span>
+
+random() 함수는 스코프에 다음과 같이 정의된다.
+
+	$scope.random = Math.random;
+
+위 코드는 `$digest` 루프를 돌 때마다 `Math.random()`을 매번 다른 값으로 평가할 것이다. 즉, 'dirty'라고 설정해서 다음 루프가 또 필요하다고 매번 판단한다. 이 상황은 루프를 계속 돌게 만들고 결국 AngularJS는 모델이 불안정해서 `$digest` 루프를 멈추게 된다.
+
+>AngularJS는 기본적으로 `$digest` 루프를 10번 수행하고도 모델이 불안정하면 루프를 빠져나온다.
+
+#####$digest 루프와 스코프 계층 구조
+
+*`$digest` 루프는 매번 루프를 돌 때마다 `$rootScope` 부터 시작해서 모든 스코프의 모든 watch 표현식을 처리*한다. 자식 스코프 중 하나에서 변경이 발생하면 부모 스코프의 변수에 영향을 미칠 수 있기 때문이다. AngularJS가 변경이 시작된 스코프의 watch에 대해서만 평가한다면 모델 값과 실제화면에 표시되는 것과의 불일치가 발생할 가능성이 있다.
+
+###AngularJS 애플리케이션 성능 개선
+
+####CPU 사용률 최적화
+
+#####$digest 루프를 빠르게
+
+`$digest` 루프의 실행 시간이 50ms(0.05초)보다 빨라야 사람의 눈으로 실행 시간을 인지할 수 없다. `$digest` 사이클이 50ms 안에 수행되게 만들려면 다음과 같은 두가지 중요한 사항을 따라야 한다.
+
+- 각 watch를 빠르게 만들기
+- 각 `$digest` 사이클의 일부분으로 평가되는 watch의 수를 제한하기
+
+#####watch를 가볍고 빠르게 만들기
+
+	$scope.$watch(watchExpression, modelChangeCallback)
+
+지정한 watchExpression은 `$digest` 루프마다 최소한 한번(보통은 2번) 실행된다. 그래서 watch 표현식을 실행하는 데 오랜 시간이 걸리면 전체 AngularJS 애플리케이션의 속도가 느려질 가능성이 있으므로 무거운 연산은 사용하지 말아야 한다.
+
+다음은 watch 표현식을 빠르게 만들기 위해 피해야 하는 몇가지 패턴이다.
+
+- *표현식에서 함수를 호출할 때 함수안에 포함된 로그를 찍는 문장은 심각하게 느려지는 결과를 초래한다.*
+
+		<span>{{getNameLog()}}</span>
+
+		$scope.getNameLog = function(){
+			console.log('getting name');
+			return $scope.name;
+		};
+
+- 필터를 사용하는 코드도 의도치 않게 무거운 연산이 스며들기 좋은 장소다.
+
+		{{myModel | myComplexFilter}}
+
+ 필터는 함수를 호출하는 것과 별반 다르지 않다. 따라서 watch 표현식의 일부분으로 포함되며, `$digest` 루프마다 최소한 한 번씩 실행된다. 그래서 필터에서 사용하는 로직이 무거운 경우 전체 `$digest` 루프가 느려진다.
+
+#####watch 표현식에서 DOM 접근 회피
+
+watchExpression에서 DOM 프로퍼티를 읽는 것은 전체 `$digest` 루프를 심각하게 느리게 만들 정도로 무겁다. 프로퍼티를 읽어갈 때 DOM 프로퍼티는 실시간으로, 그리고 동기적으로 계산된다는 것이 문제다.
+
+> AngularJS 애플리케이션에서 외부 자바스크립트 컴포넌트를 사용하려는 경우 특히 DOM 프로퍼티의 변경 사항을 감시하게 되는 경우며 `$digest` 루프의 성능에 심각한 영향을 미칠 수 있다.
+
+#####평가될 watch의 수 제한
+
+######필요 없는 watch 제거
+
+AngularJS의 양방향 데이터 바인딩은 매우 강력하지만 자칫하면 고정 값으로 충분한 경우에도 양방향 데이터 바인딩을 남용하기 쉽다. AngularJS 표현식을 적용하면 `$digest` 루프를 한 번 돌 때마다 수많은 연산이 추가로 수행돼야 한다. 그러므로 템플릿에 새로운 인터폴레이션 표현식을 추가할 때는 양방향 데이터 바인딩이 정말로 필요한지 다시 한번 생각해야 한다.
+
+######안 보이는 요소에는 watch 사용하지 않기
+
+AngularJS는 특정 조건에 따라 DOM 일부분을 보여주거나 숨기는 데 사용하기 좋은 `ng-show`와 `ng-hide`라는 2개의 디렉티브를 제공한다. 이 디렉티브는 DOM에서 요소를 실제로 제거하지는 않는다. 다만 적절한 스타일(display:none)을 적용해 숨겨놓기만 한다. '숨겨진' 요소는 DOM 트리에 여전히 존재하기 때문에 이 요소에 등록해 놓은 watch는 매 `$digest` 루프마다 평가될 것이다.
+
+> 화면에 보이지 않는 부분이 애플리케이션을 느리게 만든다면 `ng-show` 디렉티브를 고려해보자. 이 디렉티브는 보이지 않는 DOM 요소를 DOM 트리에서 물리적으로 제거해준다.
+
+######영향을 받는 스코프를 알고 있을 때 Scope.$apply 대신 Scope.$digest 호출
+
+AngularJS가 `$digest` 루프를 실행할 때는 전체 애플리케이션의 모든 스코프를 순회한다. 이는 한 스코프에 의해 시작된 변경이 부모 스코프 중 하나의 모델을 변경할 수 있기 때문이다.
+
+하지만 모델이 변경됨으로써 정확히 어떤 스코프에 영향을 미치는지 알고 있는 경우라면 영향을 받는 가장 상위 스코프에 `scope.$apply` 대신 `scope.$digest` 메소드를 호출할 수 있다. 그러면 `scope.$digest` 메소드는 스코프의 특정 부분집합에 대해서만 `$digest` 루프를 돌린다. 그리고 메소드가 호출된 해당 스코프와 그 자식 스코프에 선언된 watch만이 모델 변경에 대한 영향을 받는다. 이 방법은 평가되는 watch 표현식의 수를 획기적으로 줄일 수 있어 `$digest` 루프의 실행 속도를 높일 수 있다.
+
+#####$digest 루프 빈도 줄이기
+
+`scope.$apply()` 메소드를 호출하게 되는 AngularJS 디렉티브와 서비스는 다음과 같이 네 가지 종류의 이벤트로 분류할 수 있다.
+
+- 내비게이션 이벤트 : 사용자가 링크를 클릭하거나 뒤로 가기, 앞으로 가기 버튼을 누르는 경우
+- 네트워크 이벤트 : 응답이 준비되면 `$digest` 루프를 시작하는 모든 `$http` 서비스 호출
+- DOM 이벤트 : 이벤트 핸들러가 호출되면 `$digest` 루프를 시작하는 DOM 이벤트에 해당하는 모든 AngularJS 디렉티브
+- 자바스크립트 타이머 : 타이머가 끝나면 $digest 루프를 시작하는 자바스크립트의 `setTimeout` 함수를 래핑한 `$timeout` 서비스
+
+`$digest` 루프는 수많은 DOM 이벤트 핸들러에 의해 시작된다. 많은 것을 제어할 수 있는 상황이 아니기는 하지만 AngularJS가 `$digest` 루프에 들어가는 빈도를 줄일 수 있는 방법은 있다.
+
+기본적으로 `$timeout` 서비스는 타이머가 끝날 때마다 `$scope.apply`를 호출하므로 충분히 주의를 기울여야 한다. 다음은 현재시간을 보여주는 간단한 clock 디렉티브이다.
+
+	.directive('click', function($timeout, dateFilter){
+		return {
+			restrict: 'E',
+			link: function(scope, element, attrs){
+				function update(){
+					//현재 시간을 읽어와서 포맷을 지정한 다음 DOM을 갱신
+					element.text(dateFilter(new Date(), 'hh:mm:ss'));
+					//1초마다 반복
+					$timeout(update, 1000);		
+
+				}
+				update();
+			}
+		};
+	});
+
+이 디렉티브를 사용하는 `<clock></clock>` 마크업은 매초 `$digest` 루프를 시작하게 된다. 그래서 `$timeout` 서비스는 `scope.$apply`의 호출 여부를 지정할 수 있게 3번째 매개변수를 제공한다.
+
+	function update(){
+		element.text(dateFilter(new Date(), 'hh:mm:ss'));
+		$timeout(update, 1000, false);		
+	}
+
+타이머를 등록할 때 3번째 매개변수로 false를 넘기면 `$timeout` 서비스로 인해 `$digest` 루프가 시작되는 것을 막을 수 있다.
+
+마지막으로 마우스 이동과 관련된 이벤트 핸들러를 등록함으로써 엄청나게 많은 수의 `$digest` 루프가 실행되는 경우를 살펴보자.
+
+	<div ng-class='{active: isActive}' ng-mouseenter='isActive=true' ng-mouseleave='isActive=false'>Some content</div>
+
+위 코드는 마우스의 포인터가 요소 위에 위치하면 요소의 클래스를 변경한다. 이때 마우스 포인터가 해당 DOM 요소를 지나갈 때마다 `$digest` 루프가 실행된다. 이 코드가 아주 많은 요소에 반복적으로 사용된다면
+애플리케이션의 성능은 확 떨어진다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> f07048b24b64c96714a578657acaa4a40b0ecbf1
 
 ####문자열 기반의 템플릿 엔진이 아니다
 

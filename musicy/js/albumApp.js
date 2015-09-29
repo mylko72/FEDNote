@@ -56,7 +56,7 @@
 			//서비스모듈내 객체의 함수를 호출하여 현재 클릭된 마우스의 위치정보를 담고 있는 객체를 반환
 			var loc = MouseClickPos.getCurrentPos();
 			//마우스의 위치정보를 스타일로 정의
-			$scope.locStyle = {'left':loc.x+'px', 'top':loc.y+'px'};
+			$scope.locStyle = {'display':'block', 'left':loc.x+'px', 'top':loc.y+'px'};
 
 			$scope.played = true;	
 
@@ -127,7 +127,7 @@
 			$scope.pageSize = 20;
 			$scope.currentPage = 0;
 			$scope.$watch('filteredSongs.length', function(filteredSize){
-			  console.log(filteredSize);
+			  //console.log(filteredSize);
 			  $scope.numPages = Math.ceil(filteredSize / $scope.pageSize);
 			  for (var i=0; i<$scope.numPages; i++) {
 				$scope.pages.push(i);
